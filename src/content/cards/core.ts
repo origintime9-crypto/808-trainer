@@ -37,7 +37,7 @@ export const coreCards: Card[] = [
   c('c2-decomp-trick', ['2.2'], String.raw`已知同一初始状态下激励 $x$、$kx$ 的全响应 $y_1$、$y_2$，如何求 $y_{zi}$、$y_{zs}$？`,
     String.raw`$y_1=y_{zi}+y_{zs}$，$y_2=y_{zi}+k\,y_{zs}$，联立解出。$k=2$ 时 $y_{zs}=y_2-y_1$，$y_{zi}=2y_1-y_2$。激励延时 $t_0$：$y=y_{zi}(t)+y_{zs}(t-t_0)$；初始状态 $\times a$、激励 $\times b$：$y=a\,y_{zi}+b\,y_{zs}$。`),
   c('c2-h-g', ['2.3'], String.raw`冲激响应 $h(t)$ 与阶跃响应 $g(t)$ 的关系？`,
-    String.raw`$g(t)=\int_{-\infty}^th(\tau)d\tau$，$h(t)=\frac{dg(t)}{dt}$；$s$ 域：$G(s)=\frac{H(s)}{s}$。离散：$g(n)=\sum_{k\le n}h(k)$，$h(n)=g(n)-g(n-1)$。`),
+    String.raw`通常卷积型 LTI 系统在积分存在时有 $g(t)=\int_{-\infty}^th(\tau)d\tau$，$h(t)=\frac{dg(t)}{dt}$；$s$ 域：$G(s)=\frac{H(s)}{s}$。求导后还需核对积分起点和常数基线；绝对可积核的阶跃响应在远负时间趋于0。离散：$g(n)=\sum_{k\le n}h(k)$，$h(n)=g(n)-g(n-1)$。`),
   c('c2-0minus', ['2.1'], String.raw`什么时候 $y(0^+)\neq y(0^-)$？如何处理？`,
     String.raw`微分方程右端含 $\delta(t)$ 或其导数时，$y$ 的高阶导数在 $0$ 时刻出现冲激，状态发生跳变。时域用冲激函数匹配法求 $0^+$ 值；$s$ 域法直接代入 $0^-$ 条件，跳变会自动包含在结果中。`),
   c('c2-conv-props', ['2.4'], '卷积积分的主要性质？',

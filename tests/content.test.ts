@@ -32,7 +32,7 @@ function checkTex(where: string, text: string) {
 describe('内容完整性', () => {
   it('真题与题库作答单元齐全，同一来源题号只出现一次', () => {
     // 从题面清单独立登记的作答单元数；同题多来源仍分别计入卷面。
-    const expected: Record<string, number> = { zt2016: 28, zt2017: 30, zt2018: 30, zt2023: 22, zt2024: 23, zt2025: 25, zt2026: 17, 'tk-review': 34, 'tk-total': 24, hw1: 27, hw2: 6, hw3: 24, hw4: 47, hw5: 4, hw6: 19, hw7: 28, 'tk-key': 29, 'tk-exam-01': 21, 'tk-exam-02': 25, 'tk-exam-03': 24, 'tk-exam-04': 25, 'tk-exam-05': 24, 'tk-exam-06': 26, 'tk-exam-07': 31, 'tk-exam-08': 27, 'tk-exam-09': 28, 'tk-exam-10': 19 };
+    const expected: Record<string, number> = { zt2016: 28, zt2017: 30, zt2018: 30, zt2023: 22, zt2024: 23, zt2025: 25, zt2026: 17, 'tk-review': 34, 'tk-total': 24, hw1: 27, hw2: 6, hw3: 24, hw4: 47, hw5: 4, hw6: 19, hw7: 28, 'tk-key': 29, 'tk-exam-01': 21, 'tk-exam-02': 25, 'tk-exam-03': 24, 'tk-exam-04': 25, 'tk-exam-05': 24, 'tk-exam-06': 26, 'tk-exam-07': 31, 'tk-exam-08': 27, 'tk-exam-09': 28, 'tk-exam-10': 19, 'tk-exam-11': 30 };
     const all = problems.flatMap(p => p.sources);
     expect(new Set(all.map(s => `${s.paper}:${s.no}`)).size).toBe(all.length);
     for (const paper of papers) expect(all.filter(s => s.paper === paper.id).length, paper.id).toBe(expected[paper.id]);
@@ -55,6 +55,8 @@ describe('内容完整性', () => {
     expect(all.filter(s => s.paper === 'tk-exam-09').reduce((sum, s) => sum + (s.score ?? 0), 0)).toBe(40);
     // 课程10综合一同时标10/15分而冲突；其余综合拆问也不虚分，已知部分80分。
     expect(all.filter(s => s.paper === 'tk-exam-10').reduce((sum, s) => sum + (s.score ?? 0), 0)).toBe(80);
+    // 课程11只有填空和计算四、五有单独分值；其余拆问不擅自平分。
+    expect(all.filter(s => s.paper === 'tk-exam-11').reduce((sum, s) => sum + (s.score ?? 0), 0)).toBe(50);
   });
   it('id 唯一', () => {
     for (const list of [knowledge, patterns, problems, cards]) {
