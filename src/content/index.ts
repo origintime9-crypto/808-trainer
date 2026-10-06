@@ -32,10 +32,11 @@ import { tkExam08 } from './problems/tk-exam-08';
 import { tkExam09 } from './problems/tk-exam-09';
 import { tkExam10 } from './problems/tk-exam-10';
 import { tkExam11 } from './problems/tk-exam-11';
+import { tkExam12 } from './problems/tk-exam-12';
 
 export { knowledge, CHAPTERS, papers, patterns };
 
-const allProblems: Problem[] = [...zt2026, ...zt2023, ...zt2024, ...zt2025, ...zt2018, ...zt2017, ...zt2016, ...choicesShared, ...zpShared, ...tkReview, ...tkTotal, ...hw1, ...hw2, ...hw3, ...hw4, ...hw5, ...hw6, ...hw7, ...tkKey, ...tkExam01, ...tkExam02, ...tkExam03, ...tkExam04, ...tkExam05, ...tkExam06, ...tkExam07, ...tkExam08, ...tkExam09, ...tkExam10, ...tkExam11];
+const allProblems: Problem[] = [...zt2026, ...zt2023, ...zt2024, ...zt2025, ...zt2018, ...zt2017, ...zt2016, ...choicesShared, ...zpShared, ...tkReview, ...tkTotal, ...hw1, ...hw2, ...hw3, ...hw4, ...hw5, ...hw6, ...hw7, ...tkKey, ...tkExam01, ...tkExam02, ...tkExam03, ...tkExam04, ...tkExam05, ...tkExam06, ...tkExam07, ...tkExam08, ...tkExam09, ...tkExam10, ...tkExam11, ...tkExam12];
 // 完全同题合并来源，保留最早录入的编号；选项不同的变式仍保留。
 const duplicateOf: Record<string, string> = {
   'zt2024-3-2-1': 'zt2023-3-3', 'zt2016-1-5': 'zt2023-1-4',
@@ -75,6 +76,17 @@ const duplicateOf: Record<string, string> = {
   'tk-exam-11-32-A': 'tk-exam-03-32-A', 'tk-exam-11-32-B': 'tk-exam-03-32-B',
   'tk-exam-11-32-C': 'tk-exam-03-32-C', 'tk-exam-11-32-D': 'tk-exam-03-32-D',
   'tk-exam-11-32-E': 'tk-exam-03-32-E',
+  'tk-exam-12-1-3': 'tk-exam-07-1-3', 'tk-exam-12-1-4': 'tk-exam-07-1-4',
+  'tk-exam-12-1-6': 'tk-exam-11-1-10', 'tk-exam-12-1-9': 'hw5-5-2-2',
+  'tk-exam-12-1-8': 'tk-exam-08-1-8',
+  'tk-exam-12-1-10': 'tk-exam-08-1-10',
+  'tk-exam-12-24-1': 'tk-exam-06-22-1', 'tk-exam-12-24-2': 'tk-exam-06-22-2',
+  'tk-exam-12-2-5': 'tk-exam-06-2-4',
+  'tk-exam-12-31-1a': 'tk-exam-06-31-1a', 'tk-exam-12-31-1b': 'tk-exam-06-31-1b',
+  'tk-exam-12-31-1c': 'tk-exam-06-31-1c', 'tk-exam-12-31-2': 'tk-exam-06-31-2',
+  'tk-exam-12-31-3': 'tk-exam-06-31-3',
+  'tk-exam-12-32-1': 'tk-exam-10-32-1', 'tk-exam-12-32-2': 'tk-exam-10-32-2',
+  'tk-exam-12-32-3': 'tk-exam-10-32-3',
 };
 for (const item of allProblems) {
   const target = allProblems.find(p => p.id === duplicateOf[item.id]);
