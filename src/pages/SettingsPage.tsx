@@ -57,13 +57,19 @@ export function SettingsPage() {
       </section>
 
       <section className="card form">
-        <h2>云同步与拍照批改</h2>
-        <p className="muted small">电脑和手机使用同一个网址、同一个同步口令，即可合并进度。口令只保存在当前设备，导出文件不包含口令。</p>
+        <h2>进度自动同步</h2>
+        <p className="muted small">电脑和手机填写同一口令后，作答、卡片复习和笔记会自动上传。网页打开时，每 5 秒获取另一台设备的新进度；离线先保存本机，恢复网络后自动补传。</p>
+        <p className="muted small">每台设备只需填写一次口令。页顶会显示待上传、离线或云端已保存；照片不进入进度，导出文件不包含口令。</p>
         <label>同步口令<input key={settings.syncKey} type="password" autoComplete="off" defaultValue={settings.syncKey} placeholder="填写你设置的同步口令" onBlur={e => app.updateSettings({ syncKey: e.target.value.trim() })} /></label>
         <div className="actions"><button className="primary" disabled={sync.phase === 'syncing' || !settings.syncKey || !sync.health?.sync} onClick={() => void syncNow()}>立即同步</button><button onClick={() => void refreshHealth()}>检测服务状态</button></div>
         <p role="status" className="hint">{sync.message}{sync.lastSync && ` · 最近同步 ${dateLabel(sync.lastSync)}`}</p>
+        {settings.syncKey && <button className="small" onClick={() => app.updateSettings({ syncKey: '' })}>断开本机云同步</button>}
+      </section>
+
+      <section className="card form">
+        <h2>拍照批改</h2>
         <label className="check-label"><input type="checkbox" checked={settings.aiEnabled} disabled={!sync.health?.ai} onChange={e => app.updateSettings({ aiEnabled: e.target.checked })} />开启拍照 AI 批改</label>
-        <p className="muted small">{sync.health?.ai ? `模型：${sync.health.model}。每次批改前由你选择照片并点击发送。` : '服务端还没有配置图片模型，可以先使用「复制批改提示词」。'}</p>
+        <p className="muted small">{sync.health?.ai ? `模型：${sync.health.model}。每次批改前由你选择照片并点击发送。` : '暂未配置批改模型。接口已保留，可接入 Gemini；当前可使用「复制批改提示词」。'}</p>
       </section>
 
       <section className="card form">

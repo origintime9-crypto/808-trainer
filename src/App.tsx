@@ -4,7 +4,7 @@ import { MistakesPage } from './pages/MistakesPage';
 import { PracticePage } from './pages/PracticePage';
 import { SettingsPage } from './pages/SettingsPage';
 import { TodayPage } from './pages/TodayPage';
-import { connectSync } from './engine/sync';
+import { connectSync, syncStatusLabel, useSyncStatus } from './engine/sync';
 import { eventStorageError } from './engine/store';
 import { useEvents } from './state';
 
@@ -37,6 +37,7 @@ function useRoute(): string {
 
 export function App() {
   useEffect(connectSync, []);
+  const sync = useSyncStatus();
   useEvents();
   const storageError = eventStorageError();
   const route = useRoute();
@@ -63,6 +64,7 @@ export function App() {
             <a key={t.path} href={`#/${t.path}`} className={active === t.path ? 'on' : ''}>{t.label}</a>
           ))}
         </nav>
+        <a className={`sync-pill ${sync.phase}`} href="#/settings" title={sync.message} aria-live="polite">{syncStatusLabel(sync)}</a>
       </header>
       <main>{storageError && active !== 'settings' && <a className="banner" href="#/settings" role="alert">{storageError}</a>}<Suspense fallback={<section className="card">正在打开…</section>}>{page}</Suspense></main>
       <nav className="tabs-bottom">

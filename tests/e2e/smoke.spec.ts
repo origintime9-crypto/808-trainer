@@ -132,7 +132,7 @@ test('AI 非 JSON 返回可读原文并支持手动作答', async ({ page, conte
   expect(await records(page)).toHaveLength(1);
 });
 
-test('两台设备同步合并，失败保留本机记录，重试不重复', async ({ browser }) => {
+test('持续打开的两台设备自动双向同步，服务失败自动补传且不重复', async ({ browser }) => {
   const cloud: { id: string; kind: string; [key: string]: unknown }[] = [];
   let fail = false;
   const a = await browser.newContext({ timezoneId: 'Asia/Shanghai' });
@@ -149,31 +149,55 @@ test('两台设备同步合并，失败保留本机记录，重试不重复', as
   }
   try {
     const pa = await a.newPage(), pb = await b.newPage();
-    await pa.goto(`${base}/#/p/zt2026-10`);
-    await chooseGrade(pa, '部分对');
+    await pa.goto(base + '/#/p/zt2026-10');
+    await pb.goto(base + '/#/mistakes');
+    await expect(pa.locator('.sync-pill')).toContainText('云端已保存');
+    await expect(pb.locator('.sync-pill')).toContainText('云端已保存');
     fail = true;
-    await pa.goto(`${base}/#/settings`);
-    await pa.getByRole('button', { name: '立即同步' }).click();
-    await expect(pa.getByRole('status')).toContainText('本机进度仍已保存');
+    await chooseGrade(pa, '部分对');
+    await expect(pa.locator('.sync-pill')).toContainText('同步待重试');
     expect(await records(pa)).toHaveLength(1);
+    expect(cloud).toHaveLength(0);
     fail = false;
-    await pa.getByRole('button', { name: '立即同步' }).click();
-    await expect(pa.getByRole('status')).toContainText('两端进度已同步');
-    await pb.goto(`${base}/#/mistakes`);
-    await expect(pb.locator('.rows')).toContainText('十');
+    await expect(pb.locator('.rows')).toContainText('十', { timeout: 15000 });
     expect(await records(pb)).toHaveLength(1);
-    await pb.goto(`${base}/#/p/zt2026-10`);
-    await pb.getByPlaceholder('记下这道题的关键点、易错点……（离开输入框自动保存）').fill('手机补充：检查初值');
-    await pb.getByRole('heading', { name: '我的笔记' }).click();
-    await pb.goto(`${base}/#/settings`);
-    await pb.getByRole('button', { name: '立即同步' }).click();
-    await expect(pb.getByRole('status')).toContainText('两端进度已同步');
-    await pa.getByRole('button', { name: '立即同步' }).click();
-    await expect.poll(async () => (await records(pa)).length).toBe(2);
-    await pa.goto(`${base}/#/p/zt2026-10`);
+    await expect(pa.locator('.sync-pill')).toContainText('云端已保存');
+    await pb.goto(base + '/#/p/zt2026-10');
+    await pb.getByRole('textbox', { name: '我的笔记', exact: true }).fill('手机补充：检查初值');
+    // 保持输入框焦点，验证停顿自动保存及另一设备主动获取。
+    await expect.poll(async () => (await records(pa)).length, { timeout: 12000 }).toBe(2);
     await expect(pa.locator('textarea.note')).toHaveValue('手机补充：检查初值');
+    await expect(pb.locator('.sync-pill')).toContainText('云端已保存');
     expect(cloud).toHaveLength(2);
+    expect(new Set(cloud.map(e => e.id)).size).toBe(2);
   } finally { await a.close(); await b.close(); }
+});
+
+test('远端笔记刷新保留正在编辑的草稿，停顿和离开页面都会保存', async ({ page, context }) => {
+  const cloud: { id: string; [key: string]: unknown }[] = [];
+  await mockHealth(context, { ...health, sync: true });
+  await context.addInitScript(({ key }) => localStorage.setItem(key, JSON.stringify({ syncKey: 'test-sync-only' })), { key: SET });
+  await context.route('**/api/sync', async route => {
+    const input = route.request().postDataJSON();
+    for (const e of input.events) if (!cloud.some(x => x.id === e.id)) cloud.push(e);
+    await route.fulfill({ json: { seq: cloud.length, events: cloud.slice(input.since), accepted: input.events.map((e: { id: string }) => e.id), hasMore: false } });
+  });
+  await page.goto('/#/p/zt2026-10');
+  await expect(page.locator('.sync-pill')).toContainText('云端已保存');
+  const editor = page.getByRole('textbox', { name: '我的笔记', exact: true });
+  await editor.fill('本机草稿');
+  cloud.push({ id: 'remote-note-during-edit', kind: 'note', problemId: 'zt2026-10', t: Date.now(), text: '另一设备的笔记' });
+  for (let i = 0; i < 20; i++) {
+    await editor.press('End'); await editor.press('.');
+    await page.waitForTimeout(300);
+  }
+  await expect.poll(async () => (await records(page)).some((e: { id: string }) => e.id === 'remote-note-during-edit')).toBe(true);
+  await expect(editor).toHaveValue('本机草稿' + '.'.repeat(20));
+  await expect.poll(() => cloud.some(e => e.text === '本机草稿' + '.'.repeat(20))).toBe(true);
+  await editor.fill('离开页面也保留');
+  await page.locator('.brand').click();
+  await expect.poll(() => cloud.some(e => e.text === '离开页面也保留')).toBe(true);
+  expect((await records(page)).some((e: { text?: string }) => e.text === '离开页面也保留')).toBe(true);
 });
 
 test('损坏记录不会被新作答覆盖，可下载原始数据', async ({ page, context }) => {

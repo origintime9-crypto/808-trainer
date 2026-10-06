@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { buildGradePrompt, copyText } from '../ai/prompt';
 import { Md } from '../components/Markdown';
 import { AiGradePanel } from '../components/AiGradePanel';
+import { NoteEditor } from '../components/NoteEditor';
 import { problemById, problems } from '../content';
 import { suggestedMinutes } from '../engine/queue';
 import { dateLabel, go, kpLabel, patternLabel, relDay, sourceLabel, stars } from '../format';
@@ -201,19 +202,7 @@ export function ProblemPage({ id, onNavigate, onComplete }: { id: string; onNavi
 
       <section className="card">
         <h3>我的笔记</h3>
-        <textarea
-          key={`${id}-${note}`}
-          className="note"
-          defaultValue={note}
-          placeholder="记下这道题的关键点、易错点……（离开输入框自动保存）"
-          onBlur={(e) => {
-            const text = e.target.value.trim();
-            if (text !== note) {
-              try { app.record({ kind: 'note', problemId: id, text }); setSaveError(''); }
-              catch { setSaveError('笔记未保存，请检查浏览器存储空间并导出备份。'); }
-            }
-          }}
-        />
+        <NoteEditor key={id} problemId={id} note={note} onError={setSaveError} />
         {saveError && <p className="hint" role="alert">{saveError}</p>}
         {st && st.attempts.length > 0 && (
           <>

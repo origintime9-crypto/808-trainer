@@ -4,7 +4,6 @@ import { DAY, dayDiff, startOfToday } from '../engine/scheduler';
 import { problemById } from '../content';
 import { go, kpLabel, patternLabel, sourceLabel, stars } from '../format';
 import { setProblemList, useDerived, useEvents, useSettings } from '../state';
-import { useSyncStatus } from '../engine/sync';
 
 function ProblemLinks({ ids, empty }: { ids: string[]; empty: string }) {
   if (ids.length === 0) return <p className="muted">{empty}</p>;
@@ -33,7 +32,6 @@ export function TodayPage() {
   const { sched, mi, now } = useDerived();
   const settings = useSettings();
   const events = useEvents();
-  const sync = useSyncStatus();
   const days = Math.max(0, dayDiff(now, new Date(`${settings.examDate}T09:00:00`).getTime()));
   const q = cardQueue(sched, events, settings, mi, now);
   const mistakes = dueMistakes(sched, now);
@@ -46,7 +44,7 @@ export function TodayPage() {
 
   return (
     <div className="today">
-      <div className="page-intro"><div><p className="eyebrow">中北大学 · 2027 考研</p><h1>把今天的题，做扎实。</h1></div><span className={`sync-pill ${sync.phase}`} title={sync.message}>{sync.phase === 'done' ? '✓ 已同步' : sync.phase === 'syncing' ? '同步中' : sync.phase === 'error' ? '同步待重试' : '本机保存'}</span></div>
+      <div className="page-intro"><div><p className="eyebrow">中北大学 · 2027 考研</p><h1>把今天的题，做扎实。</h1></div></div>
       <section className="hero">
         <div>
           <div className="big">{days}</div>

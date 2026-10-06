@@ -3,7 +3,8 @@ import { onRequestGet as health } from '../functions/api/health';
 import { onRequestPost as sync } from '../functions/api/sync';
 import { onRequestPost as grade } from '../functions/api/grade';
 import type { Env, Statement } from '../server/shared';
-import { parseAiResult } from '../src/ai/grade';
+import { buildGradeRequest, parseAiResult } from '../src/ai/grade';
+import { problemById } from '../src/content';
 import type { TrainerEvent } from '../src/types';
 
 class MemoryD1 {
@@ -74,6 +75,26 @@ describe('云端接口', () => {
     const request = new Request('https://test.local/api/grade', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer test-pass' }, body: '不需要在服务端解析的原始请求' });
     const r = await grade({ request, env: { SYNC_KEY: 'test-pass', AI_API_KEY: 'secret-ai', AI_BASE_URL: 'https://model.example/v1/', AI_MODEL: 'vision' } });
     expect(r.status).toBe(200); expect(forwarded).toHaveBeenCalledOnce(); expect(await r.text()).not.toContain('secret-ai'); expect(r.headers.get('X-Secret')).toBeNull();
+  });
+  it('Gemini 兼容接口接收照片与批改消息，Key 只用于服务端请求', async () => {
+    const model = 'gemini-3.8-flash';
+    const body = buildGradeRequest(problemById.get('zt2026-10')!, model, ['data:image/jpeg;base64,dGVzdA==']);
+    const forwarded = vi.fn(async (target: URL, init: RequestInit) => {
+      expect(target.href).toBe('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions');
+      expect((init.headers as Record<string, string>).Authorization).toBe('Bearer test-gemini-secret');
+      const received = JSON.parse(await new Response(init.body).text());
+      expect(received.model).toBe(model);
+      expect(received.messages[1].content).toContainEqual({ type: 'image_url', image_url: { url: 'data:image/jpeg;base64,dGVzdA==' } });
+      expect(received.messages[1].content[0].text).toContain('【标准答案】');
+      return Response.json({ choices: [{ message: { content: JSON.stringify({ transcript: '作答', grade: 1, tags: ['计算失误'], feedback: '检查系数' }) } }] });
+    });
+    vi.stubGlobal('fetch', forwarded);
+    const request = new Request('https://test.local/api/grade', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer test-pass' }, body: JSON.stringify(body) });
+    const r = await grade({ request, env: { SYNC_KEY: 'test-pass', AI_API_KEY: 'test-gemini-secret', AI_BASE_URL: 'https://generativelanguage.googleapis.com/v1beta/openai/', AI_MODEL: model } });
+    expect(r.status).toBe(200); expect(forwarded).toHaveBeenCalledOnce();
+    const data = await r.json();
+    expect(parseAiResult(data.choices[0].message.content, model)).toMatchObject({ grade: 1, model });
+    expect(JSON.stringify(data)).not.toContain('test-gemini-secret');
   });
   it('上游错误和未配置模型均有可恢复结果', async () => {
     const env = { SYNC_KEY: 'test-pass', AI_API_KEY: 'secret-ai', AI_BASE_URL: 'https://model.example/v1', AI_MODEL: 'vision' };

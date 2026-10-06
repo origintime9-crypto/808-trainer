@@ -29,6 +29,8 @@ input, select, textarea { max-width: 100%; }
 .eyebrow { font-size: .75rem; color: var(--muted); margin: 0 0 4px; letter-spacing: .05em; }
 .sync-pill { font-size: .75rem; white-space: nowrap; padding: 4px 9px; border: 1px solid var(--line); border-radius: 99px; color: var(--muted); background: white; }
 .sync-pill.done { color: var(--good); }
+.sync-pill { margin-left: auto; }
+.sync-pill.offline, .sync-pill.pending { color: var(--warn); }
 .sync-pill.error { color: var(--warn); }
 .photo-previews { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
 .photo-previews img { width: 88px; height: 110px; object-fit: contain; border: 1px solid var(--line); border-radius: 6px; }
@@ -56,7 +58,7 @@ main { padding-top: 12px; }
 
 @media (max-width: 720px) {
   .tabs-top { display: none; }
-  .top { justify-content: center; padding: 10px 4px; }
+  .top { justify-content: space-between; gap: 8px; padding: 10px 4px; }
   .tabs-bottom {
     display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
     background: #fff; border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom);

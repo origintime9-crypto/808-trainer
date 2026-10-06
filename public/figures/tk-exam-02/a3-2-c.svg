@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="340" viewBox="0 0 720 340" role="img">
+<title>C 点：抽样频谱副本</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="340" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">C 点：抽样频谱副本</text>
+<path d="M38 253H690" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M360.0 270V53" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="668" y="282" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω/π</text>
+<path d="M100.86956521739131 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="100.86956521739131" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−200</text>
+<path d="M230.43478260869563 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="230.43478260869563" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−100</text>
+<path d="M360.0 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="360.0" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M489.5652173913043 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="489.5652173913043" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">100</text>
+<path d="M619.1304347826087 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="619.1304347826087" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">200</text>
+<text x="344.0" y="89.0" text-anchor="end" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">5</text>
+<polyline points="74.96,253.00 100.87,83.00 126.78,253.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="204.52,253.00 230.43,83.00 256.35,253.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="334.09,253.00 360.00,83.00 385.91,253.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="463.65,253.00 489.57,83.00 515.48,253.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="593.22,253.00 619.13,83.00 645.04,253.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="26" y="240" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">…</text>
+<text x="699" y="240" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">…</text>
+<text x="360" y="321" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">每个三角副本半宽 20π，峰高 5</text>
+</svg>
