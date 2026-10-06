@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { compressPhoto, gradePhotos } from '../ai/grade';
+import { compressPhoto, gradePhotos, normalizeAiMarkdown } from '../ai/grade';
 import { buildGradePrompt, copyText } from '../ai/prompt';
 import { useSyncStatus } from '../engine/sync';
 import { useSettings } from '../state';
@@ -50,7 +50,7 @@ export function AiGradePanel({ problem, onResult, disabled }: { problem: Problem
     </> : <p className="muted small">{health?.ai ? '可在设置中开启拍照批改。' : '可复制提示词到 ChatGPT，附上手写照片批改。'}</p>}
     <button onClick={() => void copyText(buildGradePrompt(problem)).then(ok => setMessage(ok ? '已复制，粘贴到 ChatGPT 后附上作答照片。' : '复制失败，请检查剪贴板权限。'))}>复制批改提示词</button>
     {message && <p className="hint" role="status">{message}</p>}
-    {result && <div><p><b>AI 建议：{GRADE_LABELS[result.grade]}</b>{result.score !== undefined && ` · 估分 ${result.score}`}</p><h3>关键步骤转写</h3><Md>{result.transcript}</Md>{result.steps?.map((s, i) => <p key={i}>{s.ok ? '✓' : '×'} {s.step}：{s.comment}</p>)}<Md>{result.feedback}</Md></div>}
+    {result && <div><p><b>AI 建议：{GRADE_LABELS[result.grade]}</b>{result.score !== undefined && ` · 估分 ${result.score}`}</p><h3>关键步骤转写</h3><Md preserveBadMath>{normalizeAiMarkdown(result.transcript)}</Md>{result.steps?.map((s, i) => <Md key={i} preserveBadMath>{normalizeAiMarkdown((s.ok ? '✓ ' : '× ') + s.step + '：' + s.comment)}</Md>)}<Md preserveBadMath>{normalizeAiMarkdown(result.feedback)}</Md></div>}
     {raw && <pre className="ai-raw">{raw}</pre>}
   </section>;
 }

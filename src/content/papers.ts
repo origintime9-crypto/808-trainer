@@ -17,4 +17,5 @@ export const papers: Paper[] = [
   { id: 'tk-key', year: 0, examType: '—', kind: '题库', title: '重点题必看（手写整理）' },
   { id: 'tk-exam-01', year: 0, examType: '—', kind: '题库', title: '中北课程题库 01（考试试题及答案）', totalScore: 100 },
   { id: 'tk-exam-02', year: 0, examType: '—', kind: '题库', title: '中北课程题库 02（考试试题及答案）', totalScore: 100 },
+  { id: 'tk-exam-03', year: 0, examType: '—', kind: '题库', title: '中北课程题库 03（考试试题及答案）', totalScore: 100 },
 ];

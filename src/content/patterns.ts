@@ -80,7 +80,7 @@ export const patterns: Pattern[] = [
     id: 'ft-basic',
     name: '常见信号的傅里叶变换',
     kps: ['3.3', '3.5'],
-    method: String.raw`熟记：$e^{-at}u(t)\leftrightarrow\frac{1}{a+j\omega}$，$G_\tau(t)\leftrightarrow\tau\,\mathrm{Sa}(\frac{\omega\tau}{2})$，$\delta(t)\leftrightarrow1$，$1\leftrightarrow2\pi\delta(\omega)$，$\cos\omega_0t\leftrightarrow\pi[\delta(\omega+\omega_0)+\delta(\omega-\omega_0)]$，$u(t)\leftrightarrow\pi\delta(\omega)+\frac{1}{j\omega}$。先把信号拆成这些基本信号，再用性质组合。`,
+    method: String.raw`熟记：$e^{-at}u(t)\leftrightarrow\frac{1}{a+j\omega}$（$a>0$），单位矩形 $G_\tau(t)\leftrightarrow\tau\,\mathrm{Sa}(\frac{\omega\tau}{2})$，$\delta(t)\leftrightarrow1$，$1\leftrightarrow2\pi\delta(\omega)$，$\cos\omega_0t\leftrightarrow\pi[\delta(\omega+\omega_0)+\delta(\omega-\omega_0)]$，$u(t)\leftrightarrow\pi\delta(\omega)+\operatorname{PV}\frac{1}{j\omega}$。阶跃、常数和永久正弦使用广义变换，PV 表示柯西主值。先拆成基本信号，再用性质组合。`,
   },
   {
     id: 'ft-property',
@@ -96,8 +96,8 @@ export const patterns: Pattern[] = [
     name: '奈奎斯特抽样频率/间隔',
     kps: ['5.2', '3.4'],
     method: String.raw`1. 求每个信号的最高角频率：$\mathrm{Sa}(\omega_ct)$ 为 $\omega_c$，$\mathrm{Sa}^2(\omega_ct)$ 为 $2\omega_c$，$\cos\omega_0t$ 为 $\omega_0$。
-2. 合成：相加取大，相乘相加，卷积取小，$f(at)$ 乘 $a$，时移和微分不变。
-3. $f_s=2f_m=\omega_m/\pi$，奈奎斯特间隔 $T_N=1/f_s$。注意题目问的是 Hz 还是 rad/s。`,
+2. 合成带宽上界：相加取大，相乘相加，卷积取小；$f(at)$ 的带宽乘 $|a|$，时移不改变带宽。边缘抵消或微分消去分量时实际带宽可能更小。
+3. $f_N=2f_m=\omega_m/\pi$，奈奎斯特间隔 $T_N=1/f_N$。注意 Hz 与 rad/s 的换算；临界等号需检查边缘冲激等条件，严格高于奈奎斯特频率时才保证频谱副本分离。`,
   },
   {
     id: 'sine-steady',
@@ -109,7 +109,7 @@ export const patterns: Pattern[] = [
     id: 'ft-exist-from-Hs',
     name: '由 H(s) 判断频率响应（傅里叶变换）是否存在',
     kps: ['4.4', '4.7'],
-    method: String.raw`默认因果：极点全在左半平面 → ROC 含 $j\omega$ 轴，$H(j\omega)=H(s)|_{s=j\omega}$；有右半平面极点 → ROC 不含 $j\omega$ 轴，傅里叶变换不存在；$j\omega$ 轴上的单极点 → 存在但含冲激项。`,
+    method: String.raw`先约去相消因子，判断实际极点及 ROC。普通收敛的傅里叶变换要求 ROC 包含整条 $j\omega$ 轴；默认因果时，极点全在左半平面满足条件，可令 $s=j\omega$，有右半平面或虚轴实际极点则不满足。非因果系统必须使用题目给定的 ROC。虚轴极点在适当条件下可定义广义变换，含柯西主值或冲激项，不能据此声称普通变换存在，也不能直接代入极点。`,
   },
   {
     id: 'block-to-Hs',

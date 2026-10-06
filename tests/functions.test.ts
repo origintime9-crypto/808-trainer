@@ -3,9 +3,12 @@ import { onRequestGet as health } from '../functions/api/health';
 import { onRequestPost as sync } from '../functions/api/sync';
 import { onRequestPost as grade } from '../functions/api/grade';
 import type { Env, Statement } from '../server/shared';
-import { buildGradeRequest, parseAiResult } from '../src/ai/grade';
+import { buildGradeRequest, gradePhotos, normalizeAiMarkdown, parseAiResult } from '../src/ai/grade';
 import { problemById } from '../src/content';
 import type { TrainerEvent } from '../src/types';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { Md } from '../src/components/Markdown';
 
 class MemoryD1 {
   rows: { seq: number; id: string; data: string }[] = [];
@@ -79,11 +82,12 @@ describe('云端接口', () => {
   it('Gemini 兼容接口接收照片与批改消息，Key 只用于服务端请求', async () => {
     const model = 'gemini-3.8-flash';
     const body = buildGradeRequest(problemById.get('zt2026-10')!, model, ['data:image/jpeg;base64,dGVzdA==']);
-    const forwarded = vi.fn(async (target: URL, init: RequestInit) => {
-      expect(target.href).toBe('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions');
+    const forwarded = vi.fn(async (target: string | URL, init: RequestInit) => {
+      expect(String(target)).toBe('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions');
       expect((init.headers as Record<string, string>).Authorization).toBe('Bearer test-gemini-secret');
       const received = JSON.parse(await new Response(init.body).text());
       expect(received.model).toBe(model);
+      expect(received.response_format.type).toBe('json_schema');
       expect(received.messages[1].content).toContainEqual({ type: 'image_url', image_url: { url: 'data:image/jpeg;base64,dGVzdA==' } });
       expect(received.messages[1].content[0].text).toContain('【标准答案】');
       return Response.json({ choices: [{ message: { content: JSON.stringify({ transcript: '作答', grade: 1, tags: ['计算失误'], feedback: '检查系数' }) } }] });
@@ -103,6 +107,15 @@ describe('云端接口', () => {
     expect(r.status).toBe(502); expect(await r.text()).not.toContain('secret-ai');
     expect((await grade({ request: req({}), env: { SYNC_KEY: 'test-pass' } })).status).toBe(503);
   });
+  it('模型地址跳转时不把服务端 Key 转交其他网址', async () => {
+    const forwarded = vi.fn(async (_target: unknown, init: RequestInit) => {
+      expect(init.redirect).toBe('manual');
+      return new Response(null, { status: 302, headers: { Location: 'https://other.example/collect' } });
+    });
+    vi.stubGlobal('fetch', forwarded);
+    const r = await grade({ request: req({}), env: { SYNC_KEY: 'test-pass', AI_API_KEY: 'secret-ai', AI_BASE_URL: 'https://model.example/v1', AI_MODEL: 'vision' } });
+    expect(r.status).toBe(502); expect(forwarded).toHaveBeenCalledOnce(); expect(await r.text()).not.toContain('secret-ai');
+  });
 });
 describe('AI 输出解析', () => {
   const value = { transcript: '$x=1$', steps: [{ step: '计算', ok: false, comment: '符号错误' }], grade: 1, tags: ['计算失误'], feedback: '检查符号' };
@@ -110,9 +123,36 @@ describe('AI 输出解析', () => {
     for (const raw of [JSON.stringify(value), '```json\n' + JSON.stringify(value) + '\n```', '点评如下：' + JSON.stringify(value)])
       expect(parseAiResult(raw, 'vision')?.grade).toBe(1);
   });
+  it('恢复模型少转义一次的分式命令，保留正常换行', () => {
+    const transcript = '$X(z)=\\frac{10}{1+z^{-1}}$\n第二行';
+    const raw = JSON.stringify({ ...value, transcript }).replaceAll('\\\\', '\\');
+    expect(parseAiResult(raw, 'vision')?.transcript).toBe(transcript);
+    expect(parseAiResult(JSON.stringify({ ...value, transcript }), 'vision')?.transcript).toBe(transcript);
+  });
   it('乱码与无效建议留给用户手动确认', () => {
     expect(parseAiResult('不是JSON', 'vision')).toBeNull();
     expect(parseAiResult(JSON.stringify({ ...value, grade: 5 }), 'vision')).toBeNull();
     expect(parseAiResult(JSON.stringify({ ...value, tags: ['其他'] }), 'vision')).toBeNull();
+  });
+  it('模型公式无法排版时保留可核对的原式，不猜写乘号或导数', () => {
+    const render = (text: string) => renderToStaticMarkup(createElement(Md, { children: normalizeAiMarkdown(text), preserveBadMath: true }));
+    const valid = '$X(z)=\\frac{10}{1+z^{-1}}$';
+    expect(render(valid)).toContain('class="katex"');
+    expect(render(valid)).not.toContain('math-original');
+    expect(normalizeAiMarkdown('\\(x=1\\)')).toBe('$x=1$');
+    const control = render('$y(n)=-10\u0007u(n)+20\u00072^n\u0007u(n)$');
+    expect(control).toContain('公式原文（请核对）');
+    expect(control).toContain('\\u0007');
+    expect(control).not.toContain('\\cdot');
+    const prime = render("$20'2^n'u(n)$");
+    expect(prime).toContain('20&#x27;2^n&#x27;u(n)');
+    expect(prime).toContain('公式原文（请核对）');
+  });
+  it('缺少题面分值或模型超出总分时不预填数字估分', async () => {
+    for (const [id, proposed, expected] of [['tk-key-1-2', 3, undefined], ['zt2026-10', 100, undefined], ['zt2026-10', 4.5, 4.5]] as const) {
+      vi.stubGlobal('fetch', vi.fn(async () => Response.json({ choices: [{ message: { content: JSON.stringify({ ...value, score: proposed }) } }] })));
+      const output = await gradePhotos(problemById.get(id)!, 'vision', 'test-pass', ['data:image/jpeg;base64,dGVzdA==']);
+      expect(output.result?.grade).toBe(1); expect(output.result?.score).toBe(expected);
+    }
   });
 });

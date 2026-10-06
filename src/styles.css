@@ -35,6 +35,7 @@ input, select, textarea { max-width: 100%; }
 .photo-previews { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
 .photo-previews img { width: 88px; height: 110px; object-fit: contain; border: 1px solid var(--line); border-radius: 6px; }
 .ai-raw { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .85rem; }
+.math-original code { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .85rem; }
 .check-label { display: flex !important; align-items: center; gap: 8px; }
 .check-label input { width: auto !important; }
 .md p, .md li, .history { overflow-wrap: anywhere; }

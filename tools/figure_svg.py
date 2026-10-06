@@ -19,14 +19,14 @@ def polyline(parts,points,color='#0f766e',width=3):
 def save(path,parts):
     path.write_text('\n'.join(parts+['</svg>']),encoding='utf-8')
 
-def spectrum(path,title,span,max_y,segments,ticks,yticks,caption,impulses=()):
+def spectrum(path,title,span,max_y,segments,ticks,yticks,caption,impulses=(),axis_label='ω/π'):
     p=start(title=title)
     mx=lambda value:62+(value+span)/(2*span)*596
     my=lambda value:253-value/max_y*170
     label(p,360,30,title,22)
     line(p,'M38 253H690',arrow=True)
     line(p,f'M{mx(0)} 270V53',arrow=True)
-    label(p,668,282,'ω/π',18)
+    label(p,668,282 if axis_label=='ω/π' else 301,axis_label,18)
     for value in ticks:
         line(p,f'M{mx(value)} 253V259')
         label(p,mx(value),282,str(value).replace('-','−'),17)

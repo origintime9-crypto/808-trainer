@@ -11,18 +11,27 @@ export async function onRequestPost(ctx: Context): Promise<Response> {
     target = new URL(`${AI_BASE_URL.replace(/\/$/, '')}/chat/completions`);
     if (target.protocol !== 'https:' || target.username || target.password) throw new Error();
   } catch { return json({ error: '服务端模型地址配置无效' }, 503); }
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 55_000);
   try {
-    // 原样转发图片请求体，服务端不进行 JSON 解码或图像处理。
-    const upstream = await fetch(target, {
-      method: 'POST', body: ctx.request.body,
+    // 保留原始 JSON 字节；已知长度的请求体兼容模型上游，不解码照片。
+    const body = await ctx.request.arrayBuffer();
+    if (body.byteLength > 10_000_000) return json({ error: '图片过大，请减少图片数量' }, 413);
+    const upstream = await fetch(target.href, {
+      method: 'POST', body,
       headers: { Authorization: `Bearer ${AI_API_KEY}`, 'Content-Type': 'application/json' },
-      signal: AbortSignal.timeout(55_000), redirect: 'error',
-      ...({ duplex: 'half' } as object),
+      signal: controller.signal, redirect: 'manual',
     });
     if (!upstream.ok) return json({ error: `模型暂时无法批改（${upstream.status}），请稍后重试或复制提示词` }, 502);
     // 只读取文本响应，不透传上游响应头，也不把异常或密钥返回前端。
     let response = await upstream.text();
     for (const secret of [AI_API_KEY, ctx.env.SYNC_KEY]) if (secret) response = response.split(secret).join('[已隐藏]');
     return new Response(response, { headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' } });
-  } catch { return json({ error: '模型连接失败或超时，请稍后重试；也可以复制批改提示词' }, 502); }
+  } catch (error) {
+    // 仅记录固定诊断词，不记录异常原文、口令或图片请求。
+    const hints = error instanceof Error ? ['stream', 'duplex', 'redirect', 'fetch', 'header', 'timeout', 'abort', 'illegal invocation', 'url', 'certificate', 'connection', 'protocol', 'body', 'character'].filter(word => error.message.toLowerCase().includes(word)) : [];
+    console.error('808-grade-upstream', error instanceof Error ? error.name : 'unknown', hints);
+    return json({ error: '模型连接失败或超时，请稍后重试；也可以复制批改提示词' }, 502);
+  }
+  finally { clearTimeout(timeout); }
 }

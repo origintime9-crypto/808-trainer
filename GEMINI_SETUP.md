@@ -2,17 +2,17 @@
 
 网站已经保留兼容 Chat Completions 的批改接口。Google 官方提供同一协议并支持 Base64 照片输入，当前照片压缩、发送和评分解析流程可以沿用：[Gemini 官方兼容说明](https://ai.google.dev/gemini-api/docs/openai)。
 
-当前线上没有配置模型 Key，拍照批改暂未启用；进度自动保存与云同步可以独立使用。
+线上已配置 Gemini Key，当前使用 gemini-3.5-flash-lite。健康检查 ai=true，拍照批改、进度自动保存与云同步均可使用。Key 仅存于 Cloudflare Secret，网页仍使用原有同步口令鉴权。
 
 ## 服务端配置
 
 | 配置名 | 内容 |
 |---|---|
 | AI_BASE_URL | https://generativelanguage.googleapis.com/v1beta/openai |
-| AI_MODEL | 在你的 Google AI Studio 项目中可用、支持图片输入的 Gemini 模型 ID |
+| AI_MODEL | 当前为 gemini-3.5-flash-lite；可改为项目中可用且支持图片的模型 ID |
 | AI_API_KEY | 你的 Gemini API Key，保存为 Cloudflare Secret |
 
-官方示例目前使用 gemini-3.8-flash；实际模型以你的项目可用列表为准。AI_BASE_URL 只填到 openai，不追加 chat/completions。
+AI_BASE_URL 只填到 openai，不追加 chat/completions。本次实测 gemini-3.8-flash 和 gemini-3.7-flash 返回高需求 503；gemini-2.5-flash 返回对新用户不可用的 404。gemini-3.5-flash-lite 可正常识图和判分，已作为本站当前模型。后续更换时应先核对该 Key 的可用模型并实际请求验证。
 
 在 E:/claude work/808-trainer 打开 PowerShell，以下命令分别提示输入对应值，不把真实 Key 写在命令中：
 
@@ -33,4 +33,6 @@
 
 分别用正确作答、含计算错误的作答和空白照片检查识别与点评。AI 结果预填评分和错因，核对后点击「记录」才计入学习进度并自动上传。
 
-已验证 Gemini 官方兼容地址、服务端 Bearer 鉴权、Base64 照片请求和评分解析的模拟流程。实际 Key、模型权限、额度及真实手写识别质量须在配置后验证。
+已通过真实 Key 调用：正确答案判为全对、关键计算错误判为方法对但结果错、空白图片判为空白或方法错误；一张资料中的手写 Z 变换解答判为全对。还检查了 375 像素手机排版、公式显示、照片清除、无分值题不虚造估分，以及确认前没有新增进度记录。
+
+Gemini 请求使用 JSON Schema 约束批改字段；其他兼容接口保留普通 Chat Completions 流程。模型少转义一次的常用 LaTeX 命令可恢复，仍无法排版的原式会显示“请核对”，程序不猜写其中的符号。实际使用时继续核对文字转写与评分，特别是模糊照片。
