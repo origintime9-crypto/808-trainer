@@ -1,0 +1,143 @@
+"""课程题库 06：从题图、原式独立核对，不读取网页答案。"""
+from common import *
+
+v = Symbol('v', real=True)
+q = Symbol('q', real=True)
+wm = Symbol('wm', positive=True)
+f0 = Symbol('f0', positive=True)
+initial = Symbol('initial', real=True)
+period, width, amp = symbols('period width amp', positive=True)
+freq = Symbol('freq', real=True, nonzero=True)
+omega = Symbol('omega', real=True)  # 包括直流位置。
+sampling = Symbol('sampling', positive=True)
+Om = Symbol('Om', real=True)
+
+eq('一1 冲激尺度与内部筛选', integrate((v-3)*DiracDelta(-2*v+4), (v, -5, 5)), -Rational(1, 2))
+# 实信号 (1+t)e^{-|t|} 的偶部与直接定义积分。
+actual2 = integrate((1+v)*exp((1-I*w)*v), (v, -oo, 0), conds='none')+integrate((1+v)*exp((-1-I*w)*v), (v, 0, oo), conds='none')
+eq('一2 实信号的偶部频谱为实部', re(actual2), 2/(1+w*w))
+eq('一2 偶部直接积分回查', integrate(exp((1-I*w)*v), (v, -oo, 0), conds='none')+integrate(exp((-1-I*w)*v), (v, 0, oo), conds='none'), re(actual2))
+eq('一3 因果实现的频响定义积分', integrate(exp((-1-I*w)*v), (v, 0, oo), conds='none'), 1/(1+I*w))
+eq('一3 幅度平方及低通形状', 1/(1+I*w)*1/(1-I*w), 1/(1+w*w))
+eq('一3 高频极限', limit(1/sqrt(1+w*w), w, oo), 0)
+eq('一4 周期5内脉冲面积直接平均', integrate(10, (v, -1, 1))/5, 4)
+eq('一4 直流与一周期均值相同', 10*Rational(2, 5), 4)
+step_sum = lambda k: sum(u(m) for m in range(-8, k+1))
+check('一5 单位阶跃累加逐样本', all(step_sum(k) == (k+1)*u(k) for k in range(-5, 13)))
+check('一5 累加序列的一阶差分', all(step_sum(k)-step_sum(k-1) == u(k) for k in range(-5, 13)))
+# 反例：左边序列可稳定，却有单位圆外极点，原答案少了因果假设。
+eq('一6 左边核绝对可和反例', summation(Rational(1, 2)**(n+1), (n, 0, oo)), 1)
+eq('一6 反例直流变换', -summation(Rational(1, 2)**(n+1), (n, 0, oo)), (z/(z-2)).subs(z, 1))
+check('一6 反例实际极点在圆外', roots(z-2, z) == {2})
+eq('一7 从缩放相位独立求频率', diff(2*pi*f0*v/2, v)/(2*pi), f0/2)
+eq('一7 奈奎斯特间隔', 1/(2*(f0/2)), 1/f0)
+a, b = symbols('a b')
+eq('一8 四倍尺度算子的叠加', (a*v**2+b*cos(v)).subs(v, 4*v), a*16*v**2+b*cos(4*v))
+eq('一8 延时一秒的时变反例差', (4*v-1)-(4*v-4), 3)
+eq('一9 两因子带宽相加', wm/4+wm/2, 3*wm/4)
+eq('一9 奈奎斯特间隔', pi/(3*wm/4), 4*pi/(3*wm))
+eq('一9 余弦边缘样例达到最高频率', simplify((cos(wm*v/4)*cos(wm*v/2)-(cos(3*wm*v/4)+cos(wm*v/4))/2).rewrite(exp)), 0)
+F10 = 1/((z+Rational(1, 2))*(z+2))
+check('一10 全部实际极点', roots((z+Rational(1, 2))*(z+2), z) == {-Rational(1, 2), -2})
+eq('一10 两个右边指数部分分式', F10, Rational(2, 3)*(1/(z+Rational(1, 2))-1/(z+2)))
+def seq10(k):
+    return Rational(2, 3)*((-Rational(1, 2))**(k-1)-(-Integer(2))**(k-1))*u(k-1)
+recurrence('一10 外ROC对应延时两拍的因果序列', seq10, [1, Rational(5, 2), 1], lambda k: int(k == 2))
+check('一10 因果序列的首项支撑', [seq10(k) for k in range(3)] == [0, 0, 1])
+
+def overlap(value, lo, hi):
+    return max(min(hi, value)-max(lo, value-2), 0)
+def answer1(value):
+    if -1 <= value < 0: return value+1
+    if 0 <= value < 2: return 1-value
+    if 2 <= value <= 3: return value-3
+    return Integer(0)
+probes = [Rational(j, 8) for j in range(-24, 41)]
+check('二1 原图卷积重叠长度逐点', all(answer1(vv) == overlap(vv, -1, 0)-overlap(vv, 0, 1) for vv in probes))
+eq('二1 正负面积相消', integrate(v+1, (v, -1, 0))+integrate(1-v, (v, 0, 2))+integrate(v-3, (v, 2, 3)), 0)
+eq('二1 原点为正峰值', answer1(0), 1)
+eq('二1 t=2为负峰值', answer1(2), -1)
+check('二1 原参考图的两峰符号确实反了', answer1(0) != -1 and answer1(2) != 1)
+
+full2 = 2*exp(-t)+3*exp(-2*t)
+zi2 = initial*exp(-2*t)
+zs2 = 2*exp(-t)+(3-initial)*exp(-2*t)
+eq('二2 一般初态的响应分解', zi2+zs2, full2)
+eq('二2 正时间原式回算输入', diff(full2, t)+2*full2, 2*exp(-t))
+eq('二2 单边原点冲激强度', (s+2)*lt(full2)-initial, 2/(s+1)+5-initial)
+eq('二2 无原点冲激时左初值必须为5', solve(Eq(5-initial, 0), initial)[0], 5)
+eq('二2 条件零状态初值为0', zs2.subs({initial: 5, t: 0}), 0)
+eq('二2 条件零状态卷积定义积分', integrate(2*exp(-v)*exp(-2*(t-v)), (v, 0, t)), zs2.subs(initial, 5))
+eq('二2 条件零输入齐次方程', diff(zi2, t)+2*zi2, 0)
+eq('二2 零初态加5δ也产生同样完全响应', lt(full2), (2/(s+1)+5)/(s+2))
+
+moving = lambda k: Rational(1, 5)*sum(int(k == m) for m in range(5))
+check('二3 单位样值输入直接回查 h', all(moving(k) == Rational(1, 5)*(u(k)-u(k-5)) for k in range(-5, 13)))
+eq('二3 绝对可和', sum(abs(moving(k)) for k in range(-5, 12)), 1)
+check('二3 因果支撑', all(moving(k) == 0 for k in range(-8, 0)))
+eq('二3 常数输入增益', sum(moving(k) for k in range(5)), 1)
+check('二3 卷积独立实现滑动平均', all(sum(moving(m)*(k-m)**2 for m in range(-6, 10)) == sum(Rational(1, 5)*(k-m)**2 for m in range(5)) for k in range(-6, 11)))
+
+AA = Matrix([[0, 1, 0], [0, 0, 1], [-1, -3, -2]])
+BB = Matrix([0, 0, 1])
+CC = Matrix([[1, 0, 1]])
+H4 = (s*s+1)/(s**3+2*s*s+3*s+1)
+eq('二4 状态空间回算原系统函数', (CC*(s*eye(3)-AA).inv()*BB)[0], H4)
+eq('二4 特征多项式回算', AA.charpoly(z).as_expr(), z**3+2*z*z+3*z+1)
+wrongA = Matrix([[0, 1, 0], [0, 0, 1], [-1, -2, -3]])
+check('二4 参考反馈2和3交换导致H错误', simplify((CC*(s*eye(3)-wrongA).inv()*BB)[0]-H4) != 0)
+eq('二4 输出无直通，正确高频系数', limit(s*H4, s, oo), (CC*BB)[0])
+
+coef = integrate(amp*exp(-I*freq*v), (v, -width/2, width/2))/period
+eq('二5 周期矩形系数按定义积分', simplify((coef-amp*width/period*sin(freq*width/2)/(freq*width/2)).rewrite(exp)), 0)
+eq('二5 零阶系数连续极限', limit(coef, freq, 0), amp*width/period)
+c0, c1 = Rational(3, 4), 3*sqrt(2)/(2*pi)
+eq('二5 具体矩形单周期积分', simplify(expand_complex(coef.subs({amp: 3, width: Rational(1, 2), period: 2, freq: pi}))), c1)
+P = 2*pi*(c0*DiracDelta(omega)+c1*DiracDelta(omega-pi)+c1*DiracDelta(omega+pi))
+eq('二5 冲激谱的逆定义积分', integrate(P*exp(I*omega*v), (omega, -oo, oo))/(2*pi), c0+2*c1*cos(pi*v))
+actual = sum(weight*(integrate(exp((1+I*shift-I*w)*v), (v, -oo, 0), conds='none')+integrate(exp((-1+I*shift-I*w)*v), (v, 0, oo), conds='none')) for shift, weight in [(0, c0), (pi, c1), (-pi, c1)])
+eq('二5 相乘后的谱副本系数', actual, c0*2/(1+w*w)+c1*2/(1+(w-pi)**2)+c1*2/(1+(w+pi)**2))
+eq('二5 相邻谱副本的临界周期', 2*pi/(2*wm), pi/wm)
+
+den = 6-5*q+q*q
+eq('三1 单边初态分子', 5*(-2)-q*(-2)-3, -13+2*q)
+eq('三1 零输入部分分式', (-13+2*q)/den, -Rational(9, 2)/(1-q/2)+Rational(7, 3)/(1-q/3))
+eq('三1 零状态部分分式', 1/(den*(1-q)), -1/(2*(1-q/2))+1/(6*(1-q/3))+1/(2*(1-q)))
+def zi(k):
+    if k < 0: return {-1: Integer(-2), -2: Integer(3)}.get(k, 0)
+    return -Rational(9, 2)*Rational(1, 2)**k+Rational(7, 3)*Rational(1, 3)**k
+def zs(k):
+    return (-Rational(1, 2)*Rational(1, 2)**k+Rational(1, 6)*Rational(1, 3)**k+Rational(1, 2))*u(k)
+def full(k): return zi(k)+zs(k)
+check('三1 零输入带原初态齐次递推', all(6*zi(k)-5*zi(k-1)+zi(k-2) == 0 for k in range(16)))
+recurrence('三1 零状态逐样本递推', zs, [6, -5, 1], u)
+check('三1 完全响应带原初态递推', all(6*full(k)-5*full(k-1)+full(k-2) == u(k) for k in range(16)))
+eq('三1 完全响应独立分解表达式', zi(t)+zs(t), -5*Rational(1, 2)**t+Rational(5, 2)*Rational(1, 3)**t+Rational(1, 2))
+eq('三1 完全响应首样本', full(0), -2)
+h = lambda k: (Rational(1, 2)*Rational(1, 2)**k-Rational(1, 3)*Rational(1, 3)**k)*u(k)
+recurrence('三1 原系数回查单位样值响应', h, [6, -5, 1], lambda k: int(k == 0))
+eq('三1 h 的几何变换回查', 1/(2*(1-q/2))-1/(3*(1-q/3)), 1/den)
+check('三1 实际极点严格位于单位圆内', roots(6*z*z-5*z+1, z) == {Rational(1, 2), Rational(1, 3)})
+eq('三1 正核的总和及静态增益', summation(Rational(1, 2)**(n+1)-Rational(1, 3)**(n+1), (n, 0, oo)), Rational(1, 2))
+check('三1 核始终非负', all(h(k) > 0 for k in range(25)))
+def delayed(k): return 2*zs(k-1)
+recurrence('三1 两倍延时阶跃输出', delayed, [6, -5, 1], lambda k: 2*u(k-1))
+check('三1 改激励后完全响应带初态递推', all(6*(zi(k)+delayed(k))-5*(zi(k-1)+delayed(k-1))+zi(k-2)+delayed(k-2) == 2*u(k-1) for k in range(16)))
+eq('三1 改激励后的首样本', zi(0)+delayed(0), -Rational(13, 6))
+
+a2 = 2/sampling
+Hd = a2*(z-1)/(z+1)
+eq('三2 双线性替换原微分器', s.subs(s, 2/sampling*(1-q)/(1+q)), Hd.subs(z, 1/q))
+eq('三2 单延时状态空间回算', a2-2*a2/(z+1), Hd)
+hb = lambda k: a2*int(k == 0)+2*a2*(-Integer(1))**k*u(k-1)
+recurrence('三2 因果实现逐样本冲激响应', hb, [1, 1], lambda k: a2*(int(k == 0)-int(k == 1)))
+check('三2 原微分器映到未消去单位圆极点', roots(z+1, z) == {-1} and (z-1).subs(z, -1) != 0)
+eq('三2 尾项不衰减，DTFT必要条件失败', limit(abs(2*a2*(-Integer(1))**n), n, oo), 2*a2)
+formal = trigsimp(expand_complex(Hd.subs(z, exp(I*Om))))
+eq('三2 单位圆形式代数值', simplify((formal-I*a2*tan(Om/2)).rewrite(exp)), 0)
+eq('三2 形式低频斜率', limit(I*a2*tan(Om/2)/(I*Om), Om, 0), 1/sampling)
+eq('三2 正频率样例相位及幅度', formal.subs(Om, pi/2), I*a2)
+eq('三2 负频率样例相位必须翻转', formal.subs(Om, -pi/2), -I*a2)
+eq('三2 DC形式值为0，相位未定义', formal.subs(Om, 0), 0)
+check('三2 高频端幅度发散', limit(a2*tan(Om/2), Om, pi, dir='-') == oo)
+finish()

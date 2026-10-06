@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="490" viewBox="0 0 720 490" role="img">
+<title>双线性微分器的单位圆形式幅相图，普通DTFT不存在</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="490" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">单位圆形式代数值：j(2/Tₛ)tan(Ω/2)</text>
+<text x="194" y="69" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">|形式值|/(2/Tₛ)</text>
+<text x="536" y="69" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">形式相位 φ(Ω)</text>
+<path d="M46 357H349" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M194 376V88" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M391 270H689" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M536 378V93" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="64" y="382" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<text x="406" y="295" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<text x="129.0" y="382" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1/2</text>
+<text x="471.0" y="295" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1/2</text>
+<text x="194" y="382" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="536" y="295" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="259.0" y="382" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1/2</text>
+<text x="601.0" y="295" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1/2</text>
+<text x="324" y="382" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="666" y="295" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="335" y="407" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Ω/π</text>
+<text x="677" y="322" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Ω/π</text>
+<text x="178" y="295" text-anchor="end" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M64 289H324" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<text x="178" y="227" text-anchor="end" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<path d="M64 221H324" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<text x="178" y="159" text-anchor="end" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<path d="M64 153H324" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<path d="M64 88V357" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<path d="M324 88V357" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<polyline points="83.50,73.76 84.80,92.16 86.10,108.43 87.40,122.94 88.70,135.96 90.00,147.72 91.30,158.39 92.60,168.12 93.90,177.04 95.20,185.25 96.50,192.83 97.80,199.86 99.10,206.40 100.40,212.49 101.70,218.19 103.00,223.54 104.30,228.57 105.60,233.31 106.90,237.78 108.20,242.02 109.50,246.03 110.80,249.85 112.10,253.48 113.40,256.94 114.70,260.25 116.00,263.41 117.30,266.43 118.60,269.33 119.90,272.12 121.20,274.80 122.50,277.38 123.80,279.87 125.10,282.27 126.40,284.59 127.70,286.83 129.00,289.00 130.30,291.10 131.60,293.14 132.90,295.12 134.20,297.05 135.50,298.92 136.80,300.75 138.10,302.52 139.40,304.25 140.70,305.94 142.00,307.60 143.30,309.21 144.60,310.79 145.90,312.33 147.20,313.85 148.50,315.33 149.80,316.78 151.10,318.21 152.40,319.62 153.70,321.00 155.00,322.35 156.30,323.69 157.60,325.00 158.90,326.30 160.20,327.57 161.50,328.83 162.80,330.08 164.10,331.30 165.40,332.52 166.70,333.72 168.00,334.91 169.30,336.08 170.60,337.24 171.90,338.40 173.20,339.54 174.50,340.67 175.80,341.80 177.10,342.92 178.40,344.03 179.70,345.13 181.00,346.23 182.30,347.32 183.60,348.41 184.90,349.49 186.20,350.57 187.50,351.65 188.80,352.72 190.10,353.79 191.40,354.86 192.70,355.93 194.00,357.00 195.30,355.93 196.60,354.86 197.90,353.79 199.20,352.72 200.50,351.65 201.80,350.57 203.10,349.49 204.40,348.41 205.70,347.32 207.00,346.23 208.30,345.13 209.60,344.03 210.90,342.92 212.20,341.80 213.50,340.67 214.80,339.54 216.10,338.40 217.40,337.24 218.70,336.08 220.00,334.91 221.30,333.72 222.60,332.52 223.90,331.30 225.20,330.08 226.50,328.83 227.80,327.57 229.10,326.30 230.40,325.00 231.70,323.69 233.00,322.35 234.30,321.00 235.60,319.62 236.90,318.21 238.20,316.78 239.50,315.33 240.80,313.85 242.10,312.33 243.40,310.79 244.70,309.21 246.00,307.60 247.30,305.94 248.60,304.25 249.90,302.52 251.20,300.75 252.50,298.92 253.80,297.05 255.10,295.12 256.40,293.14 257.70,291.10 259.00,289.00 260.30,286.83 261.60,284.59 262.90,282.27 264.20,279.87 265.50,277.38 266.80,274.80 268.10,272.12 269.40,269.33 270.70,266.43 272.00,263.41 273.30,260.25 274.60,256.94 275.90,253.48 277.20,249.85 278.50,246.03 279.80,242.02 281.10,237.78 282.40,233.31 283.70,228.57 285.00,223.54 286.30,218.19 287.60,212.49 288.90,206.40 290.20,199.86 291.50,192.83 292.80,185.25 294.10,177.04 295.40,168.12 296.70,158.39 298.00,147.72 299.30,135.96 300.60,122.94 301.90,108.43 303.20,92.16 304.50,73.76" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="88" y="82" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">↑∞</text>
+<text x="300" y="82" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">∞↑</text>
+<polyline points="406.00,332.50 536.00,332.50" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="536.00,207.50 666.00,207.50" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="519" y="195.5" text-anchor="end" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">π/2</text>
+<text x="519" y="357.5" text-anchor="end" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−π/2</text>
+<circle cx="536" cy="332.5" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<circle cx="536" cy="207.5" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<circle cx="406" cy="332.5" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<circle cx="666" cy="207.5" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<text x="360" y="446" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">幅度非负且偶对称；负频率相位 −π/2，正频率 +π/2</text>
+<text x="360" y="475" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Ω=0 相位未定义；±π 奇异；普通冲激响应 DTFT 不收敛</text>
+</svg>
