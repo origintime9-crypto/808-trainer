@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="455" viewBox="0 0 720 455" role="img">
+<title>因果H的二重零点、两极点和单位圆</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="455" fill="white"/>
+<text x="360" y="29" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">H(z)=z²/[(z−1/2)(z+1/4)]</text>
+<path d="M95 226H681" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M367 396V54" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<circle cx="367" cy="226" r="142" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+<path d="M324.5 219L338.5 233M324.5 233L338.5 219" fill="none" stroke="#b45309" stroke-width="3"/>
+<text x="331.5" y="258" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1/4</text>
+<path d="M431.0 219L445.0 233M431.0 233L445.0 219" fill="none" stroke="#b45309" stroke-width="3"/>
+<text x="438.0" y="258" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1/2</text>
+<circle cx="367" cy="226" r="7" fill="white" stroke="#0f766e" stroke-width="3"/>
+<text x="381" y="206" text-anchor="start" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">○ ×2</text>
+<text x="225" y="212" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<text x="509" y="212" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="661" y="255" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Re z</text>
+<text x="389" y="66" text-anchor="start" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Im z</text>
+<text x="545" y="93" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">虚线：单位圆</text>
+<text x="360" y="423" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">因果 ROC：|z|&gt;1/2，包含单位圆 ⇒ 稳定</text>
+<text x="360" y="449" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">○ 零点（原点二重）；× 极点</text>
+</svg>

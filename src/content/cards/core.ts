@@ -67,7 +67,7 @@ export const coreCards: Card[] = [
   c('c3-parseval', ['3.4'], String.raw`帕塞瓦尔定理与 $F(0)$、$f(0)$ 公式？`,
     String.raw`$\int|f(t)|^2dt=\frac{1}{2\pi}\int|F(j\omega)|^2d\omega$；$F(0)=\int f(t)dt$。满足反演条件时，对称频域积分在连续点给 $2\pi f(t)$，在跳点给 $2\pi[f(t^-)+f(t^+)]/2$；必要时须注明 Cauchy 主值，两端分别积分未必收敛。单点赋值不改变 F。例：$\int\sin t/t\,dt=\pi$；从0跳到2的原点，对称积分为2π。`),
   c('c3-fs', ['3.2'], '周期信号傅里叶级数（复指数形式）及频谱特点？',
-    String.raw`$f(t)=\sum F_ne^{jn\omega_0t}$，$F_n=\frac1T\int_Tf(t)e^{-jn\omega_0t}dt$；三角形式 $\frac{a_0}{2}+\sum(a_n\cos n\omega_0t+b_n\sin n\omega_0t)$，$|F_n|=\frac{A_n}{2}$。频谱三个特点：**离散性、谐波性、收敛性**。频谱包括**幅度谱**和**相位谱**。`),
+    String.raw`$f(t)=\sum F_ne^{jn\omega_0t}$，$F_n=\frac1T\int_Tf(t)e^{-jn\omega_0t}dt$；三角形式 $\frac{a_0}{2}+\sum(a_n\cos n\omega_0t+b_n\sin n\omega_0t)$，$|F_n|=\frac{A_n}{2}$。周期信号有谐波线谱；通常可积周期信号的 $F_n\to0$，广义周期冲激串的系数却为常数。通常可积非周期信号有连续谱；不可公度正弦和等非周期信号仍可有广义线谱。频谱分为幅度谱、相位谱。`),
   c('c3-fs-sym', ['3.2'], '信号对称性与傅里叶级数系数的关系？',
     String.raw`偶函数：只含直流和余弦项（$b_n=0$）；奇函数：只含正弦项（$a_0=a_n=0$）；奇谐函数 $f(t\pm\frac T2)=-f(t)$：只含奇次谐波；偶谐函数：只含偶次谐波。`),
   c('c3-sine-steady', ['3.7'], '稳定 LTI 系统的正弦稳态响应公式？',

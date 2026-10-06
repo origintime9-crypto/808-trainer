@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img">
+<title>三角输入的输出：明确c为0的条件</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="360" fill="white"/>
+<text x="360" y="29" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">z=r(t−1)−r(t−3)−2u(t−4)+c</text>
+<text x="360" y="60" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">本图取 c=0：因果实现或 z(−∞)=0</text>
+<path d="M41 260H687" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M111 281V78" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="44.00,260.00 201.00,260.00 381.00,118.00 471.00,118.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="471.00,260.00 682.00,260.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M471 118V260" fill="none" stroke="#0f766e" stroke-width="2.5"/>
+<path d="M111 118H381" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<text x="93" y="124" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<text x="111" y="290" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="201" y="290" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="381" y="290" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<text x="471" y="290" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">4</text>
+<text x="676" y="289" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<text x="360" y="330" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">未给边界条件时整条图仍可上下平移常数 c</text>
+</svg>
