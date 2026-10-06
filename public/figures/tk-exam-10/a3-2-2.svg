@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="340" viewBox="0 0 720 340" role="img">
+<title>Yₛ：每隔 ωₛ 复制，整体乘 1/T</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="340" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Yₛ：每隔 ωₛ 复制，整体乘 1/T</text>
+<path d="M38 253H690" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M360.0 270V53" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="668" y="301" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω/ω₁</text>
+<path d="M111.66666666666666 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="111.66666666666666" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−5</text>
+<path d="M161.33333333333331 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="161.33333333333331" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−4</text>
+<path d="M211.0 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="211.0" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−3</text>
+<path d="M310.33333333333337 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="310.33333333333337" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<path d="M360.0 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="360.0" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M409.6666666666667 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="409.6666666666667" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M509.0 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="509.0" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<path d="M558.6666666666667 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="558.6666666666667" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">4</text>
+<path d="M608.3333333333333 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="608.3333333333333" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">5</text>
+<text x="344.0" y="181.72727272727275" text-anchor="end" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1/(2T)</text>
+<text x="344.0" y="104.45454545454547" text-anchor="end" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1/T</text>
+<polyline points="111.67,253.00 111.67,175.73 161.33,98.45 211.00,175.73 211.00,253.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="310.33,253.00 310.33,175.73 360.00,98.45 409.67,175.73 409.67,253.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="509.00,253.00 509.00,175.73 558.67,98.45 608.33,175.73 608.33,253.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="26" y="240" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">…</text>
+<text x="699" y="240" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">…</text>
+<text x="360" y="321" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">示例 ωₛ=4ω₁；每个复制谱宽 2ω₁，中间留间隔</text>
+</svg>

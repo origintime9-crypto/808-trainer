@@ -30,10 +30,11 @@ import { tkExam06 } from './problems/tk-exam-06';
 import { tkExam07 } from './problems/tk-exam-07';
 import { tkExam08 } from './problems/tk-exam-08';
 import { tkExam09 } from './problems/tk-exam-09';
+import { tkExam10 } from './problems/tk-exam-10';
 
 export { knowledge, CHAPTERS, papers, patterns };
 
-const allProblems: Problem[] = [...zt2026, ...zt2023, ...zt2024, ...zt2025, ...zt2018, ...zt2017, ...zt2016, ...choicesShared, ...zpShared, ...tkReview, ...tkTotal, ...hw1, ...hw2, ...hw3, ...hw4, ...hw5, ...hw6, ...hw7, ...tkKey, ...tkExam01, ...tkExam02, ...tkExam03, ...tkExam04, ...tkExam05, ...tkExam06, ...tkExam07, ...tkExam08, ...tkExam09];
+const allProblems: Problem[] = [...zt2026, ...zt2023, ...zt2024, ...zt2025, ...zt2018, ...zt2017, ...zt2016, ...choicesShared, ...zpShared, ...tkReview, ...tkTotal, ...hw1, ...hw2, ...hw3, ...hw4, ...hw5, ...hw6, ...hw7, ...tkKey, ...tkExam01, ...tkExam02, ...tkExam03, ...tkExam04, ...tkExam05, ...tkExam06, ...tkExam07, ...tkExam08, ...tkExam09, ...tkExam10];
 // 完全同题合并来源，保留最早录入的编号；选项不同的变式仍保留。
 const duplicateOf: Record<string, string> = {
   'zt2024-3-2-1': 'zt2023-3-3', 'zt2016-1-5': 'zt2023-1-4',

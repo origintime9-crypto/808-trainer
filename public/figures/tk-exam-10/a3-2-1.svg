@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="340" viewBox="0 0 720 340" role="img">
+<title>Y₁：输入带内相乘，边缘高度仍为 1/2</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="340" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Y₁：输入带内相乘，边缘高度仍为 1/2</text>
+<path d="M38 253H690" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M360.0 270V53" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="668" y="301" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω/ω₁</text>
+<path d="M62.0 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="62.0" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−2</text>
+<path d="M211.0 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="211.0" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<path d="M360.0 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="360.0" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M509.0 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="509.0" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M658.0 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="658.0" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<text x="344.0" y="181.72727272727275" text-anchor="end" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1/2</text>
+<text x="344.0" y="104.45454545454547" text-anchor="end" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<polyline points="84.35,253.00 211.00,253.00 211.00,175.73 360.00,98.45 509.00,175.73 509.00,253.00 635.65,253.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="26" y="240" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">…</text>
+<text x="699" y="240" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">…</text>
+<text x="360" y="321" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">±ω₁ 处截断；并非到 ±2ω₁ 才降为零</text>
+</svg>

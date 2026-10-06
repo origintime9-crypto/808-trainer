@@ -24,4 +24,5 @@ export const papers: Paper[] = [
   { id: 'tk-exam-07', year: 0, examType: '—', kind: '题库', title: '中北题库第 7 套（原卷未编号）', totalScore: 100 },
   { id: 'tk-exam-08', year: 0, examType: '—', kind: '题库', title: '中北课程题库 08（考试试题及答案）', totalScore: 100 },
   { id: 'tk-exam-09', year: 0, examType: '—', kind: '题库', title: '中北题库第 9 套（原卷未编号）', totalScore: 100 },
+  { id: 'tk-exam-10', year: 0, examType: '—', kind: '题库', title: '中北课程题库 10（考试试题及答案）', totalScore: 100 },
 ];
