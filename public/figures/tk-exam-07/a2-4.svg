@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="380" viewBox="0 0 720 380" role="img">
+<title>x(1−2t)的反转压缩波形</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="380" fill="white"/>
+<text x="360" y="29" text-anchor="middle" font-size="24" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">f(t)=x(1−2t)：支撑 0..1，谷底 1/2</text>
+<path d="M44 264H688" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M153 284V55" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="47.00,264.00 153.00,264.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="153.00,92.00 355.00,178.00 557.00,92.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="557.00,264.00 685.00,264.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M153 264V92" fill="none" stroke="#0f766e" stroke-width="2.6"/>
+<circle cx="153" cy="92" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<path d="M557 264V92" fill="none" stroke="#0f766e" stroke-width="2.6"/>
+<circle cx="557" cy="92" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<path d="M355.0 264V178" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<text x="153" y="298" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="355.0" y="298" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1/2</text>
+<text x="557" y="298" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="133" y="185" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="133" y="99" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<text x="676" y="298" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<text x="360" y="335" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t=0、1 处发生跳变；内部两端为 2，中心为 1</text>
+<text x="360" y="364" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">原点对称反演值为 (0+2)/2=1</text>
+</svg>
