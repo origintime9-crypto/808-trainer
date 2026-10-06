@@ -79,7 +79,7 @@ export const coreCards: Card[] = [
   c('c3-modulation', ['3.6'], '调制与同步解调的原理？',
     String.raw`调制：$f(t)\cos\omega_0t$ 把频谱搬移到 $\pm\omega_0$，幅度减半。同步解调：再乘 $\cos\omega_0t$ 得 $\frac12f(t)+\frac12f(t)\cos2\omega_0t$，经低通（$\omega_m<\omega_c<2\omega_0-\omega_m$）滤除高频，放大 2 倍恢复 $f(t)$。`),
   c('c3-time-band', ['3.3', '3.4'], '信号的时宽与带宽之间是什么关系？',
-    String.raw`**反比**关系：时域压缩，频域展宽（尺度性质 $f(at)\leftrightarrow\frac{1}{|a|}F(j\frac{\omega}{a})$）。例：矩形脉冲宽度 $\tau$ 越窄，$\mathrm{Sa}$ 主瓣宽度 $\frac{4\pi}{\tau}$ 越宽。`),
+    String.raw`**反比**关系：时域压缩，频域展宽（尺度性质 $f(at)\leftrightarrow\frac{1}{|a|}F(j\frac{\omega}{a})$）。矩形脉冲宽度 $\tau$ 越窄，Sa主瓣越宽：两侧首零点间全宽 $4\pi/\tau$ rad/s，单边首零点为 $2\pi/\tau$ rad/s或 $1/\tau$ Hz。矩形并非严格带限；这些是主瓣/首零点口径，不是有限的完整频谱支撑。`),
 
   // 第四章
   c('c4-lt-table', ['4.1'], '常用单边拉氏变换对？',

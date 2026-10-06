@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="460" viewBox="0 0 720 460" role="img">
+<title>零点0与-2、极点-1与-3的因果系统</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="460" fill="white"/>
+<text x="360" y="29" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">H(z)=4z(z+2)/[(z+1)(z+3)]</text>
+<path d="M44 225H691" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M541 391V58" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<circle cx="541" cy="225" r="130" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5 5"/>
+<path d="M144 218L158 232M144 232L158 218" fill="none" stroke="#b45309" stroke-width="3"/>
+<path d="M404 218L418 232M404 232L418 218" fill="none" stroke="#b45309" stroke-width="3"/>
+<circle cx="281" cy="225" r="7" fill="white" stroke="#0f766e" stroke-width="3"/>
+<circle cx="541" cy="225" r="7" fill="white" stroke="#0f766e" stroke-width="3"/>
+<text x="151" y="257" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−3</text>
+<text x="281" y="257" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−2</text>
+<text x="411" y="257" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<text x="541" y="257" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="671" y="211" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="677" y="273" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Re z</text>
+<text x="560" y="68" text-anchor="start" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Im z</text>
+<text x="370" y="93" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">虚线：单位圆</text>
+<text x="360" y="421" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1 在单位圆上；−3 在圆外；因果 ROC |z|&gt;3</text>
+<text x="360" y="450" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">○ 零点；× 极点；因果核不趋零 ⇒ 不稳定</text>
+</svg>
