@@ -124,7 +124,7 @@ describe('AI 输出解析', () => {
       expect(parseAiResult(raw, 'vision')?.grade).toBe(1);
   });
   it('恢复模型少转义一次的分式命令，保留正常换行', () => {
-    const transcript = '$X(z)=\\frac{10}{1+z^{-1}}$\n第二行';
+    const transcript = '$X(z)=\\frac{10}{1+z^{-1}}$\n第二行 $y=-10u(n)+20\\times2^nu(n)$';
     const raw = JSON.stringify({ ...value, transcript }).replaceAll('\\\\', '\\');
     expect(parseAiResult(raw, 'vision')?.transcript).toBe(transcript);
     expect(parseAiResult(JSON.stringify({ ...value, transcript }), 'vision')?.transcript).toBe(transcript);

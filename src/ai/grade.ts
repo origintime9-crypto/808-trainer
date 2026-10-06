@@ -53,7 +53,7 @@ export function parseAiResult(text: string, model: string): AiResult | null {
   for (const raw of candidates) {
     // 模型把 \frac 等命令只转义一次时，JSON 的 \f 会变成换页字符。
     // 只恢复已知 LaTeX 命令，正常的双反斜杠和换行不改动；raw 保留原文。
-    const repaired = raw!.replace(/(?<!\\)\\(?=(?:frac|dfrac|tfrac|begin|bar|beta|mathbf|boldsymbol|right|rho|rangle|rightarrow|mathrm|text|texttt|times|tau|theta|to|top|tilde|int|sum|prod|lim|infty|delta|alpha|omega|pi|cdot|left|operatorname|cos|sin|exp|quad|qquad|le|ge|ldots|dots|sqrt|underbrace|end)\b)/g, '\\\\');
+    const repaired = raw!.replace(/(?<!\\)\\(?=(?:frac|dfrac|tfrac|begin|bar|beta|mathbf|boldsymbol|right|rho|rangle|rightarrow|mathrm|text|texttt|times|tau|theta|to|top|tilde|int|sum|prod|lim|infty|delta|alpha|omega|pi|cdot|left|operatorname|cos|sin|exp|quad|qquad|le|ge|ldots|dots|sqrt|underbrace|end)(?![A-Za-z]))/g, '\\\\');
     try { const parsed = JSON.parse(repaired); const result = readAiResult({ ...parsed, model }); if (result) return result; } catch { /* 保留原文供人工评分 */ }
   }
   return null;
