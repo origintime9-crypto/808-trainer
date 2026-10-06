@@ -33,7 +33,7 @@ export const patterns: Pattern[] = [
     method: String.raw`- **线性**：验证 $T[ax_1+bx_2]=ay_1+by_2$；出现 $x^2$、$|x|$、$\sin x$、常数项都非线性。
 - **时不变**：比较 $T[x(t-t_0)]$ 与 $y(t-t_0)$；系数含 $t$（如 $t\,x(t)$、$x(t)u(t)$）、尺度 $x(2t)$、反褶 $x(-t)$、积分上限含 $t$ 的倍数一般时变。
 - **因果**：输出是否用到未来时刻的输入；LTI 系统看 $h(t)=0,\ t<0$。
-- **稳定**：有界输入是否得到有界输出；LTI 系统看 $\int|h(t)|dt<\infty$。
+- **稳定**：有界输入是否得到有界输出。连续 LTI 的普通函数核看 $\int|h(t)|dt<\infty$，离散核看 $\sum|h(n)|<\infty$；有限冲激直通把强度绝对值计入总变差。
 - 答题必须写出判断依据或反例，只写结论不得分。`,
   },
   {
@@ -124,8 +124,8 @@ export const patterns: Pattern[] = [
     name: '零极点图 + 附加条件求 H(s)（含稳定性、h(t)、正弦稳态）',
     kps: ['4.6', '4.2', '4.7', '3.7'],
     method: String.raw`1. 由图写 $H(s)=K\frac{\prod(s-z_i)}{\prod(s-p_j)}$，共轭极点配成 $(s+\alpha)^2+\beta^2$。
-2. 定 $K$：$h(0^+)=\lim_{s\to\infty}sH(s)$，或 $H(0)$、$g(\infty)=H(0)$ 等条件。
-3. 稳定：极点全在左半平面；$h(t)$ 用 $e^{-\alpha t}\cos\beta t$、$e^{-\alpha t}\sin\beta t$ 配凑；正弦稳态用 $H(j\omega_0)$。`,
+2. 定 K：因果 h 为普通函数时用 $h(0^+)=\lim_{s\to\infty}sH(s)$；若给 $H(\infty)=D$，D 是冲激直通增益，先除去此常数再求普通部分。用阶跃终值定 $H(0)$ 还须满足终值定理。
+3. 先确定因果性或 ROC；仅给零极点与增益，h 一般不唯一。分子次数不大于分母次数时，因果有理系统的实际极点全在左半平面才 BIBO 稳定；一般情形检查 ROC 是否包含虚轴，并排除冲激导数等不稳定多项式项。部分分式求 h，正弦响应使用存在的 $H(j\omega_0)$。`,
   },
   {
     id: 'laplace-calc',
@@ -149,7 +149,7 @@ export const patterns: Pattern[] = [
     kps: ['7.7', '6.4', '7.6'],
     method: String.raw`1. 设第一个加法器输出为 $w(n)$，列 $w(n)=x(n)+\sum a_kw(n-k)$，$y(n)=\sum b_kw(n-k)$。
 2. $z$ 域消去 $W(z)$ 得 $H(z)$，交叉相乘得差分方程。
-3. $\frac{H(z)}{z}$ 部分分式求 $h(n)$；极点全在单位圆内才稳定；$H(e^{j\omega})=H(z)|_{z=e^{j\omega}}$。`,
+3. $\frac{H(z)}{z}$ 部分分式并按 ROC 求 $h(n)$。因果有理系统的实际极点全在单位圆内才稳定；一般情形须 ROC 包含单位圆。只有单位圆属于 ROC 时，代 $z=e^{j\omega}$ 才得到收敛的普通频率响应。`,
   },
   {
     id: 'hz-roc-all',

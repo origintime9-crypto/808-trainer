@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="590" viewBox="0 0 720 590" role="img">
+<title>H(z)=(z²−2z)/(z³+3z²+2z+1) 的条件直接型</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="590" fill="white"/>
+<text x="360" y="28" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">直接型：以原题 2s→2z 为条件</text>
+<text x="360" y="55" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">输出只有 x₃−2x₂，x₁ 不接输出</text>
+<circle cx="112" cy="222" r="20" fill="white" stroke="#334155" stroke-width="1.8"/>
+<circle cx="665" cy="105" r="20" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="112" y="229" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Σ</text>
+<text x="665" y="112" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Σ</text>
+<text x="30" y="206" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">f(k)</text>
+<path d="M48 222H92" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="94" y="210" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">+</text>
+<path d="M132 222H164" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="148" y="200" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">w</text>
+<rect x="164" y="200" width="60" height="44" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="194" y="229" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">z⁻¹</text>
+<path d="M224 222H324" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="324" y="200" width="60" height="44" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="354" y="229" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">z⁻¹</text>
+<path d="M384 222H484" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="484" y="200" width="60" height="44" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="514" y="229" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">z⁻¹</text>
+<path d="M544 222H593" fill="none" stroke="#334155" stroke-width="1.8"/>
+<circle cx="275" cy="222" r="3.5" fill="#334155"/>
+<text x="275" y="207" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">x₃</text>
+<circle cx="434" cy="222" r="3.5" fill="#334155"/>
+<text x="434" y="207" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">x₂</text>
+<circle cx="589" cy="222" r="3.5" fill="#334155"/>
+<text x="589" y="207" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">x₁</text>
+<path d="M275 222V105H645" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="645" y="94" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">+</text>
+<path d="M434 222V176H485" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="485" y="154" width="60" height="44" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="515" y="183" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<path d="M545 176H665V125" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="682" y="134" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−</text>
+<path d="M685 105H708" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="687" y="82" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y(k)</text>
+<path d="M275 222V314H224" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="164" y="292" width="60" height="44" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="194" y="321" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<path d="M164 314H112V242" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="128" y="254" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−</text>
+<path d="M434 222V395H224" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="164" y="373" width="60" height="44" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="194" y="402" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<path d="M164 395H74V258H97V236" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="84" y="252" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−</text>
+<path d="M589 222V476H224" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="164" y="454" width="60" height="44" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="194" y="483" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M164 476H33V156H112V202" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="129" y="194" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−</text>
+<text x="360" y="530" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">w=f−3w[k−1]−2w[k−2]−w[k−3]</text>
+<text x="360" y="557" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">x₁[k+1]=x₂[k]；x₂[k+1]=x₃[k]</text>
+<text x="360" y="584" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">圆点是连接；跨线不连接；三阶延时链无直通</text>
+</svg>

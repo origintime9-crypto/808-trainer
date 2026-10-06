@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="430" viewBox="0 0 720 430" role="img">
+<title>f(t)*h(t) 的双极三角波</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="430" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">双极卷积：支撑 0..3，正负面积相消</text>
+<path d="M44 219H695" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M140 362V57" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M140 219V226" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="140" y="247" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M300 219V226" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="300" y="247" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M380.0 219V226" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="380.0" y="247" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3/2</text>
+<path d="M460 219V226" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="460" y="247" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<path d="M620 219V226" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="620" y="247" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<text x="122" y="351" text-anchor="end" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−2</text>
+<path d="M140 345H460" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<text x="122" y="99" text-anchor="end" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<path d="M140 93H300" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<polyline points="60.00,219.00 140.00,219.00 300.00,93.00 460.00,345.00 620.00,219.00 684.00,219.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M300 219V93" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<path d="M460 219V345" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<text x="684" y="245" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<text x="360" y="394" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">分段斜率：+2、−4、+2；过零点 t=3/2</text>
+<text x="360" y="421" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">断点 0、1、2、3 的值依次为 0、2、−2、0</text>
+</svg>
