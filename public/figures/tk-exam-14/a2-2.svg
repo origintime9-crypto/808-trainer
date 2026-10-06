@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="340" viewBox="0 0 720 340" role="img">
+<title>F(jω)为单位高门频谱</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="340" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">F(jω)为单位高门频谱</text>
+<path d="M38 253H690" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M360.0 270V53" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="668" y="301" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω/ωc</text>
+<path d="M161.33333333333331 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="161.33333333333331" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<path d="M360.0 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="360.0" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M558.6666666666667 253V259" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="558.6666666666667" y="282" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="344.0" y="128.23076923076925" text-anchor="end" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<polyline points="62.00,253.00 161.33,253.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="161.33,253.00 161.33,122.23 558.67,122.23 558.67,253.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="558.67,253.00 658.00,253.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="26" y="240" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">…</text>
+<text x="699" y="240" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">…</text>
+<text x="360" y="321" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">边缘对称值1/2；单点不影响反演</text>
+</svg>

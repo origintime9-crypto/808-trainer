@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="350" viewBox="0 0 720 350" role="img">
+<title>单边谐波功率9/2、1/2、2，总平均功率7</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="350" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">单边谐波平均功率：Pₙ=Aₙ²/2</text>
+<path d="M45 245H681" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M68 268V59" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M130 245V92.0" fill="none" stroke="#0f766e" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="130" y="78.0" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">9/2</text>
+<text x="130" y="272" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M378 245V228.0" fill="none" stroke="#0f766e" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="378" y="214.0" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1/2</text>
+<text x="378" y="272" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">5</text>
+<path d="M564 245V177" fill="none" stroke="#0f766e" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="564" y="163" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<text x="564" y="272" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">8</text>
+<text x="692" y="273" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω</text>
+<text x="360" y="308" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">总功率7；此处是每个实谐波的单边平均功率</text>
+<text x="360" y="336" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">双边PSD每侧冲激强度另为2π|Cₙ|²</text>
+</svg>
