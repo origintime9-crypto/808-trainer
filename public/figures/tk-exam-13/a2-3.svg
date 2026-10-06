@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="385" viewBox="0 0 720 385" role="img">
+<title>反向缩放后冲激权重为4，负峰条件A=1</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="385" fill="white"/>
+<text x="360" y="28" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">f(t)=g[(1−t)/2]：此图普通负峰取A=1</text>
+<path d="M38 188H690" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M282 292V65" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M178 188V73" fill="none" stroke="#0f766e" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="176" y="59" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">4δ(t+1)</text>
+<polyline points="282.00,188.00 386.00,100.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="386.00,276.00 490.00,188.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M386 100V276" fill="none" stroke="#334155" stroke-width="1.1" stroke-dasharray="4 4"/>
+<path d="M74 188V194" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="74" y="215" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−2</text>
+<path d="M178 188V194" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="178" y="215" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<path d="M282 188V194" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="282" y="215" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M386 188V194" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="386" y="215" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M490 188V194" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="490" y="215" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<path d="M594 188V194" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="594" y="215" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<text x="694" y="215" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<text x="267" y="104" text-anchor="end" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="267" y="280" text-anchor="end" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−A</text>
+<text x="460" y="320" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">一般负段为A(t−2)，1&lt;t&lt;2</text>
+<text x="360" y="354" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">冲激位置−1，强度4；普通部分仅在0..2</text>
+<text x="360" y="377" text-anchor="middle" font-size="16" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">跳点单值未给；原图负峰未独立标高，图中A=1为条件</text>
+</svg>

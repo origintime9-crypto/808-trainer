@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="345" viewBox="0 0 720 345" role="img">
+<title>H(z)=z/(z−1/2)的零点0和极点1/2</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="345" fill="white"/>
+<text x="360" y="28" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">有限零点0，极点1/2；虚线为单位圆</text>
+<circle cx="340" cy="170" r="100" fill="none" stroke="#94a3b8" stroke-dasharray="5 5"/>
+<path d="M165 170H531" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M340 285V54" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<circle cx="340" cy="170" r="7" fill="white" stroke="#0f766e" stroke-width="2.8"/>
+<path d="M384 164L396 176M384 176L396 164" fill="none" stroke="#0f766e" stroke-width="2.8"/>
+<text x="340" y="199" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="397" y="200" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1/2</text>
+<text x="532" y="198" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Re z</text>
+<text x="382" y="65" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Im z</text>
+<text x="360" y="318" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">有理式本身允许|z|&gt;1/2或|z|&lt;1/2，需另给ROC</text>
+</svg>

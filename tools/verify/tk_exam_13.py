@@ -1,0 +1,131 @@
+"""课程13：从p58..60题面独立运算，不从网站读取解答。"""
+from common import *
+
+v = Symbol('v', real=True)
+omega = Symbol('omega', real=True)
+wo = Symbol('wo', positive=True)
+t0 = Symbol('t0', positive=True)
+aa = Symbol('aa', positive=True)
+scale_a = Symbol('scale_a', positive=True)
+q = Symbol('q')
+
+# 原印指数没有t：保留常数阶跃解释，另检验补t的条件版本。
+constant = exp(-2-5*I)
+eq('一1 按原印式确为常数乘阶跃', constant, exp(-2)*exp(-5*I))
+eq('一1 常数阶跃的指数正则化', integrate(constant*exp(-(aa+I*omega)*v), (v, 0, oo), conds='none'), constant/(aa+I*omega))
+eq('一1 正则化实部形成π倍冲激', integrate(aa/(aa*aa+omega*omega), (omega, -oo, oo)), pi)
+eq('一1 若补t的衰减复指数定义积分', integrate(exp(-(2+5*I+I*omega)*v), (v, 0, oo), conds='none'), 1/(2+I*(omega+5)))
+eq('一2 斜坡的定义单边变换', lt(t), 1/s**2)
+conv = integrate(v*exp(-(t-v)), (v, 0, t))
+eq('一2 加权正时间卷积的样例', conv, t-1+exp(-t))
+eq('一2 样例变换等于H除s平方', lt(conv), 1/(s*s*(s+1)))
+
+# 两个有限脉冲反转加时移；分段积分及零频率均单独检查。
+F1 = integrate(2*exp(-I*w*v), (v, 0, t0/2))+integrate(exp(-I*w*v), (v, t0/2, t0))
+F2 = integrate(exp(-I*w*v), (v, 0, t0/2))+integrate(2*exp(-I*w*v), (v, t0/2, t0))
+eq('一3 原图两段反转的FT', F2, exp(-I*w*t0)*F1.subs(w, -w))
+eq('一3 两信号互补为三倍有限门', F1+F2, 3*(1-exp(-I*w*t0))/(I*w))
+eq('一3 零频率两脉冲总面积', 2*t0/2+t0/2, Rational(3, 2)*t0)
+ratio = Symbol('ratio', real=True)
+geometric = summation(ratio**n, (n, 0, oo))
+# 此分支明确采用|ratio|<1，分别对应|z|>2与|z|<3。
+assert isinstance(geometric, Piecewise)
+geo = geometric.args[0][0]
+right = geo.subs(ratio, 2/z)
+left = z/3*geo.subs(ratio, z/3)
+eq('一4 右边指数与左边指数的有理式之和', right+left, z/(z-2)-z/(z-3))
+eq('一4 环形ROC中实点2.5的收敛值', (right+left).subs(z, Rational(5, 2)), 10)
+check('一4 两支收敛条件的交集非空', 2 < Rational(5, 2) < 3)
+eq('一5 四拍平移保持余弦', cos(pi*(n+4)/2), cos(pi*n/2))
+check('一5 一二三拍均不是周期', all(cos(pi*m/2) != 1 for m in [1, 2, 3]))
+eq('一6 负尺度单位冲激筛选', integrate((v*v+4)*DiracDelta(1-v), (v, -oo, oo)), 5)
+yi = Rational(4, 3)*exp(-2*t)
+ys = 1-exp(-2*t)
+y = 1+exp(-2*t)/3
+eq('一7 原初态的零输入', yi.subs(t, 0), Rational(4, 3))
+eq('一7 零状态与零输入相加', yi+ys, y)
+eq('一7 给定完全响应回原微分式', diff(y, t)+2*y, 2)
+eq('一7 自由项不等于零输入的整个系数', y-1, exp(-2*t)/3)
+eq('一7 自由项也是衰减暂态', limit(exp(-2*t)/3, t, oo), 0)
+eq('一8 门谱反演的定义积分', integrate(exp(I*w*t), (w, -wo, wo))/(2*pi), sin(wo*t)/(pi*t))
+eq('一8 时域原点可去值', limit(sin(wo*t)/(pi*t), t, 0), wo/pi)
+eq('一9 单边指数的LT', lt(exp(-2*t)), 1/(s+2))
+check('一9 因果极点及收敛右边界', roots(s+2, s) == {-2})
+eq('一10 重极点决定多项式乘指数的形式', lt(t*exp(-2*t)), 1/(s+2)**2)
+
+# 二1的尺度与频域导数，以高斯的定义积分作独立样例。
+G = sqrt(pi)*exp(-omega**2/4)
+eq('二1 普通尺度压缩再乘t的频域结果', I*diff(G.subs(omega, omega/2)/2, omega), -I*omega*sqrt(pi)*exp(-omega**2/16)/16)
+eq('二1 以高斯定义积分独立检查', integrate(v*exp(-4*v*v)*exp(-I*omega*v), (v, -oo, oo)), I*diff(G.subs(omega, omega/2)/2, omega))
+# 正则化一侧正弦/余弦，保留两侧冲激系数，不能遗漏广义变换项。
+decay_sin = wo/((aa+I*omega)**2+wo**2)
+decay_cos = (aa+I*omega)/((aa+I*omega)**2+wo**2)
+eq('二2 一侧正弦的正则化定义LT', lt(exp(-aa*t)*sin(wo*t)).subs(s, I*omega), decay_sin)
+eq('二2 一侧余弦的正则化定义LT', lt(exp(-aa*t)*cos(wo*t)).subs(s, I*omega), decay_cos)
+eq('二2 正弦分解为两移位的一侧谱', decay_sin, (1/(aa+I*(omega-wo))-1/(aa+I*(omega+wo)))/(2*I))
+eq('二2 余弦分解为两移位的一侧谱', decay_cos, (1/(aa+I*(omega-wo))+1/(aa+I*(omega+wo)))/2)
+eq('二2 非极点正弦正则化极限', decay_sin.subs(aa, 0), wo/(wo*wo-omega*omega))
+eq('二2 非极点余弦正则化极限', decay_cos.subs(aa, 0), I*omega/(wo*wo-omega*omega))
+eq('二2 正弦正频率冲激强度', pi/(2*I), -I*pi/2)
+eq('二2 余弦正频移的正则化实部面积', integrate(aa/(aa*aa+(omega-wo)**2), (omega, -oo, oo))/2, pi/2)
+
+# 二3：g=f(−2t+1)，负峰未单独标幅，用A给通用结果。
+g_pos = 1-2*v
+g_neg = -scale_a*(1+2*v)
+eq('二3 反解正段普通波形', g_pos.subs(v, (1-t)/2), t)
+eq('二3 反解负段普通波形', g_neg.subs(v, (1-t)/2), scale_a*(t-2))
+check('二3 原g的节点对应顺序反转', [1-2*x for x in [-Rational(1, 2), 0, Rational(1, 2), 1]] == [2, 1, 0, -1])
+eq('二3 冲激反尺度后权重4', 2/Abs(-Rational(1, 2)), 4)
+eq('二3 冲激原变量复合回g后权重2', 4/Abs(-2), 2)
+eq('二3 普通部分总面积含参数', integrate(t, (t, 0, 1))+integrate(scale_a*(t-2), (t, 1, 2)), (1-scale_a)/2)
+
+# 二4：零点0、极点1/2，单位圆只属于右边ROC。
+Hd = z/(z-Rational(1, 2))
+eq('二4 不可约传递函数的零点', Hd.subs(z, 0), 0)
+check('二4 实际极点', roots(z-Rational(1, 2), z) == {Rational(1, 2)})
+HH = 1/(1-Rational(1, 2)*exp(-I*omega))
+eq('二4 幅度平方的倒数', simplify(1/(HH*conjugate(HH))), Rational(5, 4)-cos(omega))
+eq('二4 普通频响直流增益', HH.subs(omega, 0), 2)
+eq('二4 普通频响π处增益', HH.subs(omega, pi), Rational(2, 3))
+eq('二4 正半周期幅度分母单调增长', diff(Rational(5, 4)-cos(omega), omega), sin(omega))
+check('二4 另一ROC不包含单位圆', not (1 < Rational(1, 2)))
+
+# 二5：s+2在零状态传输中消去，不能丢失输入导数原点冲激。
+H = (s+2)/(s*s+3*s+2)
+eq('二5 零状态的可约系统函数', H, 1/(s+1))
+eq('二5 因果单位冲激响应LT', lt(exp(-t)), H)
+zs = integrate(exp(-v)*exp(-3*(t-v)), (v, 0, t))
+eq('二5 时域卷积求零状态', zs, (exp(-t)-exp(-3*t))/2)
+eq('二5 零状态定义LT交叉检查', lt(zs), H/(s+3))
+eq('二5 正时间回原二阶方程', diff(zs, t, 2)+3*diff(zs, t)+2*zs, -exp(-3*t))
+eq('二5 零状态导数初值由输入导数δ决定', diff(zs, t).subs(t, 0), 1)
+
+# 三1：两个正加法器、p/3正反馈、p/4前馈。
+pp = Symbol('pp', real=True)
+Dp = (1+pp*q/4)/(1-pp*q/3)
+eq('三1 原图闭环函数', Dp.subs(q, 1/z), (z+pp/4)/(z-pp/3))
+eq('三1 前馈分离出δ加几何尾项', Dp, 1+Rational(7, 12)*pp*q/(1-pp*q/3))
+eq('三1 参数0的零极点消去', Dp.subs(pp, 0), 1)
+eq('三1 零点−p/4与极点p/3重合仅在p0', solve(-pp/4-pp/3, pp)[0], 0)
+check('三1 稳定范围的两端均不衰减', [Abs(x/3) for x in [Integer(-3), Integer(3)]] == [1, 1])
+Y = Dp.subs(pp, 1)/(1-2*q/3)
+eq('三1 p1新输入的部分分式', Y, Rational(11, 4)/(1-2*q/3)-Rational(7, 4)/(1-q/3))
+recurrence('三1 零状态逐点回闭环差分方程', lambda k: (Rational(11, 4)*Rational(2, 3)**k-Rational(7, 4)*Rational(1, 3)**k)*u(k), [1, -Rational(1, 3)], lambda k: Rational(2, 3)**k*u(k)+Rational(1, 4)*Rational(2, 3)**(k-1)*u(k-1))
+eq('三1 输入接通首样本', Rational(11, 4)-Rational(7, 4), 1)
+
+# 三2：由实际原图和H0定标；频响用精确复数而非粗略幅相。
+base = (s-3)/(s*s+4*s+5)
+K = -Rational(6, 5)/base.subs(s, 0)
+eq('三2 由负直流增益定标K', K, 2)
+Hs = K*base
+check('三2 原图共轭实际极点', roots(s*s+4*s+5, s) == {-2+I, -2-I})
+eq('三2 原图零点+3', Hs.subs(s, 3), 0)
+hp = exp(-2*t)*(2*cos(t)-10*sin(t))
+eq('三2 冲激响应定义LT', lt(hp), Hs)
+eq('三2 冲激响应右初值', hp.subs(t, 0), 2)
+eq('三2 微分方程分子', Hs*(s*s+4*s+5), 2*s-6)
+eq('三2 频率3的确切复增益', Hs.subs(s, 3*I), Rational(3, 5)+Rational(3, 10)*I)
+steady = Rational(3, 5)*cos(3*t)-Rational(3, 10)*sin(3*t)
+eq('三2 正弦稳态回原方程', diff(steady, t, 2)+4*diff(steady, t)+5*steady, -6*cos(3*t)-6*sin(3*t))
+eq('三2 复增益模平方', Abs(Rational(3, 5)+Rational(3, 10)*I)**2, Rational(9, 20))
+finish()
