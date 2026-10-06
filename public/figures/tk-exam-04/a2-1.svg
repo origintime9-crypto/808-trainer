@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="355" viewBox="0 0 720 355" role="img">
+<title>f(−2t−4) 的波形</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="355" fill="white"/>
+<text x="360" y="29" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">f(−2t−4)：翻转、压缩、左移</text>
+<path d="M32 184H690" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M611.0 280V65" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M123.0 184V190" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="123.0" y="208" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−4</text>
+<path d="M184.0 184V190" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="184.0" y="208" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−7/2</text>
+<path d="M245.0 184V190" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="245.0" y="208" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−3</text>
+<path d="M306.0 184V190" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="306.0" y="208" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−5/2</text>
+<path d="M367.0 184V190" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="367.0" y="208" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−2</text>
+<path d="M611.0 184V190" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="611.0" y="208" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="596.0" y="265" text-anchor="end" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">-1</text>
+<path d="M123.0 260H611.0" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<text x="596.0" y="113" text-anchor="end" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M123.0 108H611.0" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<polyline points="80.30,184.00 123.00,184.00 184.00,260.00 245.00,260.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="245.00,108.00 306.00,108.00 367.00,184.00 598.80,184.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M245.0 260V108" fill="none" stroke="#0f766e" stroke-width="1.8" stroke-dasharray="4 4"/>
+<text x="681" y="205" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<text x="360" y="316" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">支撑 −4..−2；t=−3 从 −1 跳到 +1</text>
+<text x="360" y="343" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">原断点 a 映到 −(a+4)/2，斜率变成 −2</text>
+</svg>

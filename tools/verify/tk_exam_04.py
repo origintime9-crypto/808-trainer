@@ -1,0 +1,121 @@
+"""课程题库 04：从原题独立复核积分、序列、波形、系统及矩形抽样。"""
+from common import *
+from sympy.discrete.convolutions import convolution
+
+v = Symbol('v', real=True)
+q = Symbol('q', real=True)
+wm = Symbol('wm', positive=True)
+
+eq('一1 反向积分限的冲激积分', integrate(exp(-2*v)*DiracDelta(v-2), (v, 3, 1)), -exp(-4))
+check('一2 有限离散卷积', convolution([1, 2, 3], [1, 1, 1, 1]) == [1, 3, 6, 6, 5, 3])
+def xf(k): return {1: 1, 2: 2, 3: 3}.get(k, 0)
+def hf(k): return u(k)-u(k-4)
+ys = {1: 1, 2: 3, 3: 6, 4: 6, 5: 5, 6: 3}
+check('一2 首项 k=1 与全部支撑', all(sum(xf(k-m)*hf(m) for m in range(-8, 9)) == ys.get(k, 0) for k in range(-6, 10)))
+a, b = symbols('a b')
+down = lambda expr: expr.subs(v, 2*v)
+eq('一3 抽取叠加独立代入', down(a*v**2+b*cos(v)), a*down(v**2)+b*down(cos(v)))
+check('一3 延时冲激的整数支撑反例', solveset(Eq(2*v, 1), v, domain=S.Integers) == S.EmptySet)
+for power in range(4):
+    lhs = -integrate(cos(v)*diff(v**power, v), (v, -pi, pi))
+    rhs = integrate(-sin(v)*v**power, (v, -pi, pi))-(-pi)**power+pi**power
+    eq(f'一4 分布导数的检验函数 t^{power}', lhs, rhs)
+eq('一5 矩形谱的定义逆积分', integrate(pi*exp(I*w*t), (w, -4, 4))/(2*pi), sin(4*t)/t)
+eq('一5 零时刻的可去奇点', limit(sin(4*t)/t, t, 0), 4)
+direct6 = integrate(exp(-I*(w-100)*v)/2+exp(-I*(w+100)*v)/2, (v, -1, 1))
+formula6 = sin(w-100)/(w-100)+sin(w+100)/(w+100)
+eq('一6 有限窗余弦的傅里叶积分', simplify((direct6-formula6).rewrite(exp)), 0)
+def g7(k): return Rational(1, 2)**k*u(k)
+def h7(k): return g7(k)-g7(k-1)
+check('一7 冲激响应累加回阶跃响应', all(sum(h7(m) for m in range(0, k+1)) == g7(k) for k in range(13)))
+recurrence('一7 系统函数反查递推', h7, [1, -Rational(1, 2)], lambda k: int(k == 0)-int(k == 1))
+eq('一7 差分阶跃的 z 变换', (1-q)/(1-q/2), 1-q/(2*(1-q/2)))
+eq('一8 一周期直接平均功率', integrate((2+4*cos(10*v)+3*cos(20*v))**2, (v, 0, pi/5))/(pi/5), Rational(33, 2))
+eq('一9 两因子带宽上界', wm/4+wm/2, 3*wm/4)
+eq('一9 奈奎斯特间隔', pi/(3*wm/4), 4*pi/(3*wm))
+def h10(k): return ((-Integer(1))**(k-1)+(-Rational(1, 2))**(k-1))*u(k)
+recurrence('一10 原冲激响应与差分方程', h10, [1, Rational(3, 2), Rational(1, 2)], lambda k: -3*int(k == 0)-Rational(5, 2)*int(k == 1))
+eq('一10 两几何级数的系统函数', -1/(1+q)-2/(1+q/2), (-3-Rational(5, 2)*q)/(1+Rational(3, 2)*q+q*q/2))
+
+def ramp(value): return max(sympify(value), 0)
+def original(value):
+    if 0 <= value < 1: return value
+    if 1 <= value < 2: return Integer(1)
+    if 2 < value < 3: return Integer(-1)
+    if 3 <= value < 4: return value-4
+    return Integer(0)
+def causal(value): return ramp(value)-ramp(value-1)-2*u(value-2)+ramp(value-3)-ramp(value-4)
+probes = [Rational(j, 4) for j in range(-24, 33) if j != 8]
+check('二1a 阶跃斜坡式逐区间回查题图', all(causal(value) == original(value) for value in probes))
+def mapped(value):
+    if -4 < value < -Rational(7, 2): return -2*value-8
+    if -Rational(7, 2) <= value < -3: return Integer(-1)
+    if -3 < value < -Rational(5, 2): return Integer(1)
+    if -Rational(5, 2) <= value < -2: return -2*value-4
+    return Integer(0)
+check('二1b 反向压缩移位逐点回查', all(mapped(value) == original(-2*value-4) for value in [Rational(j, 8) for j in range(-44, -8) if j != -24]))
+eq('二1 原波形正负面积相消', integrate(v, (v, 0, 1))+1-1+integrate(v-4, (v, 3, 4)), 0)
+eq('二1 变换后绝对面积减半', integrate(-(-2*v-8), (v, -4, -Rational(7, 2)))+Rational(1, 2)+Rational(1, 2)+integrate(-2*v-4, (v, -Rational(5, 2), -2)), Rational(3, 2))
+def experiment(k): return Rational(1, 2)**k*u(k-1)
+def h2(k): return Rational(1, 2)**(k+1)*u(k)
+check('二2 由延时冲激实验回推 h', all(h2(k) == experiment(k+1) for k in range(-5, 14)))
+def input2(k): return 2*int(k == 0)+u(k)
+def answer2(k): return (1+Rational(1, 2)**(k+1))*u(k)
+check('二2 逐点卷积核对输出', all(sum(h2(m)*input2(k-m) for m in range(-6, 20)) == answer2(k) for k in range(-5, 13)))
+eq('二2 系统乘积的 z 域回查', (2+1/(1-q))/(2*(1-q/2)), 1/(1-q)+1/(2*(1-q/2)))
+eq('二3 双矩形带通谱直接逆变换', simplify(((integrate(exp(I*w*(t-2)), (w, -6, -4))+integrate(exp(I*w*(t-2)), (w, 4, 6)))/(2*pi)-2*sin(t-2)*cos(5*(t-2))/(pi*(t-2))).rewrite(exp)), 0)
+eq('二3 延时中心极限', limit(2*sin(t-2)*cos(5*(t-2))/(pi*(t-2)), t, 2), 2/pi)
+H4 = lambda value: max(1-abs(sympify(value))/3, 0)
+check('二4 三个输入谱线独立求增益', [H4(0), H4(2), H4(4)] == [1, Rational(1, 3), 0])
+eq('二4 正时间稳态输出', 5*H4(0)+3*H4(2)*cos(2*t)+H4(4)*cos(4*t), 5+cos(2*t))
+check('二4 原答案幅度确实不符题图', 3*H4(2) != 2)
+eq('二5 输入的积分为斜坡窗口', integrate(1, (v, 0, t)), t)
+for value, expected in [(-2, 0), (0, 1), (2, 0)]:
+    eq(f'二5 有符号冲激积分 t={value}', integrate(DiracDelta(v+1)-DiracDelta(v-1), (v, -oo, value)), expected)
+eq('二5 错误加号的积分尾部', integrate(DiracDelta(v+1)+DiracDelta(v-1), (v, -oo, 2)), 2)
+
+den = (s+2)*(s+3)
+H = (2*s+1)/den
+zi = 4*exp(-2*t)-3*exp(-3*t)
+zs = -exp(-t)/2+3*exp(-2*t)-Rational(5, 2)*exp(-3*t)
+full = -exp(-t)/2+7*exp(-2*t)-Rational(11, 2)*exp(-3*t)
+eq('三1 零输入的单边初态项', lt(zi), (s+6)/den)
+eq('三1 零输入初值', zi.subs(t, 0), 1)
+eq('三1 零输入初始导数', diff(zi, t).subs(t, 0), 1)
+eq('三1 零输入齐次方程', diff(zi, t, 2)+5*diff(zi, t)+6*zi, 0)
+eq('三1 零状态变换独立回算', lt(zs), H/(s+1))
+eq('三1 零状态初值', zs.subs(t, 0), 0)
+eq('三1 输入导数导致右侧导数为 2', diff(zs, t).subs(t, 0), 2)
+eq('三1 零状态正时间微分方程', diff(zs, t, 2)+5*diff(zs, t)+6*zs, -exp(-t))
+eq('三1 完全响应为两部分之和', zi+zs, full)
+eq('三1 完全响应初值', full.subs(t, 0), 1)
+eq('三1 完全响应右侧导数为 3', diff(full, t).subs(t, 0), 3)
+eq('三1 冲激响应的拉氏回查', lt(-3*exp(-2*t)+5*exp(-3*t)), H)
+check('三1 因果左半平面极点', roots(den, s) == {-2, -3})
+ht = -3*exp(-2*t)+5*exp(-3*t)
+eq('三1 冲激响应绝对可积', integrate(ht, (t, 0, log(Rational(5, 3))))-integrate(ht, (t, log(Rational(5, 3)), oo)), Rational(79, 150))
+AA = Matrix([[0, 1], [-6, -5]])
+BB = Matrix([0, 1])
+CC = Matrix([[1, 2]])
+eq('三1 直接型回算系统函数', (CC*(s*eye(2)-AA).inv()*BB)[0], H)
+initial = Matrix([-Rational(11, 15), Rational(13, 15)])
+eq('三1 状态指数独立核对零输入', (CC*(AA*t).exp()*initial)[0], zi)
+
+width = Symbol('width', positive=True)
+period = Symbol('period', positive=True)
+amplitude = Symbol('amplitude', positive=True)
+freq = Symbol('freq', real=True, nonzero=True)
+coef = integrate(amplitude*exp(-I*freq*v), (v, -width/2, width/2))/period
+eq('三2 矩形脉冲系数定义积分', simplify((coef-amplitude*width/period*sin(freq*width/2)/(freq*width/2)).rewrite(exp)), 0)
+eq('三2 直流系数的连续极限', limit(coef, freq, 0), amplitude*width/period)
+c0 = Rational(3, 4)
+c1 = 3*sqrt(2)/(2*pi)
+eq('三2 具体周期系数样例', simplify(expand_complex(coef.subs({amplitude: 3, width: Rational(1, 2), period: 2, freq: pi}))), c1)
+omega = Symbol('omega', real=True)  # 必须允许零频率，不能把直流冲激化为零。
+P = 2*pi*(c0*DiracDelta(omega)+c1*DiracDelta(omega-pi)+c1*DiracDelta(omega+pi))
+eq('三2 2π 冲激谱的定义逆变换', integrate(P*exp(I*omega*v), (omega, -oo, oo))/(2*pi), c0+2*c1*cos(pi*v))
+# 取可积输入 e^{-|t|} 和有限谐波，直接积分核对每个副本的系数。
+actual = sum(weight*(integrate(exp((1+I*shift-I*w)*v), (v, -oo, 0), conds='none')+integrate(exp((-1+I*shift-I*w)*v), (v, 0, oo), conds='none')) for shift, weight in [(0, c0), (pi, c1), (-pi, c1)])
+eq('三2 乘积的三个频谱副本', actual, c0*2/(1+w*w)+c1*2/(1+(w-pi)**2)+c1*2/(1+(w+pi)**2))
+eq('三2 无重叠的临界间隔', 2*pi/(2*wm), pi/wm)
+finish()
