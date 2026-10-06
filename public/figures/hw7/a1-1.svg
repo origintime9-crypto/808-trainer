@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="445" viewBox="0 0 680 445" role="img">
+<rect width="680" height="445" fill="white"/>
+<defs><clipPath id="plot"><rect x="70" y="60" width="530" height="310"/></clipPath></defs>
+<g clip-path="url(#plot)">
+<rect x="70" y="60" width="530" height="310" fill="#e6f5ef"/>
+<circle cx="320" cy="205" r="43.52034299268435" fill="white" stroke="none" stroke-width="1.5"/>
+<circle cx="320" cy="205" r="87.0406859853687" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 5"/>
+<circle cx="320" cy="205" r="43.52034299268435" fill="none" stroke="#15803d" stroke-width="1.5" stroke-dasharray="8 5"/>
+</g>
+<path d="M70 205H600 M594 201L600 205L594 209 M320 365V60 M316 66L320 60L324 66" stroke="#475569" fill="none" stroke-width="1.5"/>
+<text x="625" y="211" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Re z</text>
+<text x="352" y="74" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Im z</text>
+<text x="306" y="224" text-anchor="middle" font-size="16" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="407.04068598536867" y="232" text-anchor="middle" font-size="16" font-family="Arial,Microsoft YaHei,sans-serif" fill="#64748b">1</text>
+<circle cx="165.0" cy="205.0" r="6" fill="white" stroke="#0369a1" stroke-width="2"/>
+<text x="165.0" y="237.0" text-anchor="middle" font-size="16" font-family="Arial,Microsoft YaHei,sans-serif" fill="#0369a1">-1.781</text>
+<circle cx="344.43897102194694" cy="205.0" r="6" fill="white" stroke="#0369a1" stroke-width="2"/>
+<text x="344.43897102194694" y="237.0" text-anchor="middle" font-size="16" font-family="Arial,Microsoft YaHei,sans-serif" fill="#0369a1">0.281</text>
+<path d="M357.52034299268433 199.0L369.52034299268433 211.0 M357.52034299268433 211.0L369.52034299268433 199.0" stroke="#b45309" stroke-width="2.5"/>
+<text x="363.52034299268433" y="190.0" text-anchor="middle" font-size="16" font-family="Arial,Microsoft YaHei,sans-serif" fill="#b45309">0.5</text>
+<text x="340" y="30" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#166534">ROC: |z| &gt; 0.5</text>
+<text x="340" y="397" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">○ 零点    × 极点    绿色：ROC    灰虚线：单位圆</text>
+<text x="340" y="427" text-anchor="middle" font-size="16" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">有限平面示意；本题 ROC 不含 ∞</text>
+</svg>

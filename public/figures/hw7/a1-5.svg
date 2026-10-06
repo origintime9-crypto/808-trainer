@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="445" viewBox="0 0 680 445" role="img">
+<rect width="680" height="445" fill="white"/>
+<defs><clipPath id="plot"><rect x="70" y="60" width="530" height="310"/></clipPath></defs>
+<g clip-path="url(#plot)">
+<circle cx="320" cy="205" r="155.0" fill="#e6f5ef" stroke="none" stroke-width="1.5"/>
+<circle cx="320" cy="205" r="155.0" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 5"/>
+<circle cx="320" cy="205" r="155.0" fill="none" stroke="#15803d" stroke-width="1.5" stroke-dasharray="8 5"/>
+</g>
+<path d="M70 205H600 M594 201L600 205L594 209 M320 365V60 M316 66L320 60L324 66" stroke="#475569" fill="none" stroke-width="1.5"/>
+<text x="625" y="211" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Re z</text>
+<text x="352" y="74" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Im z</text>
+<text x="306" y="224" text-anchor="middle" font-size="16" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="475.0" y="232" text-anchor="middle" font-size="16" font-family="Arial,Microsoft YaHei,sans-serif" fill="#64748b">1</text>
+<path d="M469.0 199.0L481.0 211.0 M469.0 211.0L481.0 199.0" stroke="#b45309" stroke-width="2.5"/>
+<text x="475.0" y="190.0" text-anchor="middle" font-size="16" font-family="Arial,Microsoft YaHei,sans-serif" fill="#b45309">1</text>
+<text x="340" y="30" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#166534">ROC: |z| &lt; 1</text>
+<text x="340" y="397" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">○ 零点    × 极点    绿色：ROC    灰虚线：单位圆</text>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="200" viewBox="0 0 680 200" role="img">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="680" height="200" fill="white"/>
+<text x="90" y="63" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">x(t)</text>
+<path d="M45 90H231" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<circle cx="250" cy="90" r="18" fill="white" stroke="#334155" stroke-width="2"/>
+<text x="250" y="97" text-anchor="middle" font-size="24" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">×</text>
+<path d="M269 90H360" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="360" y="62" width="140" height="56" rx="4" fill="#f0fdfa" stroke="#0f766e" stroke-width="2"/>
+<text x="430.0" y="96.0" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">H(jω)</text>
+<path d="M500 90H630" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="615" y="65" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y(t)</text>
+<path d="M250 165V110" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="250" y="187" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">s(t)=cos 500t</text>
+</svg>

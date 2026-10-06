@@ -1,0 +1,25 @@
+"""2025 回忆卷：双边序列、傅里叶对偶及有限时宽变换复核。"""
+from common import *
+
+check('一1 绝对值非线性见证',Abs(-2)!=-Abs(2))
+eq('一2 负号变式',(t-sin(t)).subs(t,pi/3),pi/3-sqrt(3)/2)
+eq('一3 补全正弦的周期',2*pi/(5*pi/6),Rational(12,5))
+eq('一4 卷积积分',integrate(exp(-2*tau),(tau,0,t)),(1-exp(-2*t))/2)
+check('一5 稳定几何级数',summation(Rational(1,2)**n,(n,0,oo))==2)
+X=z/(z**2-Rational(10,3)*z+1)
+eq('一6 部分分式',X,Rational(3,8)*(z/(z-3)-z/(z-Rational(1,3))))
+xn=lambda j:-Rational(3,8)*(Integer(3)**j*u(-j-1)+Rational(1,3)**j*u(j))
+recurrence('一6 双边逆变换',xn,[1,Rational(-10,3),1],lambda j:Integer(j==1))
+eq('一7 延时方向',cos(w*(t-1)),cos(w*(t-1)))
+eq('一8 采样后角频率',Rational(5,6)*pi/5,pi/6)
+check('一8 最小离散周期',all(exp(I*pi*N/6)!=1 for N in range(1,12)) and exp(I*pi*12/6)==1)
+Y=integrate((t-2)*exp(-s*t),(t,2,3))+integrate((4-t)*exp(-s*t),(t,3,4))
+eq('三1 两个移位矩形卷积',Y,exp(-2*s)*((1-exp(-s))/s)**2)
+eq('三2-1 指数 FT',1+lt(-exp(-2*t)),1-1/(s+2))
+a=Symbol('a',positive=True)
+# 从所求谱独立做逆变换，确认为负频率半轴，不能用错误的双边奇谱。
+eq('三2-2 负频率谱逆变换',integrate(exp((a+I*t)*w),(w,-oo,0),conds='none'),1/(a+I*t))
+eq('三3 有限余弦 LT',integrate(exp(-(s+2)*t)*cos(pi*t),(t,0,2)),(s+2)*(1-exp(-2*(s+2)))/((s+2)**2+pi**2))
+eq('三4-1 几何级数 ZT',1/(1-Rational(1,4)/z),z/(z-Rational(1,4)))
+eq('三4-2 有限序列 ZT',sum(Integer(v)*z**(-j) for j,v in enumerate([1,2,3,2])),1+2/z+3/z**2+2/z**3)
+finish()

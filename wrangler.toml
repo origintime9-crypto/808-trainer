@@ -1,0 +1,12 @@
+name = "808-trainer"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-10-01"
+
+[vars]
+ALLOWED_ORIGINS = "https://origintime9-crypto.github.io"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "808-trainer"
+database_id = "75aa42cb-1d08-4e18-9f43-09bac6499589"
+preview_database_id = "75aa42cb-1d08-4e18-9f43-09bac6499589"

@@ -1,0 +1,18 @@
+import type { Paper } from '../types';
+
+export const papers: Paper[] = [
+  { id: 'zt2026', year: 2026, examType: '初试', kind: '真题', title: '2026 初试真题（808）', totalScore: 150 },
+  ...[2025, 2024, 2023].map(year => ({ id: `zt${year}`, year, examType: '复试' as const, kind: '真题' as const, title: `${year} 复试真题（回忆版）`, recall: true })),
+  { id: 'zt2018', year: 2018, examType: '复试', kind: '真题', title: '2018 复试真题' },
+  ...[2017, 2016].map(year => ({ id: `zt${year}`, year, examType: '复试' as const, kind: '真题' as const, title: `${year} 复试真题`, totalScore: 150 })),
+  { id: 'tk-review', year: 0, examType: '—', kind: '题库', title: '信号与系统复习题' },
+  { id: 'tk-total', year: 0, examType: '—', kind: '题库', title: '信号与系统总复习' },
+  { id: 'hw1', year: 0, examType: '—', kind: '习题', title: '王明泉第 1 章课后习题' },
+  { id: 'hw2', year: 0, examType: '—', kind: '习题', title: '王明泉第 2 章课后习题' },
+  { id: 'hw3', year: 0, examType: '—', kind: '习题', title: '王明泉第 3 章课后习题' },
+  { id: 'hw4', year: 0, examType: '—', kind: '习题', title: '王明泉第 4 章课后习题' },
+  { id: 'hw5', year: 0, examType: '—', kind: '习题', title: '王明泉第 5 章课后习题' },
+  { id: 'hw6', year: 0, examType: '—', kind: '习题', title: '王明泉第 6 章课后习题' },
+  { id: 'hw7', year: 0, examType: '—', kind: '习题', title: '王明泉第 7 章课后习题' },
+  { id: 'tk-key', year: 0, examType: '—', kind: '题库', title: '重点题必看（手写整理）' },
+];

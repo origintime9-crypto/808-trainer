@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="285" viewBox="0 0 640 285" role="img">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#334155"/></marker></defs>
+<rect width="640" height="285" fill="white"/>
+<line x1="32" y1="211" x2="614" y2="211" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="254.5" y1="227" x2="254.5" y2="38" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="620" y="240" font-family="Arial, sans-serif" font-size="19" text-anchor="middle" fill="#334155">k</text>
+<text x="270.5" y="30" font-family="Arial, sans-serif" font-size="19" text-anchor="middle" fill="#334155">y</text>
+<line x1="119.5" y1="211" x2="119.5" y2="217" stroke="#334155" stroke-width="1.6"/>
+<text x="119.5" y="244" font-family="Arial, sans-serif" font-size="17" text-anchor="middle" fill="#334155">-2</text>
+<line x1="187.0" y1="211" x2="187.0" y2="217" stroke="#334155" stroke-width="1.6"/>
+<text x="187.0" y="244" font-family="Arial, sans-serif" font-size="17" text-anchor="middle" fill="#334155">-1</text>
+<line x1="254.5" y1="211" x2="254.5" y2="217" stroke="#334155" stroke-width="1.6"/>
+<text x="254.5" y="244" font-family="Arial, sans-serif" font-size="17" text-anchor="middle" fill="#334155">0</text>
+<line x1="322.0" y1="211" x2="322.0" y2="217" stroke="#334155" stroke-width="1.6"/>
+<text x="322.0" y="244" font-family="Arial, sans-serif" font-size="17" text-anchor="middle" fill="#334155">1</text>
+<line x1="389.5" y1="211" x2="389.5" y2="217" stroke="#334155" stroke-width="1.6"/>
+<text x="389.5" y="244" font-family="Arial, sans-serif" font-size="17" text-anchor="middle" fill="#334155">2</text>
+<line x1="457.0" y1="211" x2="457.0" y2="217" stroke="#334155" stroke-width="1.6"/>
+<text x="457.0" y="244" font-family="Arial, sans-serif" font-size="17" text-anchor="middle" fill="#334155">3</text>
+<line x1="524.5" y1="211" x2="524.5" y2="217" stroke="#334155" stroke-width="1.6"/>
+<text x="524.5" y="244" font-family="Arial, sans-serif" font-size="17" text-anchor="middle" fill="#334155">4</text>
+<line x1="119.5" y1="211" x2="119.5" y2="156.625" stroke="#0f766e" stroke-width="3"/>
+<circle cx="119.5" cy="156.625" r="4" fill="#0f766e"/>
+<text x="119.5" y="144.625" font-family="Arial, sans-serif" font-size="19" text-anchor="middle" fill="#334155">3</text>
+<line x1="187.0" y1="211" x2="187.0" y2="120.375" stroke="#0f766e" stroke-width="3"/>
+<circle cx="187.0" cy="120.375" r="4" fill="#0f766e"/>
+<text x="187.0" y="108.375" font-family="Arial, sans-serif" font-size="19" text-anchor="middle" fill="#334155">5</text>
+<line x1="254.5" y1="211" x2="254.5" y2="102.25" stroke="#0f766e" stroke-width="3"/>
+<circle cx="254.5" cy="102.25" r="4" fill="#0f766e"/>
+<text x="254.5" y="90.25" font-family="Arial, sans-serif" font-size="19" text-anchor="middle" fill="#334155">6</text>
+<line x1="322.0" y1="211" x2="322.0" y2="102.25" stroke="#0f766e" stroke-width="3"/>
+<circle cx="322.0" cy="102.25" r="4" fill="#0f766e"/>
+<text x="322.0" y="90.25" font-family="Arial, sans-serif" font-size="19" text-anchor="middle" fill="#334155">6</text>
+<line x1="389.5" y1="211" x2="389.5" y2="102.25" stroke="#0f766e" stroke-width="3"/>
+<circle cx="389.5" cy="102.25" r="4" fill="#0f766e"/>
+<text x="389.5" y="90.25" font-family="Arial, sans-serif" font-size="19" text-anchor="middle" fill="#334155">6</text>
+<line x1="457.0" y1="211" x2="457.0" y2="156.625" stroke="#0f766e" stroke-width="3"/>
+<circle cx="457.0" cy="156.625" r="4" fill="#0f766e"/>
+<text x="457.0" y="144.625" font-family="Arial, sans-serif" font-size="19" text-anchor="middle" fill="#334155">3</text>
+<line x1="524.5" y1="211" x2="524.5" y2="192.875" stroke="#0f766e" stroke-width="3"/>
+<circle cx="524.5" cy="192.875" r="4" fill="#0f766e"/>
+<text x="524.5" y="180.875" font-family="Arial, sans-serif" font-size="19" text-anchor="middle" fill="#334155">1</text>
+</svg>

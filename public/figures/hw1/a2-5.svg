@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="310" viewBox="0 0 660 310" role="img">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#334155"/></marker></defs>
+<rect width="660" height="310" fill="white"/>
+<line x1="35" y1="142.5" x2="617" y2="142.5" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="325.0" y1="252" x2="325.0" y2="27" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="632" y="162.5" font-family="Arial,sans-serif" font-size="18" text-anchor="middle" fill="#334155">t</text>
+<text x="343.0" y="29" font-family="Arial,sans-serif" font-size="18" text-anchor="middle" fill="#334155">f</text>
+<line x1="97.85714285714286" y1="142.5" x2="97.85714285714286" y2="147.5" stroke="#334155" stroke-width="1.5"/>
+<text x="97.85714285714286" y="276" font-family="Arial,sans-serif" font-size="18" text-anchor="middle" fill="#334155">-3</text>
+<line x1="173.57142857142856" y1="142.5" x2="173.57142857142856" y2="147.5" stroke="#334155" stroke-width="1.5"/>
+<text x="173.57142857142856" y="276" font-family="Arial,sans-serif" font-size="18" text-anchor="middle" fill="#334155">-2</text>
+<line x1="249.28571428571428" y1="142.5" x2="249.28571428571428" y2="147.5" stroke="#334155" stroke-width="1.5"/>
+<text x="249.28571428571428" y="276" font-family="Arial,sans-serif" font-size="18" text-anchor="middle" fill="#334155">-1</text>
+<line x1="325.0" y1="142.5" x2="325.0" y2="147.5" stroke="#334155" stroke-width="1.5"/>
+<text x="325.0" y="276" font-family="Arial,sans-serif" font-size="18" text-anchor="middle" fill="#334155">0</text>
+<line x1="400.7142857142857" y1="142.5" x2="400.7142857142857" y2="147.5" stroke="#334155" stroke-width="1.5"/>
+<text x="400.7142857142857" y="276" font-family="Arial,sans-serif" font-size="18" text-anchor="middle" fill="#334155">1</text>
+<line x1="476.42857142857144" y1="142.5" x2="476.42857142857144" y2="147.5" stroke="#334155" stroke-width="1.5"/>
+<text x="476.42857142857144" y="276" font-family="Arial,sans-serif" font-size="18" text-anchor="middle" fill="#334155">2</text>
+<line x1="552.1428571428571" y1="142.5" x2="552.1428571428571" y2="147.5" stroke="#334155" stroke-width="1.5"/>
+<text x="552.1428571428571" y="276" font-family="Arial,sans-serif" font-size="18" text-anchor="middle" fill="#334155">3</text>
+<line x1="321.0" y1="213.65384615384616" x2="325.0" y2="213.65384615384616" stroke="#334155" stroke-width="1.5"/>
+<text x="316.0" y="218.65384615384616" font-family="Arial,sans-serif" font-size="18" text-anchor="end" fill="#334155">-1</text>
+<line x1="321.0" y1="71.34615384615387" x2="325.0" y2="71.34615384615387" stroke="#334155" stroke-width="1.5"/>
+<text x="316.0" y="76.34615384615387" font-family="Arial,sans-serif" font-size="18" text-anchor="end" fill="#334155">1</text>
+<polyline points="97.857,213.654 173.571,213.654 173.571,71.346 249.286,71.346 249.286,213.654 325.000,213.654 325.000,71.346 400.714,71.346 400.714,213.654 476.429,213.654 476.429,71.346 552.143,71.346" fill="none" stroke="#0f766e" stroke-width="3"/>
+</svg>

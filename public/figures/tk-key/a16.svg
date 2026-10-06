@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="360" viewBox="0 0 680 360" role="img">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="680" height="360" fill="white"/>
+<path d="M40 272H640" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M340 295V45" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="355" y="31" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">|Fₛ|</text>
+<text x="535" y="338" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω / (1000π)</text>
+<polyline points="79.5,272.0 137.4,92.0 195.3,92.0 253.2,272.0 253.2,272.0 311.1,92.0 368.9,92.0 426.8,272.0 426.8,272.0 484.7,92.0 542.6,92.0 600.5,272.0" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="79.47368421052632" y="303" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">-9</text>
+<text x="166.31578947368422" y="303" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">-6</text>
+<text x="253.1578947368421" y="303" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">-3</text>
+<text x="340.0" y="303" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="426.8421052631579" y="303" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<text x="513.6842105263158" y="303" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">6</text>
+<text x="600.5263157894736" y="303" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">9</text>
+<text x="315" y="97.0" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3/2</text>
+<text x="350" y="330" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">...</text>
+<text x="45" y="260" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">...</text>
+<text x="650" y="260" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">...</text>
+</svg>

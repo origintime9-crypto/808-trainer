@@ -1,0 +1,57 @@
+"""八张手写重点：独立积分、频谱、逆变换、递推与必要条件检查。"""
+from common import *
+
+v=Symbol('v',real=True)
+d=Symbol('d',real=True,nonzero=True)
+delay=Symbol('delay',real=True)
+w0=Symbol('w0',real=True)
+eq('1(1) 冲激权重',4*sin(pi/6),2)
+eq('1(2) 系数四的可去点',4*limit(sin(2*t)/t,t,0),8)
+eq('1(3) 提取尺度后的时移', -2*(t-Rational(5,2)),5-2*t)
+F=exp(-t*t)
+eq('2 先移位再积分（衰减样例）', integrate(diff(F,t).subs(t,v-delay),(v,-oo,t)), exp(-(t-delay)**2))
+eq('3 阶跃微分的普通项',diff(exp(-3*t),t),-3*exp(-3*t))
+eq('4 频域除法',1/((I*w+2)*(I*w+3))/(1/(I*w+2)),1/(I*w+3))
+for i,cutoff,height,expected in [
+    (1,2*pi,1,sin(2*pi*d)/(pi*d)),
+    (2,pi,1,sin(pi*d)/(pi*d)),
+    (3,2*pi,Rational(1,3),sin(2*pi*d)/(3*pi*d)),
+]:
+    eq('7('+str(i)+') 频谱定义逆积分',integrate(height*exp(I*v*d),(v,-cutoff,cutoff))/(2*pi),expected)
+    eq('7('+str(i)+') 可去点极限',limit(expected,d,0),height*cutoff/pi)
+for sign in [1,-1]:
+    actual=integrate(exp(-(v-delay)**2)*exp(sign*I*w0*v)*exp(-I*w*v),(v,-oo,oo),conds='none')
+    expected=sqrt(pi)*exp(-(w-sign*w0)**2/4)*exp(-I*(w-sign*w0)*delay)
+    eq('8 时移调制的独立高斯积分 '+str(sign),actual.rewrite(erf),expected)
+theta=Symbol('theta',real=True)
+eq('9 两次余弦调制展开', expand_trig(8*cos(theta)*cos(5*theta)**2-4*cos(theta)-2*cos(9*theta)-2*cos(11*theta)),0)
+check('9 低通选择分量', [f for f in [100,900,1100] if abs(f)<120]==[100])
+check('10 因果与稳定实例', all(re(p)<0 for p in roots((s+1)*(s+2),s)))
+H=2*(s-1)/(s*s+2*s+Rational(7,4))
+eq('11(1) 初值决定增益',limit(s*H,s,oo),2)
+eq('11(2)(3) 正弦复频响',H.subs(s,I*sqrt(3)/2),(1+3*sqrt(3)*I)/4)
+eq('11(3) 幅度',Abs((1+3*sqrt(3)*I)/4),sqrt(7)/2)
+eq('11(3) 相位',arg((1+3*sqrt(3)*I)/4),atan(3*sqrt(3)))
+check('12 n/8 非周期', not 1/(16*pi) in S.Rationals)
+eq('13 4s 逆变换重建', lt(12*exp(-3*t)-8*exp(-2*t)),4*s/((s+2)*(s+3)))
+eq('13 初值',limit(12*exp(-3*t)-8*exp(-2*t),t,0),4)
+eq('14 两频率边缘相乘', expand_trig(2*cos(2*theta)*cos(3*theta)-cos(5*theta)-cos(theta)),0)
+eq('15 奈奎斯特 Hz',Integer(120)/(2*pi)*2,120/pi)
+eq('16(1) 最大采样间隔',pi/(1000*pi+2000*pi),Rational(1,3000))
+trapezoid=integrate((3000*pi+v)/(4000000*pi)*exp(I*v*t),(v,-3000*pi,-1000*pi))+integrate(Rational(1,2000)*exp(I*v*t),(v,-1000*pi,1000*pi))+integrate((3000*pi-v)/(4000000*pi)*exp(I*v*t),(v,1000*pi,3000*pi))
+# 先把高频自变量归一化，避免将 3000πt 展开成三千次三角多项式。
+normalized=expand_complex(trapezoid/(2*pi)).subs(t,theta/(1000*pi))
+eq('16(2) 梯形谱独立逆积分', expand_trig(normalized-sin(theta)*sin(2*theta)/(2*theta**2)),0)
+eq('16(2) 抽样幅度因子',Integer(3000)*Rational(1,2000),Rational(3,2))
+eq('16(2) 副本间距',2*pi/Rational(1,3000),6000*pi)
+Hd=(1+1/z)/(1-3/z+2/z**2)
+eq('17(1)(2) 部分分式',-2*z/(z-1)+3*z/(z-2),Hd)
+recurrence('17(2) 冲激递推',lambda j:(3*Integer(2)**j-2)*u(j),[1,-3,2],lambda j:Integer(j==0)+Integer(j==1))
+recurrence('17(3) 零状态递推',lambda j:(20*Integer(2)**j-10)*u(j),[1,-3,2],lambda j:10*Integer(-1)**j*u(j)+10*Integer(-1)**(j-1)*u(j-1))
+eq('17(4) 框图反馈重建',(1+1/z)/(1-(3/z-2/z**2)),Hd)
+eq('18 正确负极点',z/(z+Rational(1,2)),1/(1+1/(2*z)))
+recurrence('19(1) 因果 h',lambda j:Integer(-1)**j*u(j),[1,1],lambda j:Integer(j==0))
+recurrence('19(1) 非因果 h',lambda j:-Integer(-1)**j*u(-j-1),[1,1],lambda j:Integer(j==0))
+check('19(1) 因果冲激响应不趋零',all(abs(Integer(-1)**j)==1 for j in range(30)))
+recurrence('19(2) 零状态递推',lambda j:5*(1+Integer(-1)**j)*u(j),[1,1],lambda j:10*u(j))
+finish()
