@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="535" viewBox="0 0 720 535" role="img">
+<title>第19套二1：反缩放冲激与从负无穷开始的积分</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="535" fill="white"/>
+<text x="360" y="31" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">f(2−2t)反求原信号：负冲激在−2、强度−2</text>
+<path d="M63 161H679" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M360 254V63" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="382" y="68" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">f(t)</text>
+<text x="679" y="189" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<polyline points="65.00,161.00 360.00,161.00 360.00,91.00 532.00,91.00 532.00,161.00 663.00,161.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M188 161V236" fill="none" stroke="#b91c1c" stroke-width="2.8" marker-end="url(#arrow)"/>
+<text x="216" y="224" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">(−2)</text>
+<text x="346" y="98" text-anchor="end" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="188" y="185" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−2</text>
+<text x="350" y="185" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="532" y="185" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<text x="515" y="221" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">普通矩形：0&lt;t&lt;2</text>
+<path d="M63 351H679" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M360 485V297" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="397" y="302" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">I(t)</text>
+<polyline points="65.00,351.00 188.00,351.00 188.00,459.00 360.00,459.00 532.00,351.00 663.00,351.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M188 351V459" fill="none" stroke="#b91c1c" stroke-width="2.5" stroke-dasharray="4 4"/>
+<text x="188" y="377" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−2</text>
+<text x="350" y="377" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="532" y="377" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<text x="348" y="467" text-anchor="end" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−2</text>
+<text x="679" y="377" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<text x="490" y="439" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">斜率+1</text>
+<text x="360" y="516" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">负冲激跳−2，矩形面积+2；积分最终回到0</text>
+</svg>

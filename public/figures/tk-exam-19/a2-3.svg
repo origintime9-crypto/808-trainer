@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="535" viewBox="0 0 720 535" role="img">
+<title>第19套二3：单边振幅与相位，基频3 rad/s</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="535" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2−4cos6t+2sin9t：单边振幅及相位</text>
+<path d="M64 253H684" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M100 272V61" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="82" y="70" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">A</text>
+<path d="M100 253V173" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="100" cy="173" r="4" fill="#0f766e"/>
+<text x="115" y="164" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<text x="100" y="280" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M418 253V93" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="418" cy="93" r="4" fill="#0f766e"/>
+<text x="418" y="84" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">4</text>
+<text x="418" y="280" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">6</text>
+<path d="M577 253V173" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="577" cy="173" r="4" fill="#0f766e"/>
+<text x="577" y="164" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<text x="577" y="280" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">9</text>
+<text x="681" y="299" text-anchor="end" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω (rad/s)</text>
+<text x="254" y="83" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">直流幅度2</text>
+<path d="M64 429H684" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M100 493V324" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="81" y="332" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">φ</text>
+<circle cx="100" cy="429" r="4" fill="#2563eb"/>
+<text x="118" y="419" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="100" y="453" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M418 429V339" fill="none" stroke="#2563eb" stroke-width="2.8"/>
+<circle cx="418" cy="339" r="4" fill="#2563eb"/>
+<text x="418" y="329" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">π</text>
+<text x="418" y="453" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">6</text>
+<path d="M577 429V474" fill="none" stroke="#2563eb" stroke-width="2.8"/>
+<circle cx="577" cy="474" r="4" fill="#2563eb"/>
+<text x="577" y="499" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−π/2</text>
+<text x="577" y="453" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">9</text>
+<text x="681" y="455" text-anchor="end" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω (rad/s)</text>
+<text x="360" y="523" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">正振幅配相位π表示负余弦；零幅谱线相位未定义</text>
+</svg>
