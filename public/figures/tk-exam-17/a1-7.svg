@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="440" viewBox="0 0 860 440" role="img">
+<title>课程17一7：两积分器直接型信号流图</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="860" height="440" fill="white"/>
+<text x="430" y="32" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">直接型：q″+3q′+2q=f，y=2q′+q</text>
+<circle cx="130" cy="180" r="20" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="130" y="187" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Σ</text>
+<circle cx="735" cy="180" r="20" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="735" y="187" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Σ</text>
+<rect x="245" y="153" width="78" height="54" rx="4" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.8"/>
+<text x="284" y="187" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1/s</text>
+<rect x="455" y="153" width="78" height="54" rx="4" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.8"/>
+<text x="494" y="187" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1/s</text>
+<path d="M35 180H110" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M150 180H245" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M323 180H455" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M533 180H715" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M755 180H830" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="49" y="163" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">f(t)</text>
+<text x="199" y="161" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">q″</text>
+<text x="378" y="220" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">q′=q₂</text>
+<text x="619" y="220" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">q=q₁</text>
+<text x="810" y="161" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y(t)</text>
+<circle cx="360" cy="180" r="3.5" fill="#334155"/>
+<circle cx="570" cy="180" r="3.5" fill="#334155"/>
+<path d="M360 180V96H735V160" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="550" y="83" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">×2</text>
+<path d="M360 180V300H155L140 198" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="263" y="286" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">×(−3)</text>
+<path d="M570 180V365H90L118 198" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="290" y="352" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">×(−2)</text>
+<text x="430" y="421" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">箭头输入按所标增益相加；输出包含q′及q两条支路</text>
+</svg>

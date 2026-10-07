@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="490" viewBox="0 0 760 490" role="img">
+<title>课程17一10：单边振幅与双边复系数模</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="760" height="490" fill="white"/>
+<text x="380" y="29" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">同一信号，两种幅度口径；Ω₀=1 rad/s</text>
+<path d="M65 209H710" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M90 229V57" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="77" y="54" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Aₙ</text>
+<path d="M90 209V146" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="90" cy="146" r="4" fill="#0f766e"/>
+<text x="90" y="136" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="90" y="235" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M198 209V83" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="198" cy="83" r="4" fill="#0f766e"/>
+<text x="198" y="73" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<text x="198" y="235" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M414 209V177.5" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="414" cy="177.5" r="4" fill="#0f766e"/>
+<text x="414" y="167.5" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">½</text>
+<text x="414" y="235" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<path d="M630 209V193.25" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="630" cy="193.25" r="4" fill="#0f766e"/>
+<text x="630" y="183.25" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">¼</text>
+<text x="630" y="235" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">5</text>
+<text x="677" y="255" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω/Ω₀</text>
+<text x="414" y="64" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">单边余弦振幅</text>
+<path d="M65 419H710" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M380 435V286" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="424" y="295" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">|Cₙ|</text>
+<path d="M120 419V408.25" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="120" cy="408.25" r="3.5" fill="#2563eb"/>
+<text x="120" y="397.25" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">⅛</text>
+<text x="120" y="444" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−5</text>
+<path d="M224 419V397.5" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="224" cy="397.5" r="3.5" fill="#2563eb"/>
+<text x="224" y="386.5" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">¼</text>
+<text x="224" y="444" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−3</text>
+<path d="M328 419V333" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="328" cy="333" r="3.5" fill="#2563eb"/>
+<text x="328" y="322" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="328" y="444" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<path d="M380 419V333" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="380" cy="333" r="3.5" fill="#2563eb"/>
+<text x="380" y="322" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="380" y="444" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M432 419V333" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="432" cy="333" r="3.5" fill="#2563eb"/>
+<text x="432" y="322" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="432" y="444" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M536 419V397.5" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="536" cy="397.5" r="3.5" fill="#2563eb"/>
+<text x="536" y="386.5" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">¼</text>
+<text x="536" y="444" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<path d="M640 419V408.25" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="640" cy="408.25" r="3.5" fill="#2563eb"/>
+<text x="640" y="397.25" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">⅛</text>
+<text x="640" y="444" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">5</text>
+<text x="690" y="453" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω/Ω₀</text>
+<text x="174" y="299" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">双边复系数模</text>
+<text x="380" y="479" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">非零余弦分成两线；直流C₀=1只占一线，不减半</text>
+</svg>

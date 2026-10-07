@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="420" viewBox="0 0 720 420" role="img">
+<title>课程17三1：零点1、极点负1与稳定ROC</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="420" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">稳定ROC：Re s&gt;−1；右半平面零点不影响稳定性</text>
+<rect x="230" y="62" width="435" height="249" rx="8" fill="#ecfdf5"/>
+<path d="M230 54V319" fill="none" stroke="#94a3b8" stroke-width="1.7" stroke-dasharray="4 4"/>
+<path d="M65 191H688" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M360 326V52" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="692" y="216" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">σ</text>
+<text x="379" y="62" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">jω</text>
+<path d="M223 184L237 198M223 198L237 184" fill="none" stroke="#b91c1c" stroke-width="2.8"/>
+<circle cx="490" cy="191" r="8" fill="white" stroke="#2563eb" stroke-width="2.6"/>
+<text x="230" y="223" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<text x="360" y="223" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="490" y="223" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">+1</text>
+<text x="540" y="282" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Re s&gt;−1</text>
+<text x="360" y="362" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">×：极点；○：零点；虚轴在ROC内，边界极点不含</text>
+<text x="360" y="398" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">h(t)=δ(t)−2e⁻ᵗu(t)：因果且稳定</text>
+</svg>
