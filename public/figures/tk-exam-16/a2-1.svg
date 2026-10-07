@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="340" viewBox="0 0 720 340" role="img">
+<title>课程16二1：h=f(2−t)=−f的卷积</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="340" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y=h*f：连续折线，正负面积相抵</text>
+<path d="M55 232H670" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M105 285V55" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="684" y="240" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<text x="93" y="54" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y(t)</text>
+<path d="M105 232V238" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="105" y="260" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M225 232V238" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="225" y="260" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M345 232V238" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="345" y="260" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<path d="M465 232V238" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="465" y="260" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<path d="M585 232V238" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="585" y="260" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">4</text>
+<path d="M99 302H111" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="85" y="308" text-anchor="end" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<path d="M99 162H111" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="85" y="168" text-anchor="end" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M99 92H111" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="85" y="98" text-anchor="end" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<polyline points="55.00,232.00 105.00,232.00 225.00,302.00 345.00,92.00 465.00,302.00 585.00,232.00 670.00,232.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="360" y="328" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0≤t≤4外为0；中心峰2，两侧谷−1；∫y(t)dt=0</text>
+</svg>

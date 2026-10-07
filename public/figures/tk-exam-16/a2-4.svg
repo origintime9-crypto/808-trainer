@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="340" viewBox="0 0 720 340" role="img">
+<title>课程16二4：单边余弦振幅谱</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="340" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">单边振幅：第3次为2，第8次为1</text>
+<path d="M72 255H681" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M90 278V58" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="82" y="50" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Aₙ</text>
+<path d="M90 255V261" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="90" y="283" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M270 255V261" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="270" y="283" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<path d="M570 255V261" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="570" y="283" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">8</text>
+<path d="M270 255V89" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="270" cy="89" r="4" fill="#0f766e"/>
+<text x="270" y="77" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<path d="M570 255V172" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="570" cy="172" r="4" fill="#0f766e"/>
+<text x="570" y="160" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="650" y="294" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω/Ω₀</text>
+<text x="360" y="328" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Ω₀=π/6 rad/s；其余振幅0；线高不是FT冲激强度</text>
+</svg>

@@ -35,7 +35,7 @@ describe('内容完整性', () => {
     const expected: Record<string, number> = { zt2016: 28, zt2017: 30, zt2018: 30, zt2023: 22, zt2024: 23, zt2025: 25, zt2026: 17, 'tk-review': 34, 'tk-total': 24, hw1: 27, hw2: 6, hw3: 24, hw4: 47, hw5: 4, hw6: 19, hw7: 28, 'tk-key': 29, 'tk-exam-01': 21, 'tk-exam-02': 25, 'tk-exam-03': 24, 'tk-exam-04': 25, 'tk-exam-05': 24, 'tk-exam-06': 26, 'tk-exam-07': 31, 'tk-exam-08': 27, 'tk-exam-09': 28, 'tk-exam-10': 19, 'tk-exam-11': 30, 'tk-exam-12': 26, 'tk-exam-13': 25, 'tk-exam-14': 24, 'tk-exam-15': 28 };
     const all = problems.flatMap(p => p.sources);
     expect(new Set(all.map(s => `${s.paper}:${s.no}`)).size).toBe(all.length);
-    Object.assign(expected, { 'ext-xaut2024': 13, 'ext-sau2024': 12, 'ext-sxu2024': 8 });
+    Object.assign(expected, { 'tk-exam-16': 22, 'ext-xaut2024': 13, 'ext-sau2024': 12, 'ext-sxu2024': 8 });
     for (const paper of papers) expect(all.filter(s => s.paper === paper.id).length, paper.id).toBe(expected[paper.id]);
     expect(cards.filter(c => !c.id.startsWith('pattern-'))).toHaveLength(100);
     expect(all.filter(s => s.paper === 'zt2026').reduce((sum, s) => sum + (s.score ?? 0), 0)).toBe(150);
@@ -64,6 +64,8 @@ describe('内容完整性', () => {
     expect(all.filter(s => s.paper === 'tk-exam-13').reduce((sum, s) => sum + (s.score ?? 0), 0)).toBe(50);
     expect(all.filter(s => s.paper === 'tk-exam-14').reduce((sum, s) => sum + (s.score ?? 0), 0)).toBe(50);
     expect(all.filter(s => s.paper === 'tk-exam-15').reduce((sum, s) => sum + (s.score ?? 0), 0)).toBe(60);
+    // 课程16计算四及两个综合题无小问分值，保留已知部分70分。
+    expect(all.filter(s => s.paper === 'tk-exam-16').reduce((sum, s) => sum + (s.score ?? 0), 0)).toBe(70);
   });
   it('id 唯一', () => {
     for (const list of [knowledge, patterns, problems, cards]) {

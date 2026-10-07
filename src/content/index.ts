@@ -36,13 +36,15 @@ import { tkExam12 } from './problems/tk-exam-12';
 import { tkExam13 } from './problems/tk-exam-13';
 import { tkExam14 } from './problems/tk-exam-14';
 import { tkExam15 } from './problems/tk-exam-15';
+import { tkExam16 } from './problems/tk-exam-16';
 import { xaut2024, sau2024, sxu2024 } from './problems/external';
 
 export { knowledge, CHAPTERS, papers, patterns };
 
-const allProblems: Problem[] = [...zt2026, ...zt2023, ...zt2024, ...zt2025, ...zt2018, ...zt2017, ...zt2016, ...choicesShared, ...zpShared, ...tkReview, ...tkTotal, ...hw1, ...hw2, ...hw3, ...hw4, ...hw5, ...hw6, ...hw7, ...tkKey, ...tkExam01, ...tkExam02, ...tkExam03, ...tkExam04, ...tkExam05, ...tkExam06, ...tkExam07, ...tkExam08, ...tkExam09, ...tkExam10, ...tkExam11, ...tkExam12, ...tkExam13, ...tkExam14, ...tkExam15, ...xaut2024, ...sau2024, ...sxu2024];
+const allProblems: Problem[] = [...zt2026, ...zt2023, ...zt2024, ...zt2025, ...zt2018, ...zt2017, ...zt2016, ...choicesShared, ...zpShared, ...tkReview, ...tkTotal, ...hw1, ...hw2, ...hw3, ...hw4, ...hw5, ...hw6, ...hw7, ...tkKey, ...tkExam01, ...tkExam02, ...tkExam03, ...tkExam04, ...tkExam05, ...tkExam06, ...tkExam07, ...tkExam08, ...tkExam09, ...tkExam10, ...tkExam11, ...tkExam12, ...tkExam13, ...tkExam14, ...tkExam15, ...tkExam16, ...xaut2024, ...sau2024, ...sxu2024];
 // 完全同题合并来源，保留最早录入的编号；选项不同的变式仍保留。
 const duplicateOf: Record<string, string> = {
+  'tk-exam-16-1-9': 'tk-exam-10-1-10', 'tk-exam-16-1-10': 'tk-exam-11-1-4',
   'ext-xaut2024-3-4': 'tk-key-9',
   'zt2024-3-2-1': 'zt2023-3-3', 'zt2016-1-5': 'zt2023-1-4',
   'zt2016-1-6': 'zt2017-1-5', 'zt2018-2-6': 'zt2023-2-7',

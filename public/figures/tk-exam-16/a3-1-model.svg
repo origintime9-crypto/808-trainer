@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" role="img">
+<title>课程16三1：保留两初态源的单边s域电路</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="900" height="500" fill="white"/>
+<text x="450" y="31" text-anchor="middle" font-size="24" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">单边s域模型：两个外源与两个初态源均保留</text>
+<path d="M85 320H800M85 135H173M227 135H270M345 135H800" fill="none" stroke="#334155" stroke-width="1.8"/>
+<path d="M85 135V201M85 255V320" fill="none" stroke="#334155" stroke-width="1.8"/>
+<circle cx="85" cy="228" r="27" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="85" y="223" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">+</text>
+<text x="85" y="245" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−</text>
+<text x="74" y="277" text-anchor="end" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Uₛ=1/s</text>
+<circle cx="200" cy="135" r="27" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="186" y="142" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−</text>
+<text x="212" y="142" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">+</text>
+<text x="200" y="190" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">L iL(0⁻)=1</text>
+<rect x="270" y="119" width="75" height="32" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="307" y="112" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">sL=s</text>
+<path d="M270 78H348" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="307" y="65" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">I_L</text>
+<text x="575" y="105" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">上节点 V=U_C</text>
+<path d="M430 135V207M430 250V320" fill="none" stroke="#334155" stroke-width="1.8"/>
+<rect x="418" y="207" width="24" height="43" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="394" y="234" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2/s</text>
+<path d="M545 135V201M545 255V320" fill="none" stroke="#334155" stroke-width="1.8"/>
+<circle cx="545" cy="228" r="27" fill="white" stroke="#334155" stroke-width="1.8"/>
+<path d="M545 245V211" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="545" y="357" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">C uC(0⁻)=½</text>
+<path d="M675 135V201M675 255V320" fill="none" stroke="#334155" stroke-width="1.8"/>
+<circle cx="675" cy="228" r="27" fill="white" stroke="#334155" stroke-width="1.8"/>
+<path d="M675 211V245" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="675" y="277" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Iₛ=1/s</text>
+<path d="M800 135V207M800 250V320" fill="none" stroke="#334155" stroke-width="1.8"/>
+<rect x="788" y="207" width="24" height="43" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="841" y="234" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1Ω</text>
+<path d="M855 159V198" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="855" y="148" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">I_R</text>
+<text x="450" y="397" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">KVL：s I_L−1 = 1/s−V</text>
+<text x="450" y="432" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">KCL：I_L = (s/2)V−½+V+1/s</text>
+<text x="450" y="475" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">电容初态源向上；外部电流源向下；I_R=V/1Ω</text>
+</svg>
