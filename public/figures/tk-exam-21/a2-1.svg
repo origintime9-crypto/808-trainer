@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="407" viewBox="0 0 720 407" role="img">
+<title>课程21二1：移动积分窗延时相减后为正负两个矩形</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="407" fill="white"/>
+<text x="360" y="29" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y=f(t)−f(t−2)：两个分离的矩形平台</text>
+<text x="360" y="56" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">原输入仅1&lt;t&lt;5为1，3&lt;t&lt;5重叠相消</text>
+<path d="M47 207H690" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M92 338V77" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="95.75,207.00 167.00,207.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="167.00,106.00 317.00,106.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="317.00,207.00 467.00,207.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="467.00,308.00 617.00,308.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="617.00,207.00 677.00,207.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M167 207V106" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle cx="167" cy="106" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<circle cx="167" cy="207" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<path d="M317 207V106" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle cx="317" cy="106" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<circle cx="317" cy="207" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<path d="M467 207V308" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle cx="467" cy="308" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<circle cx="467" cy="207" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<path d="M617 207V308" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle cx="617" cy="308" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<circle cx="617" cy="207" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<text x="81" y="232" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="167" y="232" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="317" y="232" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<text x="467" y="232" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">5</text>
+<text x="617" y="232" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">7</text>
+<text x="72" y="111" text-anchor="end" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="72" y="315" text-anchor="end" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<text x="127" y="84" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y(t)</text>
+<text x="682" y="233" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<text x="360" y="369" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">开圈不指定跳点值，端点依所用u(0)约定</text>
+<text x="360" y="394" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1&lt;t&lt;3为+1；5&lt;t&lt;7为−1；其他非端点为0</text>
+</svg>
