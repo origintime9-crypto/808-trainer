@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="530" viewBox="0 0 720 530" role="img">
+<title>课程20二5：外半谱调制得到中心为零的V形输出谱</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="530" fill="white"/>
+<text x="360" y="28" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">H₁只留外半谱，再乘cos(ωc+ω₁)t</text>
+<path d="M50 218H687" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M360 242V61" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="382" y="78" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">R₂</text>
+<polyline points="53.00,218.00 160.00,218.00 240.00,118.00 240.00,218.00 480.00,218.00 480.00,118.00 560.00,218.00 675.00,218.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="160" y="250" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−ωc−ω₁</text>
+<text x="240" y="250" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−ωc</text>
+<text x="480" y="250" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ωc</text>
+<text x="560" y="250" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ωc+ω₁</text>
+<text x="252" y="112" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">A/2</text>
+<text x="507" y="112" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">A/2</text>
+<text x="350" y="240" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="687" y="245" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω</text>
+<text x="360" y="290" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Y(jω)：每次余弦各乘1/2，最终两边内侧A/4</text>
+<path d="M50 433H687" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M360 458V309" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="382" y="324" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Y</text>
+<polyline points="53.00,433.00 190.00,433.00 190.00,333.00 360.00,433.00 530.00,333.00 530.00,433.00 675.00,433.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="190" y="463" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−ω₁</text>
+<text x="530" y="463" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω₁</text>
+<text x="348" y="458" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="687" y="460" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω</text>
+<text x="312" y="335" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">A/4</text>
+<path d="M190 333H530" fill="none" stroke="#94a3b8" stroke-width="1.4" stroke-dasharray="4 4"/>
+<text x="360" y="511" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">|ω|&lt;ω₁内Y=A|ω|/(4ω₁)；严格通带边界取0</text>
+</svg>

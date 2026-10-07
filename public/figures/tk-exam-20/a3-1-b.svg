@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="355" viewBox="0 0 720 355" role="img">
+<title>课程20三1：零点负1、极点二分之一，外收敛域含单位圆</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="355" fill="white"/>
+<rect x="37" y="55" width="646" height="245" rx="12" fill="#ecfdf5"/>
+<circle cx="360" cy="181" r="57.5" fill="white" stroke="#0f766e" stroke-dasharray="5 4" stroke-width="1.6"/>
+<circle cx="360" cy="181" r="115" fill="none" stroke="#94a3b8" stroke-dasharray="4 4" stroke-width="1.5"/>
+<text x="360" y="30" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">H(z)=−(z+1)/[3(z−1/2)]</text>
+<path d="M67 181H668" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M360 304V52" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<circle cx="245" cy="181" r="8" fill="white" stroke="#2563eb" stroke-width="2.6"/>
+<path d="M411 174L425 188M425 174L411 188" fill="none" stroke="#b91c1c" stroke-width="2.5"/>
+<text x="245" y="216" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1 ○</text>
+<text x="418" y="216" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1/2 ×</text>
+<text x="345" y="206" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="652" y="208" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Re z</text>
+<text x="387" y="72" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Im z</text>
+<text x="511" y="93" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ROC |z|&gt;1/2</text>
+<text x="508" y="276" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">虚线外圆：|z|=1</text>
+<text x="360" y="337" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">极点仅1/2；常数阶跃项经差分消去，H无极点1</text>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="420" viewBox="0 0 720 420" role="img">
+<title>课程20二4：右端缺符号，线性条件式及字面乘积的直接型I</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="420" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">延时形式：y[k]=3y[k−1]−2y[k−2]+ψ(f₁,f₂)</text>
+<path d="M35 128H109" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="110" y="107" width="60" height="42" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="140.0" y="135.0" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">D</text>
+<path d="M170 128H284" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<circle cx="215" cy="128" r="3.4" fill="#334155"/>
+<rect x="285" y="107" width="60" height="42" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="315.0" y="135.0" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">D</text>
+<path d="M345 128H439" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="440" y="107" width="120" height="42" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="500.0" y="135.0" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ψ(f₁,f₂)</text>
+<path d="M560 128H580" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<circle cx="600" cy="128" r="19" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="600" y="135" text-anchor="middle" font-size="24" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Σ</text>
+<path d="M620 128H694" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<circle cx="660" cy="128" r="3.4" fill="#334155"/>
+<path d="M215 128V67H500V106" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="56" y="112" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">f[k]</text>
+<text x="215" y="157" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">f₁</text>
+<text x="394" y="157" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">f₂</text>
+<text x="684" y="111" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y[k]</text>
+<path d="M660 128V250H574" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="515" y="229" width="58" height="42" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="544.0" y="257.0" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">D</text>
+<path d="M515 250H409" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<circle cx="450" cy="250" r="3.4" fill="#334155"/>
+<rect x="350" y="229" width="58" height="42" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="379.0" y="257.0" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">D</text>
+<path d="M350 250H279" fill="none" stroke="#334155" stroke-width="1.8"/>
+<circle cx="280" cy="250" r="3.4" fill="#334155"/>
+<path d="M450 250V181H600V148" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="526" y="173" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">+3</text>
+<path d="M280 250V316H650V160L615 142" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="584" y="306" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−2</text>
+<text x="450" y="279" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y[k−1]</text>
+<text x="280" y="279" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y[k−2]</text>
+<text x="360" y="366" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ψ=f₁+bf₂，b=±2：补运算符后的线性条件版本</text>
+<text x="360" y="396" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">字面ψ=2f₁f₂：需要乘法器，该版本非线性</text>
+</svg>
