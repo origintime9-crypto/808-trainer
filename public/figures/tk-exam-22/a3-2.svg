@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="560" viewBox="0 0 720 560" role="img">
+<title>课程22三2：希尔伯特主值频响，正频率负九十度</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="560" fill="white"/>
+<text x="360" y="29" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">H(jω)=−j sgn ω：非零频率幅度1</text>
+<path d="M48 239H689" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M360 268V70" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="59.00,112.00 360.00,112.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="360.00,112.00 667.00,112.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="360" cy="112" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<circle cx="360" cy="239" r="4" fill="#0f766e" stroke="#0f766e" stroke-width="2"/>
+<text x="337" y="117" text-anchor="end" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="343" y="268" text-anchor="end" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="390" y="87" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">|H|</text>
+<text x="682" y="267" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω</text>
+<text x="174" y="155" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω&lt;0</text>
+<text x="545" y="155" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω&gt;0</text>
+<text x="360" y="301" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">原点按 H(0)=0；原点相位未定义</text>
+<path d="M48 442H689" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M360 526V331" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="59.00,377.00 360.00,377.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="360.00,507.00 667.00,507.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="360" cy="377" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<circle cx="360" cy="507" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<text x="332" y="361" text-anchor="end" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">+π/2</text>
+<text x="337" y="526" text-anchor="end" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−π/2</text>
+<text x="343" y="470" text-anchor="end" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="394" y="344" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">∠H</text>
+<text x="682" y="470" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω</text>
+<text x="360" y="550" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">负频率 +π/2；正频率 −π/2，不连接原点跳变</text>
+</svg>

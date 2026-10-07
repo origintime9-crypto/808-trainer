@@ -36,6 +36,7 @@ export const papers: Paper[] = [
   { id: 'tk-exam-19', year: 0, examType: '—', kind: '题库', title: '中北题库第 19 套（原卷未编号）', totalScore: 100 },
   { id: 'tk-exam-20', year: 0, examType: '—', kind: '题库', title: '中北题库课程 20', totalScore: 100 },
   { id: 'tk-exam-21', year: 0, examType: '—', kind: '题库', title: '中北题库课程 21', totalScore: 100 },
+  { id: 'tk-exam-22', year: 0, examType: '—', kind: '题库', title: '中北题库课程 22', totalScore: 100 },
   { id: 'ext-xaut2024', year: 2024, examType: '初试', kind: '真题', school: '西安理工大学', title: '西安理工 2024 · 810（精选）', selection: '13 个单元，基础变换、卷积与系统分析。按题面比较接近中北常规计算量。', referenceUrl: 'https://yjsy.xaut.edu.cn/2.1.pdf' },
   { id: 'ext-sau2024', year: 2024, examType: '初试', kind: '真题', school: '沈阳航空航天大学', title: '沈航 2024 · 808（精选）', selection: '12 个单元，波形、s/z 域与响应，综合题拆成可单独练习的小问；状态方程未入选。', referenceUrl: 'https://dzx.sau.edu.cn/info/1109/1576.htm' },
   { id: 'ext-sxu2024', year: 2024, examType: '初试', kind: '真题', school: '山西大学', title: '山西大学 2024 · 841（精选）', selection: '8 个单元，以变换、响应和抽样补充训练；计算量稍大的题按用时匹配。', referenceUrl: 'https://yjszsw.sxu.edu.cn/docs/2023-09/0bd43c4677944ee190e0c090125c0fd0.pdf' },
