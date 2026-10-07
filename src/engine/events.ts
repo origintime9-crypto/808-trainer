@@ -1,4 +1,4 @@
-import { MISTAKE_TAGS, type AiResult, type TrainerEvent } from '../types';
+import { MISTAKE_TAGS, type AiResult, type ExamItem, type TrainerEvent } from '../types';
 
 const record = (x: unknown): x is Record<string, unknown> => !!x && typeof x === 'object' && !Array.isArray(x);
 const str = (x: unknown, max: number) => typeof x === 'string' && x.length <= max;
@@ -23,14 +23,29 @@ export function readEvent(x: unknown): TrainerEvent | null {
   if (!record(x) || !str(x.id, 200) || !x.id || !int(x.t, 0, 8640000000000000)) return null;
   const base = { id: x.id as string, t: x.t as number };
   if (x.kind === 'attempt' && str(x.problemId, 200) && x.problemId && int(x.grade, 0, 3) && tags(x.tags) && int(x.sec, 0, 31536000)) {
+    if (x.examId !== undefined && (!str(x.examId, 200) || !x.examId)) return null;
     const ai = x.ai === undefined ? undefined : readAiResult(x.ai);
     if (ai === null) return null;
-    return { ...base, kind: 'attempt', problemId: x.problemId as string, grade: x.grade as 0 | 1 | 2 | 3, tags: [...new Set(x.tags as AiResult['tags'])], sec: x.sec as number, ...(ai ? { ai } : {}) };
+    return { ...base, kind: 'attempt', problemId: x.problemId as string, grade: x.grade as 0 | 1 | 2 | 3, tags: [...new Set(x.tags as AiResult['tags'])], sec: x.sec as number, ...(ai ? { ai } : {}), ...(x.examId ? { examId: x.examId as string } : {}) };
   }
   if (x.kind === 'review' && str(x.cardId, 200) && x.cardId && int(x.rating, 1, 4))
     return { ...base, kind: 'review', cardId: x.cardId as string, rating: x.rating as 1 | 2 | 3 | 4 };
   if (x.kind === 'note' && str(x.problemId, 200) && x.problemId && str(x.text, 50000))
     return { ...base, kind: 'note', problemId: x.problemId as string, text: x.text as string };
+  if (x.kind === 'exam' && str(x.examId, 200) && x.examId) {
+    const exam = { ...base, kind: 'exam' as const, examId: x.examId as string };
+    if (x.action === 'finish') return { ...exam, action: 'finish' };
+    if (x.action === 'navigate' && int(x.current, 0, 59)) return { ...exam, action: 'navigate', current: x.current as number };
+    if (x.action === 'start' && str(x.title, 200) && str(x.template, 200) && x.template && int(x.minutes, 1, 360) && Array.isArray(x.items) && x.items.length > 0 && x.items.length <= 60) {
+      const items: ExamItem[] = [];
+      for (const i of x.items) {
+        if (!record(i) || !str(i.problemId, 200) || !i.problemId || !str(i.referenceId, 200) || !i.referenceId || !str(i.no, 40) || !i.no || typeof i.score !== 'number' || !Number.isFinite(i.score) || i.score <= 0 || i.score > 150 || !['pattern', 'knowledge', 'original'].includes(i.match as string)) return null;
+        items.push({ problemId: i.problemId as string, referenceId: i.referenceId as string, no: i.no as string, score: i.score, match: i.match as ExamItem['match'] });
+      }
+      if (new Set(items.map(i => i.problemId)).size !== items.length || new Set(items.map(i => i.no)).size !== items.length || items.reduce((v,i)=>v+i.score,0) > 150) return null;
+      return { ...exam, action: 'start', title: x.title as string, template: x.template as string, minutes: x.minutes as number, items };
+    }
+  }
   return null;
 }
 

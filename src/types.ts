@@ -23,6 +23,10 @@ export interface Paper {
   title: string;
   totalScore?: number;
   recall?: boolean;
+  /** 外校精选题源；未设置时表示中北或本校课程资料。 */
+  school?: string;
+  selection?: string;
+  referenceUrl?: string;
 }
 
 export type ProblemType = '填空' | '选择' | '计算' | '画图' | '分析' | '简答';
@@ -47,6 +51,8 @@ export interface Problem {
   solution: string;
   verified: 'checked' | 'corrected' | 'uncertain';
   note?: string;
+  /** 人工评估的完整作答用时，用于模拟卷匹配计算量。 */
+  minutes?: number;
 }
 
 export interface Card {
@@ -86,7 +92,22 @@ export interface AttemptEvent extends EventBase {
   tags: MistakeTag[];
   sec: number;
   ai?: AiResult;
+  examId?: string;
 }
+
+export interface ExamItem {
+  problemId: string;
+  no: string;
+  score: number;
+  referenceId: string;
+  match: 'pattern' | 'knowledge' | 'original';
+}
+
+export type ExamEvent = EventBase & { kind: 'exam'; examId: string } & (
+  { action: 'start'; title: string; template: string; minutes: number; items: ExamItem[] }
+  | { action: 'navigate'; current: number }
+  | { action: 'finish' }
+);
 
 export interface ReviewEvent extends EventBase {
   kind: 'review';
@@ -100,7 +121,7 @@ export interface NoteEvent extends EventBase {
   text: string;
 }
 
-export type TrainerEvent = AttemptEvent | ReviewEvent | NoteEvent;
+export type TrainerEvent = AttemptEvent | ReviewEvent | NoteEvent | ExamEvent;
 
 export interface Settings {
   examDate: string;

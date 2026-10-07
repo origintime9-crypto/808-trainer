@@ -16,7 +16,7 @@ export function ExamPage({ paper }: { paper: string }) {
   const [session, setSession] = useState<Session | null>(() => load(paper));
   const save = (s: Session) => { sessionStorage.setItem(KEY, JSON.stringify(s)); setSession(s); setProblemList(list.map(p => p.id)); };
   const start = () => save({ paper, started: Date.now(), current: list[0].id, finished: false });
-  const done = list.map(p => ({ p, a: events.filter(e => e.kind === 'attempt' && e.problemId === p.id && e.t >= (session?.started ?? Infinity)).at(-1) })).filter(x => x.a?.kind === 'attempt');
+  const done = list.map(p => ({ p, a: events.filter(e => e.kind === 'attempt' && !e.examId && e.problemId === p.id && e.t >= (session?.started ?? Infinity)).at(-1) })).filter(x => x.a?.kind === 'attempt');
   const scored = done.reduce((sum, { p, a }) => sum + (p.sources.find(s => s.paper === paper)?.score ?? 0) * (a?.kind === 'attempt' ? SCORE_COEF[a.grade] : 0), 0);
   const uncertainScore = list.some(p => !p.sources.find(s => s.paper === paper)?.score);
   const subtotal = list.reduce((sum, p) => sum + (p.sources.find(s => s.paper === paper)?.score ?? 0), 0);

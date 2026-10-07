@@ -76,6 +76,7 @@ export function recommendNew(sched: Schedule, events: TrainerEvent[], settings: 
 
 export function suggestedMinutes(problemId: string): number {
   const p = problemById.get(problemId);
+  if (p?.minutes) return p.minutes;
   const score = p?.sources.find((s) => s.score)?.score ?? 5;
   return Math.max(2, Math.round(score * 1.2));
 }

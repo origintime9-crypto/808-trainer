@@ -8,26 +8,26 @@ import { suggestedMinutes } from '../engine/queue';
 import { dateLabel, go, kpLabel, patternLabel, relDay, sourceLabel, stars } from '../format';
 import { kpById } from '../content';
 import { app, getProblemList, useDerived } from '../state';
-import { GRADE_LABELS, MISTAKE_TAGS, type AiResult, type Grade, type MistakeTag } from '../types';
+import { GRADE_LABELS, MISTAKE_TAGS, type AiResult, type AttemptEvent, type Grade, type MistakeTag } from '../types';
 
 function mmss(sec: number): string {
   return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
 }
 
-export function ProblemPage({ id, onNavigate, onComplete }: { id: string; onNavigate?: (id: string) => void; onComplete?: () => void }) {
+export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; onNavigate?: (id: string) => void; onComplete?: () => void; exam?: { id: string; score: number; attempt?: AttemptEvent } }) {
   const p = problemById.get(id);
   const { sched, now } = useDerived();
-  const [shown, setShown] = useState(false);
+  const [shown, setShown] = useState(!!exam?.attempt);
   const [chosen, setChosen] = useState<number | null>(null);
-  const [grade, setGrade] = useState<Grade | null>(null);
-  const [tags, setTags] = useState<MistakeTag[]>([]);
-  const [submitted, setSubmitted] = useState(false);
+  const [grade, setGrade] = useState<Grade | null>(exam?.attempt?.grade ?? null);
+  const [tags, setTags] = useState<MistakeTag[]>(exam?.attempt?.tags ?? []);
+  const [submitted, setSubmitted] = useState(!!exam?.attempt);
   const [copied, setCopied] = useState('');
-  const [ai, setAi] = useState<AiResult | undefined>();
+  const [ai, setAi] = useState<AiResult | undefined>(exam?.attempt?.ai);
   const [saveError, setSaveError] = useState('');
-  const startRef = useRef(Date.now());
-  const [elapsed, setElapsed] = useState(0);
-  const stopRef = useRef<number | null>(null);
+  const startRef = useRef(Date.now()-(exam?.attempt?.sec??0)*1000);
+  const [elapsed, setElapsed] = useState(exam?.attempt?.sec??0);
+  const stopRef = useRef<number | null>(exam?.attempt ? Date.now() : null);
 
   useEffect(() => {
     const t = window.setInterval(() => {
@@ -45,7 +45,7 @@ export function ProblemPage({ id, onNavigate, onComplete }: { id: string; onNavi
   const prevId = idx > 0 ? list[idx - 1] : undefined;
   const nextId = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : undefined;
   const similar = p.pattern ? problems.filter((x) => x.pattern === p.pattern && x.id !== p.id) : [];
-  const limit = suggestedMinutes(id);
+  const limit = exam ? Math.round(exam.score*1.2) : suggestedMinutes(id);
 
   const reveal = () => {
     if (stopRef.current === null) stopRef.current = Date.now();
@@ -62,13 +62,13 @@ export function ProblemPage({ id, onNavigate, onComplete }: { id: string; onNavi
   const submit = () => {
     if (grade === null) return;
     const sec = Math.max(0, Math.round(((stopRef.current ?? Date.now()) - startRef.current) / 1000));
-    try { app.record({ kind: 'attempt', problemId: id, grade, tags: grade < 3 ? tags : [], sec, ...(ai ? { ai } : {}) }); setSubmitted(true); }
+    try { app.record({ kind: 'attempt', problemId: id, grade, tags: grade < 3 ? tags : [], sec, ...(ai ? { ai } : {}), ...(exam ? {examId:exam.id} : {}) }); setSubmitted(true); }
     catch { setSaveError('浏览器未能保存记录，请先导出备份并检查存储空间。'); }
   };
   const navigate = (target: string) => onNavigate ? onNavigate(target) : go(`#/p/${target}`);
 
   const copyPrompt = async () => {
-    const ok = await copyText(buildGradePrompt(p));
+    const ok = await copyText(buildGradePrompt(p, exam?.score));
     setCopied(ok ? '已复制。打开 ChatGPT，粘贴后附上作答照片即可。' : '复制失败，请检查浏览器权限。');
   };
 
@@ -85,6 +85,7 @@ export function ProblemPage({ id, onNavigate, onComplete }: { id: string; onNavi
         <div className="meta">
           <span className="source">{sourceLabel(p)}</span>
           <span className="badge">{p.type}</span>
+          {exam && <span className="badge">本卷 {exam.score} 分</span>}
           {p.verified === 'corrected' && <span className="badge warn">资料答案有误，已修正</span>}
           {p.verified === 'uncertain' && <span className="badge warn">题干/答案存疑</span>}
           {st?.inMistakes && <span className="badge bad">错题本中</span>}
@@ -134,7 +135,7 @@ export function ProblemPage({ id, onNavigate, onComplete }: { id: string; onNavi
         {copied && <p className="hint">{copied}</p>}
       </section>
 
-      {!p.options && <AiGradePanel problem={p} disabled={submitted} onResult={r => { setAi(r); setGrade(r.grade); setTags(r.tags); reveal(); }} />}
+      {!p.options && <AiGradePanel problem={p} maxScore={exam?.score} disabled={submitted} onResult={r => { setAi(r); setGrade(r.grade); setTags(r.tags); reveal(); }} />}
 
       {shown && (
         <section className="card answer">
@@ -195,6 +196,7 @@ export function ProblemPage({ id, onNavigate, onComplete }: { id: string; onNavi
             </p>
           )}
           <div className="actions">
+            {exam && <button onClick={()=>{setSubmitted(false);setAi(undefined);}}>重新评分</button>}
             {nextId ? <button className="primary" onClick={() => navigate(nextId)}>下一题</button> : onComplete ? <button className="primary" onClick={onComplete}>查看整卷结果</button> : <button className="primary" onClick={() => go('#/today')}>回到今日</button>}
           </div>
         </section>

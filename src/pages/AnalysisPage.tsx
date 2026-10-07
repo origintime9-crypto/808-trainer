@@ -89,7 +89,7 @@ export function AnalysisPage() {
             </label>
           )}
         </div>
-        <p className="muted small">按优先级排序。优先级 = 星级 × 薄弱程度 × 真题频次；点击一行去刷对应的题。</p>
+        <p className="muted small">按优先级排序。优先级 = 星级 × 薄弱程度 × 中北真题频次；点击一行去刷对应的题。<a href="#/knowledge">查看知识分类 →</a></p>
         <Table rows={rows} kind={tab} />
       </section>
     </div>

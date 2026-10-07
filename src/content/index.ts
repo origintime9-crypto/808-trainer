@@ -36,12 +36,14 @@ import { tkExam12 } from './problems/tk-exam-12';
 import { tkExam13 } from './problems/tk-exam-13';
 import { tkExam14 } from './problems/tk-exam-14';
 import { tkExam15 } from './problems/tk-exam-15';
+import { xaut2024, sau2024, sxu2024 } from './problems/external';
 
 export { knowledge, CHAPTERS, papers, patterns };
 
-const allProblems: Problem[] = [...zt2026, ...zt2023, ...zt2024, ...zt2025, ...zt2018, ...zt2017, ...zt2016, ...choicesShared, ...zpShared, ...tkReview, ...tkTotal, ...hw1, ...hw2, ...hw3, ...hw4, ...hw5, ...hw6, ...hw7, ...tkKey, ...tkExam01, ...tkExam02, ...tkExam03, ...tkExam04, ...tkExam05, ...tkExam06, ...tkExam07, ...tkExam08, ...tkExam09, ...tkExam10, ...tkExam11, ...tkExam12, ...tkExam13, ...tkExam14, ...tkExam15];
+const allProblems: Problem[] = [...zt2026, ...zt2023, ...zt2024, ...zt2025, ...zt2018, ...zt2017, ...zt2016, ...choicesShared, ...zpShared, ...tkReview, ...tkTotal, ...hw1, ...hw2, ...hw3, ...hw4, ...hw5, ...hw6, ...hw7, ...tkKey, ...tkExam01, ...tkExam02, ...tkExam03, ...tkExam04, ...tkExam05, ...tkExam06, ...tkExam07, ...tkExam08, ...tkExam09, ...tkExam10, ...tkExam11, ...tkExam12, ...tkExam13, ...tkExam14, ...tkExam15, ...xaut2024, ...sau2024, ...sxu2024];
 // 完全同题合并来源，保留最早录入的编号；选项不同的变式仍保留。
 const duplicateOf: Record<string, string> = {
+  'ext-xaut2024-3-4': 'tk-key-9',
   'zt2024-3-2-1': 'zt2023-3-3', 'zt2016-1-5': 'zt2023-1-4',
   'zt2016-1-6': 'zt2017-1-5', 'zt2018-2-6': 'zt2023-2-7',
   'hw1-1-4-5': 'zt2024-1-2', 'hw1-1-13-7': 'zt2025-1-1',
@@ -134,7 +136,7 @@ export const cardById = new Map(cards.map((c) => [c.id, c]));
 function countPapers(key: (p: Problem) => string[]): Map<string, Set<string>> {
   const m = new Map<string, Set<string>>();
   for (const p of problems) {
-    const realPapers = p.sources.filter((s) => paperById.get(s.paper)?.kind === '真题').map((s) => s.paper);
+    const realPapers = p.sources.filter((s) => { const paper = paperById.get(s.paper); return paper?.kind === '真题' && !paper.school; }).map((s) => s.paper);
     for (const k of key(p)) {
       const set = m.get(k) ?? new Set<string>();
       realPapers.forEach((x) => set.add(x));
@@ -146,7 +148,7 @@ function countPapers(key: (p: Problem) => string[]): Map<string, Set<string>> {
 
 export const kpPapers = countPapers((p) => p.kps);
 export const patternPapers = countPapers((p) => (p.pattern ? [p.pattern] : []));
-export const realPaperCount = papers.filter((p) => p.kind === '真题').length;
+export const realPaperCount = papers.filter((p) => p.kind === '真题' && !p.school).length;
 
 export function paperYears(set: Set<string> | undefined): number[] {
   if (!set) return [];

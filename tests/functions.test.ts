@@ -6,6 +6,7 @@ import type { Env, Statement } from '../server/shared';
 import { buildGradeRequest, gradePhotos, normalizeAiMarkdown, parseAiResult } from '../src/ai/grade';
 import { problemById } from '../src/content';
 import type { TrainerEvent } from '../src/types';
+import { generateMock, mockResult, mockSessions, validMockSession } from '../src/engine/mock';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Md } from '../src/components/Markdown';
@@ -60,6 +61,29 @@ describe('云端接口', () => {
     expect(first.seq).toBe(500); expect(first.hasMore).toBe(true);
     const next = await (await sync({ request: req({ since: first.seq, events: [] }), env })).json();
     expect(next.events).toHaveLength(150); expect(next.seq).toBe(650); expect(next.hasMore).toBe(false);
+  });
+  it('真实卷面配置、当前题位、作答与结束通过云接口往返后仍能还原估分', async () => {
+    const env: Env = { DB: new MemoryD1(), SYNC_KEY: 'test-pass' };
+    const items = generateMock('zt2026', 'mixed', 'cloud-protocol');
+    const events: TrainerEvent[] = [
+      { id: 'exam-start', t: 1000, kind: 'exam', examId: 'mock-cloud', action: 'start', title: '模拟卷', template: 'zt2026', minutes: 180, items },
+      { id: 'exam-nav', t: 1100, kind: 'exam', examId: 'mock-cloud', action: 'navigate', current: 3 },
+      { id: 'exam-answer', t: 1200, kind: 'attempt', examId: 'mock-cloud', problemId: items[3].problemId, grade: 3, sec: 30, tags: [] },
+      { id: 'exam-finish', t: 1300, kind: 'exam', examId: 'mock-cloud', action: 'finish' },
+    ];
+    const upload = await sync({ request: req({ since: 0, events }), env });
+    expect(upload.status).toBe(200);
+    const first = await upload.json();
+    const restored = await (await sync({ request: req({ since: 0, events: [] }), env })).json();
+    expect(restored.events).toEqual(events);
+    const session = mockSessions(restored.events)[0];
+    expect(validMockSession(session)).toBe(true);
+    expect(session.current).toBe(3); expect(session.finished).toBe(1300);
+    expect(mockResult(session, restored.events)).toMatchObject({ done: 1, score: items[3].score, total: 150 });
+    const duplicate = await (await sync({ request: req({ since: first.seq, events }), env })).json();
+    expect(duplicate.events).toEqual([]);
+    const bad = { ...events[0], items: [{ ...items[0], score: 999 }] };
+    expect((await sync({ request: req({ since: 0, events: [bad] }), env })).status).toBe(400);
   });
   it('错误评分、错因、游标和批量大小不会污染数据', async () => {
     const env: Env = { DB: new MemoryD1(), SYNC_KEY: 'test-pass' };

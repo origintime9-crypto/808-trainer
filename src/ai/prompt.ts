@@ -3,8 +3,8 @@ import { MISTAKE_TAGS } from '../types';
 import { problemScore, sourceLabel } from '../format';
 
 /** 生成可粘贴到 ChatGPT 的批改提示词（配合手写作答照片使用） */
-export function buildGradePrompt(p: Problem): string {
-  const score = problemScore(p);
+export function buildGradePrompt(p: Problem, scoreOverride?: number): string {
+  const score = scoreOverride ?? problemScore(p);
   return [
     '你是中北大学 808 信号与系统的阅卷老师。我会给你一道题的题目、分值、标准答案和参考解答，并附上我手写作答的照片。请按下面的要求批改：',
     '1. 先转写我的关键步骤（公式用 LaTeX；看不清的地方写"[看不清]"，不要臆测）。',
@@ -15,6 +15,7 @@ export function buildGradePrompt(p: Problem): string {
     '5. 给出一两条有针对性的改进建议。',
     '',
     `【题目】${sourceLabel(p)}`,
+    ...(scoreOverride ? [`本次模拟卷题位满分 ${scoreOverride} 分（来自中北模板，不是原题分值）。`] : []),
     p.stem,
     ...(p.options ? p.options.map((o, i) => `${String.fromCharCode(65 + i)}. ${o}`) : []),
     '',

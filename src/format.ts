@@ -6,7 +6,7 @@ export function sourceLabel(p: Problem): string {
   return p.sources
     .map((s) => {
       const paper = paperById.get(s.paper);
-      const name = paper ? (paper.kind === '真题' ? `${paper.year}${paper.examType === '初试' ? '初试' : ''}` : paper.title) : s.paper;
+      const name = paper ? (paper.school ? paper.title : paper.kind === '真题' ? `${paper.year}${paper.examType === '初试' ? '初试' : ''}` : paper.title) : s.paper;
       return `${name} ${s.no}${s.score ? `（${s.score}分）` : ''}`;
     })
     .join(' / ');
