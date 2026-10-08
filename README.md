@@ -110,6 +110,10 @@ npm run local:api -- --binding SYNC_KEY=808-local-test-only --ip 127.0.0.1
 
 拍照批改已接入 Gemini，当前模型为 gemini-3.8-flash，Key 仅保存为 Cloudflare Secret。打开“设置 → 拍照批改”并开启，回到计算题上传 1–3 张作答照片；AI 预填自评和错因，核对后点击“记录”，进度随即自动上传。确认前不新增作答记录。无题面分值的题不显示数字估分；无法排版的模型公式保留原文供核对。Gemini 3.8 请求省略已弃用的温度参数，保留照片输入和 JSON Schema。遇到及时返回的 503，服务端短暂退避后最多补发一次；两次共用 55 秒期限，不改变模型或推理档位。保留 AI_BASE_URL、AI_MODEL、AI_API_KEY 兼容接口，配置步骤及验收方式见 [Gemini 接入说明](GEMINI_SETUP.md)。
 
+接口忙碌时，在题目页复制批改提示词并打开 Gemini，附上作答照片；有题图也附上题图。将返回的 JSON 粘贴到“粘贴 Gemini / ChatGPT 批改结果”，点击“读取批改结果”。程序核对当前题号、评分档和错因，再预填建议。核对转写和评分后点击“记录”才计入掌握度、错题本和模拟卷估分；统计始终使用你最终确认的评分。转写有误可点击“忽略 AI 建议”后手动评分。更换照片或重试会清除上一份建议，失败时不会沿用旧图评分。
+
+“设置 → 批改复核记录”显示已确认的辅助批改、人工调整评分和转写含“[看不清]”的记录，并按模型或手动导入来源列出。未确认及接口失败不进入这些数量；调整数量不是模型识别准确率。文字结果和原建议随进度同步，照片和粘贴原文不保存。
+
 后端更新执行 npm run build 和 npx wrangler pages deploy dist --project-name 808-trainer --branch main。前端源码更新由 GitHub Actions 发布。电脑和手机流量的实际网络可访问性仍需用户在各自设备确认。
 
 配置参照 [GitHub Pages 工作流](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)、[Cloudflare Pages 配置](https://developers.cloudflare.com/pages/functions/wrangler-configuration/) 与 [D1 绑定](https://developers.cloudflare.com/pages/functions/bindings/)。

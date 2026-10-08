@@ -3,7 +3,7 @@ import { onRequestGet as health } from '../functions/api/health';
 import { onRequestPost as sync } from '../functions/api/sync';
 import { onRequestPost as grade } from '../functions/api/grade';
 import type { Env, Statement } from '../server/shared';
-import { buildGradeRequest, gradePhotos, normalizeAiMarkdown, parseAiResult } from '../src/ai/grade';
+import { buildGradeRequest, gradePhotos, normalizeAiMarkdown, parseAiResult, parseExternalGrade } from '../src/ai/grade';
 import { problemById } from '../src/content';
 import type { TrainerEvent } from '../src/types';
 import { generateMock, mockResult, mockSessions, validMockSession } from '../src/engine/mock';
@@ -52,6 +52,17 @@ describe('云端接口', () => {
     expect(repeat.seq).toBe(2); expect(repeat.events).toHaveLength(0);
     const other = await (await sync({ request: req({ since: 0, events: [event('c')] }), env })).json();
     expect(other.seq).toBe(3); expect(other.events.map((e: TrainerEvent) => e.id)).toEqual(['a', 'b', 'c']);
+  });
+  it('外部文字批改与人工修正经两设备同步，最终评分和原建议各自保留', async () => {
+    const env: Env = { DB: new MemoryD1(), SYNC_KEY: 'test-pass' };
+    const p = problemById.get('zt2026-10')!;
+    const ai = parseExternalGrade(JSON.stringify({ problemId: p.id, transcript: '$H(s)=1$', grade: 3, tags: [], feedback: '检查', photos: ['data:image/png;base64,AAAA'] }), p, 'Gemini')!;
+    const confirmed = { ...event('external-confirmed'), grade: 0, tags: ['方法不会'], ai };
+    expect((await sync({ request: req({ since: 0, events: [confirmed] }), env })).status).toBe(200);
+    const other = await (await sync({ request: req({ since: 0, events: [] }), env })).json();
+    expect(other.events).toHaveLength(1);
+    expect(other.events[0]).toMatchObject({ grade: 0, tags: ['方法不会'], ai: { grade: 3, model: 'Gemini（手动导入）' } });
+    expect(JSON.stringify(other.events)).not.toContain('data:image');
   });
   it('大量记录分页返回，游标不会跳过未返回的数据', async () => {
     const db = new MemoryD1();

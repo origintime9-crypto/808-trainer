@@ -1,0 +1,90 @@
+import { test, expect } from '@playwright/test';
+import { resolve } from 'node:path';
+
+const eventsKey = 'trainer808.events.v1';
+const settingsKey = 'trainer808.settings.v1';
+const base = (process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:18080').replace(/\/$/, '');
+const result = { transcript: '$4\\times 1=4$', steps: [{ step: '取极限', ok: false, comment: '极限应为2' }], grade: 1, tags: ['计算失误'], feedback: '检查系数' };
+
+test('Gemini文字结果在手机导入，先核题号、预填、人工改分，再保存并统计', async ({ page, context }) => {
+  let gradeCalls = 0;
+  await context.route('**/api/health', route => route.fulfill({ json: { ok: true, ai: false, sync: false, model: '' } }));
+  await context.route('**/api/grade', route => { gradeCalls++; return route.fulfill({ status: 503, json: { error: '测试不使用真实模型' } }); });
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto(base + '/#/p/tk-key-1-2');
+  const panel = page.locator('.ai-panel');
+  await expect(panel.getByRole('link', { name: '打开 Gemini' })).toHaveAttribute('href', 'https://gemini.google.com/app');
+  await panel.locator('summary').click();
+  const input = panel.getByLabel('批改结果 JSON');
+  await input.fill(JSON.stringify({ ...result, problemId: 'zt2026-10' }));
+  await panel.getByRole('button', { name: '读取批改结果' }).click();
+  await expect(panel.getByRole('status')).toContainText('未读取到本题');
+  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey)).toHaveLength(0);
+  await input.fill('```json\n' + JSON.stringify({ ...result, problemId: 'tk-key-1-2', score: 100 }) + '\n```');
+  await panel.getByRole('button', { name: '读取批改结果' }).click();
+  await expect(panel.getByText('AI 建议：部分对', { exact: true })).toBeVisible();
+  await expect(panel).not.toContainText('估分');
+  await expect(page.locator('.grade.g1')).toHaveClass(/on/);
+  await panel.screenshot({ path: 'work/screenshots/grading-fallback-mobile.png' });
+  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey)).toHaveLength(0);
+  await page.getByRole('button', { name: '大部分对', exact: true }).click();
+  await page.getByRole('button', { name: '记录', exact: true }).click();
+  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey);
+  expect(saved).toHaveLength(1);
+  expect(saved[0]).toMatchObject({ grade: 2, ai: { grade: 1, model: 'Gemini（手动导入）' } });
+  expect(saved[0].ai).not.toHaveProperty('score');
+  expect(JSON.stringify(saved)).not.toContain('data:image');
+  await expect(input).toBeDisabled();
+  expect(gradeCalls).toBe(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(376);
+  await page.goto(base + '/#/settings');
+  const audit = page.locator('.grading-audit');
+  await expect(audit).toContainText('Gemini（手动导入）：1 条，调整评分 1 条');
+  await expect(audit).toContainText('不能当作模型的识别准确率');
+  await audit.screenshot({ path: 'work/screenshots/grading-audit-mobile.png' });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(376);
+});
+
+test('换照片后批改失败，不沿用上一张的AI建议或评分', async ({ page, context }) => {
+  await context.route('**/api/health', route => route.fulfill({ json: { ok: true, ai: true, sync: false, model: 'vision-mock' } }));
+  await page.addInitScript(key => localStorage.setItem(key, JSON.stringify({ aiEnabled: true, syncKey: 'test-sync-only' })), settingsKey);
+  let calls = 0;
+  await context.route('**/api/grade', route => {
+    calls++;
+    return calls === 1 ? route.fulfill({ json: { choices: [{ message: { content: JSON.stringify({ ...result, grade: 3, tags: [] }) } }] } }) : route.fulfill({ status: 502, json: { error: '测试模型临时忙碌' } });
+  });
+  await page.goto(base + '/#/p/zt2026-10');
+  const panel = page.locator('.ai-panel');
+  await panel.getByLabel('作答照片').setInputFiles(resolve('tests/fixtures/blank.png'));
+  await panel.getByRole('button', { name: '开始 AI 批改', exact: true }).click();
+  await expect(panel.getByText('AI 建议：全对', { exact: true })).toBeVisible();
+  await panel.getByLabel('作答照片').setInputFiles(resolve('tests/fixtures/blank.png'));
+  await expect(panel.getByText(/^AI 建议：/)).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '记录', exact: true })).toBeDisabled();
+  await panel.getByRole('button', { name: '开始 AI 批改', exact: true }).click();
+  await expect(panel.getByRole('status')).toContainText('测试模型临时忙碌');
+  await expect(page.getByRole('button', { name: '记录', exact: true })).toBeDisabled();
+  await page.getByRole('button', { name: '不会', exact: true }).click();
+  await page.getByRole('button', { name: '记录', exact: true }).click();
+  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey);
+  expect(saved).toHaveLength(1); expect(saved[0].grade).toBe(0); expect(saved[0]).not.toHaveProperty('ai');
+  expect(calls).toBe(2);
+});
+
+test('忽略看不清的AI转写后，手动评分不携带原建议', async ({ page, context }) => {
+  await context.route('**/api/health', route => route.fulfill({ json: { ok: true, ai: false, sync: false, model: '' } }));
+  await page.goto(base + '/#/p/zt2026-10');
+  const panel = page.locator('.ai-panel');
+  await panel.locator('summary').click();
+  await panel.getByLabel('批改结果 JSON').fill(JSON.stringify({ ...result, problemId: 'zt2026-10', transcript: '[看不清]' }));
+  await panel.getByRole('button', { name: '读取批改结果' }).click();
+  await expect(panel.getByText('AI 建议：部分对', { exact: true })).toBeVisible();
+  await panel.getByRole('button', { name: '忽略 AI 建议' }).click();
+  await expect(page.getByRole('button', { name: '记录', exact: true })).toBeDisabled();
+  await page.getByRole('button', { name: '全对', exact: true }).click();
+  await page.getByRole('button', { name: '记录', exact: true }).click();
+  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey);
+  expect(saved[0].grade).toBe(3); expect(saved[0]).not.toHaveProperty('ai');
+  await page.goto(base + '/#/settings');
+  await expect(page.locator('.grading-audit')).toContainText('暂无已确认的辅助批改记录');
+});

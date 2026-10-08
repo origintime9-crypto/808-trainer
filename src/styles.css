@@ -202,6 +202,11 @@ button.wide { width: 100%; padding: 10px; margin-top: 12px; }
 .tag.on { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
 .result { border-left: 4px solid var(--brand); }
 textarea.note { width: 100%; min-height: 80px; font: inherit; padding: 8px; border: 1px solid var(--line); border-radius: 8px; resize: vertical; }
+.external-grade { margin: 14px 0; }
+.external-grade label { display: block; margin: 10px 0; }
+.external-grade select { margin-left: 8px; }
+.external-grade textarea { display: block; width: 100%; font: inherit; padding: 8px; border: 1px solid var(--line); border-radius: 8px; resize: vertical; }
+.grading-audit li { overflow-wrap: anywhere; }
 .history, .links { padding-left: 1.2em; margin: 0; font-size: 0.9rem; }
 .g0 { color: var(--bad); } .g1 { color: var(--warn); } .g2 { color: #3a7bbf; } .g3 { color: var(--good); }
 

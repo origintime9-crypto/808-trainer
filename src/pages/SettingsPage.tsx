@@ -4,6 +4,7 @@ import { eventStorageError, exportJson, parseImport, rawEventStorage } from '../
 import { dateLabel } from '../format';
 import { app, useEvents, useSettings } from '../state';
 import { refreshHealth, syncNow, useSyncStatus } from '../engine/sync';
+import { gradingAudit } from '../engine/grading';
 
 export function SettingsPage() {
   const settings = useSettings();
@@ -12,6 +13,7 @@ export function SettingsPage() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [msg, setMsg] = useState('');
   const storageError = eventStorageError();
+  const grading = gradingAudit(events, Date.now());
 
   const download = (text: string, name: string) => {
     const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
@@ -70,6 +72,15 @@ export function SettingsPage() {
         <h2>拍照批改</h2>
         <label className="check-label"><input type="checkbox" checked={settings.aiEnabled} disabled={!sync.health?.ai} onChange={e => app.updateSettings({ aiEnabled: e.target.checked })} />开启拍照 AI 批改</label>
         <p className="muted small">{sync.health?.ai ? `模型：${sync.health.model}。每次批改前由你选择照片并点击发送。` : '暂未配置批改模型。接口已保留，可接入 Gemini；当前可使用「复制批改提示词」。'}</p>
+        <p className="muted small">接口忙碌时，可复制题目提示词到 Gemini 或 ChatGPT，附上作答照片，再将 JSON 批改结果粘贴回题目页。识别、评分都要核对，点击「记录」才保存和同步。</p>
+      </section>
+
+      <section className="card grading-audit">
+        <h2>批改复核记录</h2>
+        <p className="muted small">掌握度、错题本和模拟卷估分使用你最终确认的评分。AI 原建议保留供复核；未确认、超时或格式错误的结果不计入这里。</p>
+        <div className="readiness-stats"><div><b>{grading.confirmed}</b><small>已确认的辅助批改记录</small></div><div><b>{grading.adjusted}</b><small>人工调整评分的记录</small></div><div><b>{grading.unclear}</b><small>转写含 [看不清] 的记录</small></div></div>
+        {grading.models.length ? <ul>{grading.models.map(row => <li key={row.model}>{row.model}：{row.confirmed} 条，调整评分 {row.adjusted} 条，转写含 [看不清] {row.unclear} 条。</li>)}</ul> : <p className="muted small">暂无已确认的辅助批改记录。</p>}
+        <p className="muted small">这些数量反映你的复核记录，不能当作模型的识别准确率。照片不保存；转写有误时可在题目页忽略 AI 建议后手动评分。</p>
       </section>
 
       <section className="card form">

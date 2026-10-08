@@ -2,7 +2,7 @@ import type { Problem } from '../types';
 import { MISTAKE_TAGS } from '../types';
 import { problemScore, sourceLabel } from '../format';
 
-/** 生成可粘贴到 ChatGPT 的批改提示词（配合手写作答照片使用） */
+/** 生成批改提示词，配合手写作答照片使用。 */
 export function buildGradePrompt(p: Problem, scoreOverride?: number): string {
   const score = scoreOverride ?? problemScore(p);
   return [
@@ -25,6 +25,14 @@ export function buildGradePrompt(p: Problem, scoreOverride?: number): string {
     '【参考解答】',
     p.solution,
   ].join('\n');
+}
+
+export function buildExternalGradePrompt(p: Problem, scoreOverride?: number): string {
+  const score = scoreOverride ?? problemScore(p);
+  return buildGradePrompt(p, scoreOverride) + '\n\n【返回格式】\n' +
+    '仅返回一个 JSON 对象，便于我粘贴回刷题网页。problemId 必须原样保留；grade 为数字 0/1/2/3，按照片实际作答评分；tags 仅用上述五类错因。' +
+    '下面字段值只作格式示意，请替换为实际识别和判断结果。公式中的反斜杠按 JSON 正确转义；看不清标[看不清]。\n' +
+    JSON.stringify({ problemId: p.id, transcript: '关键步骤转写', steps: [{ step: '步骤', ok: true, comment: '判断依据' }], grade: 0, tags: [], feedback: '改进建议', ...(score ? { score: 0 } : {}) }, null, 2);
 }
 
 export async function copyText(text: string): Promise<boolean> {

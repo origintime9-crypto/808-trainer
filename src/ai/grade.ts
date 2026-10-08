@@ -50,13 +50,31 @@ export function buildGradeRequest(p: Problem, model: string, photos: string[], s
     ],
   };
 }
-export function parseAiResult(text: string, model: string): AiResult | null {
+function gradeObjects(text: string): Record<string, unknown>[] {
   const candidates = [text, text.match(/```(?:json)?\s*([\s\S]*?)```/i)?.[1], text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1)].filter(Boolean);
+  const objects: Record<string, unknown>[] = [];
   for (const raw of candidates) {
     // 模型把 \frac 等命令只转义一次时，JSON 的 \f 会变成换页字符。
     // 只恢复已知 LaTeX 命令，正常的双反斜杠和换行不改动；raw 保留原文。
     const repaired = raw!.replace(/(?<!\\)\\(?=(?:frac|dfrac|tfrac|begin|bar|beta|mathbf|boldsymbol|right|rho|rangle|rightarrow|mathrm|text|texttt|times|tau|theta|to|top|tilde|int|sum|prod|lim|infty|delta|alpha|omega|pi|cdot|left|operatorname|cos|sin|exp|quad|qquad|le|ge|ldots|dots|sqrt|underbrace|end)(?![A-Za-z]))/g, '\\\\');
-    try { const parsed = JSON.parse(repaired); const result = readAiResult({ ...parsed, model }); if (result) return result; } catch { /* 保留原文供人工评分 */ }
+    try { const parsed = JSON.parse(repaired); if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) objects.push(parsed); } catch { /* 保留原文供人工评分 */ }
+  }
+  return objects;
+}
+export function parseAiResult(text: string, model: string): AiResult | null {
+  for (const parsed of gradeObjects(text)) { const result = readAiResult({ ...parsed, model }); if (result) return result; }
+  return null;
+}
+/** 网页/应用的批改文字仅按当前题号导入，未知字段和照片不进入记录。 */
+export function parseExternalGrade(text: string, p: Problem, source: 'Gemini' | 'ChatGPT', scoreOverride?: number): AiResult | null {
+  if (text.length > 200_000) return null;
+  for (const parsed of gradeObjects(text)) {
+    if (parsed.problemId !== p.id) continue;
+    const result = readAiResult({ ...parsed, model: `${source}（手动导入）` });
+    if (!result || /data:image\//i.test(JSON.stringify(result))) continue;
+    const maxScore = scoreOverride ?? problemScore(p);
+    if (result.score !== undefined && (!maxScore || result.score > maxScore)) delete result.score;
+    return result;
   }
   return null;
 }

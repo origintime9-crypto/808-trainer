@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { buildGradePrompt, copyText } from '../ai/prompt';
+import { buildExternalGradePrompt, copyText } from '../ai/prompt';
 import { Md } from '../components/Markdown';
 import { AiGradePanel } from '../components/AiGradePanel';
 import { NoteEditor } from '../components/NoteEditor';
@@ -68,8 +68,8 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
   const navigate = (target: string) => onNavigate ? onNavigate(target) : go(`#/p/${target}`);
 
   const copyPrompt = async () => {
-    const ok = await copyText(buildGradePrompt(p, exam?.score));
-    setCopied(ok ? '已复制。打开 ChatGPT，粘贴后附上作答照片即可。' : '复制失败，请检查浏览器权限。');
+    const ok = await copyText(buildExternalGradePrompt(p, exam?.score));
+    setCopied(ok ? '已复制。粘贴到 Gemini 或 ChatGPT 并附上作答照片，再把返回的 JSON 粘贴到本页批改区。' : '复制失败，请检查浏览器权限。');
   };
 
   return (
@@ -135,7 +135,7 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
         {copied && <p className="hint">{copied}</p>}
       </section>
 
-      {!p.options && <AiGradePanel problem={p} maxScore={exam?.score} disabled={submitted} onResult={r => { setAi(r); setGrade(r.grade); setTags(r.tags); reveal(); }} />}
+      {!p.options && <AiGradePanel problem={p} maxScore={exam?.score} disabled={submitted} onResult={r => { setAi(r ?? undefined); setGrade(r?.grade ?? null); setTags(r?.tags ?? []); if (r) reveal(); }} />}
 
       {shown && (
         <section className="card answer">
@@ -145,7 +145,7 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
           <Md>{p.solution}</Md>
           {p.note && <p className="note-src">说明：{p.note}</p>}
           {!copied && !p.options && (
-            <button className="ghost small" onClick={copyPrompt}>复制批改提示词（发给 ChatGPT 帮你看步骤）</button>
+            <button className="ghost small" onClick={copyPrompt}>复制批改提示词（发给 Gemini 或 ChatGPT）</button>
           )}
         </section>
       )}
