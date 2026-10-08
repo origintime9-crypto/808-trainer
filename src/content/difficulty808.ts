@@ -21,12 +21,12 @@ const referenceLevels: Record<string, DemandLevel> = {
   'zt2026-5-1': 1, 'zt2026-5-2': 2,
   'zt2026-6': 3, 'zt2026-7': 3, 'zt2026-8': 2, 'zt2026-9': 3, 'zt2026-10': 3,
 };
-const basic = new Set(['delta-sift', 'ft-basic', 'ft-property', 'concept']);
+const basic = new Set(['delta-sift', 'ft-basic', 'ft-property', 'fourier-series', 'concept']);
 const integrated = new Set(['full-response-decomp', 'hz-roc-all', 'zp-h0']);
 const methods: Record<string, string> = {
   'delta-sift': 'delta', 'sys-prop': 'properties', waveform: 'waveform', period: 'period',
   'conv-integral': 'continuous-convolution', 'conv-sum': 'discrete-convolution',
-  'ft-basic': 'fourier', 'ft-property': 'fourier', nyquist: 'sampling',
+  'ft-basic': 'fourier', 'ft-property': 'fourier', 'fourier-series': 'fourier-series', nyquist: 'sampling',
   'sine-steady': 'frequency-response', 'filter-output': 'frequency-response',
   'ft-exist-from-Hs': 'existence', 'block-to-Hs': 'continuous-diagram',
   'ode-to-diagram': 'continuous-diagram', 'zp-h0': 'pole-zero-response',

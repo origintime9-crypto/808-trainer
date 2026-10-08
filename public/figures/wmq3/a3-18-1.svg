@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="360" viewBox="0 0 660 360" role="img">
+<title>3.18(1) 两个中心矩形的卷积</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="660" height="360" fill="white"/>
+<text x="330" y="34" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3.18(1) 对称梯形（等宽时为三角形）</text>
+<path d="M40 260H620" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M330 292V70" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="70.00,260.00 130.00,260.00 250.00,120.00 410.00,120.00 530.00,260.00 590.00,260.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="130" y="290" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">−a</text>
+<text x="250.0" y="290" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">−b</text>
+<text x="330" y="290" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">0</text>
+<text x="410.0" y="290" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">b</text>
+<text x="530" y="290" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">a</text>
+<text x="330" y="105" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">E₁E₂m</text>
+<text x="330" y="327" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">a=(τ₁+τ₂)/2，b=|τ₁−τ₂|/2，m=min(τ₁,τ₂)</text>
+</svg>

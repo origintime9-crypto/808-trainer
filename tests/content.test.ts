@@ -39,6 +39,7 @@ describe('内容完整性', () => {
     expected['tk-exam-30'] = 25;
     expected.wmq1 = 25;
     expected.wmq2 = 34;
+    expected.wmq3 = 51;
     for (const paper of papers) expect(all.filter(s => s.paper === paper.id).length, paper.id).toBe(expected[paper.id]);
     expect(cards.filter(c => !c.id.startsWith('pattern-'))).toHaveLength(100);
     expect(all.filter(s => s.paper === 'zt2026').reduce((sum, s) => sum + (s.score ?? 0), 0)).toBe(150);

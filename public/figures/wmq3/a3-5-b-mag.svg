@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="350" viewBox="0 0 660 350" role="img">
+<title>3.5(b) 双边幅度 |Cₙ| / E</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="660" height="350" fill="white"/>
+<text x="330" y="33" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3.5(b) 双边幅度 |Cₙ| / E</text>
+<path d="M35 260H620" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M330.0 294V59" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="632" y="267" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">n</text>
+<path d="M65.0 260v4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<path d="M118.0 260v4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<path d="M171.0 260v4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<path d="M224.0 260v4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<path d="M277.0 260v4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<path d="M330.0 260v4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<path d="M383.0 260v4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<path d="M436.0 260v4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<path d="M489.0 260v4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<path d="M542.0 260v4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<path d="M595.0 260v4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<path d="M65.0 260V250.1323935283025" fill="none" stroke="#334155" stroke-width="3"/>
+<circle cx="65.00" cy="250.13" r="4" fill="#2563eb"/>
+<path d="M118.0 260V247.6654919103781" fill="none" stroke="#334155" stroke-width="3"/>
+<circle cx="118.00" cy="247.67" r="4" fill="#2563eb"/>
+<path d="M171.0 260V243.5539892138375" fill="none" stroke="#334155" stroke-width="3"/>
+<circle cx="171.00" cy="243.55" r="4" fill="#2563eb"/>
+<path d="M224.0 260V235.33098382075622" fill="none" stroke="#334155" stroke-width="3"/>
+<circle cx="224.00" cy="235.33" r="4" fill="#2563eb"/>
+<path d="M277.0 260V210.66196764151243" fill="none" stroke="#334155" stroke-width="3"/>
+<circle cx="277.00" cy="210.66" r="4" fill="#2563eb"/>
+<path d="M330.0 260V105.0" fill="none" stroke="#334155" stroke-width="3"/>
+<circle cx="330.00" cy="105.00" r="4" fill="#2563eb"/>
+<path d="M383.0 260V210.66196764151243" fill="none" stroke="#334155" stroke-width="3"/>
+<circle cx="383.00" cy="210.66" r="4" fill="#2563eb"/>
+<path d="M436.0 260V235.33098382075622" fill="none" stroke="#334155" stroke-width="3"/>
+<circle cx="436.00" cy="235.33" r="4" fill="#2563eb"/>
+<path d="M489.0 260V243.5539892138375" fill="none" stroke="#334155" stroke-width="3"/>
+<circle cx="489.00" cy="243.55" r="4" fill="#2563eb"/>
+<path d="M542.0 260V247.6654919103781" fill="none" stroke="#334155" stroke-width="3"/>
+<circle cx="542.00" cy="247.67" r="4" fill="#2563eb"/>
+<path d="M595.0 260V250.1323935283025" fill="none" stroke="#334155" stroke-width="3"/>
+<circle cx="595.00" cy="250.13" r="4" fill="#2563eb"/>
+<text x="65.0" y="284" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">-5</text>
+<text x="118.0" y="284" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">-4</text>
+<text x="171.0" y="284" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">-3</text>
+<text x="224.0" y="284" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">-2</text>
+<text x="277.0" y="284" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">-1</text>
+<text x="330.0" y="284" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">0</text>
+<text x="383.0" y="284" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">1</text>
+<text x="436.0" y="284" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">2</text>
+<text x="489.0" y="284" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">3</text>
+<text x="542.0" y="284" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">4</text>
+<text x="595.0" y="284" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">5</text>
+<text x="330.0" y="93.0" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">1/2</text>
+<text x="277.0" y="198.66196764151243" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">1/(2π)</text>
+<text x="383.0" y="198.66196764151243" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">1/(2π)</text>
+<text x="330" y="329" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω₀=2π/T；直流为 E/2，与 T 无关</text>
+</svg>
