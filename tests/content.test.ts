@@ -36,6 +36,7 @@ describe('内容完整性', () => {
     const all = problems.flatMap(p => p.sources);
     expect(new Set(all.map(s => `${s.paper}:${s.no}`)).size).toBe(all.length);
     Object.assign(expected, { 'tk-exam-16': 22, 'tk-exam-17': 27, 'tk-exam-18': 23, 'tk-exam-19': 22, 'tk-exam-20': 27, 'tk-exam-21': 27, 'tk-exam-22': 21, 'tk-exam-23': 20, 'tk-exam-24': 25, 'tk-exam-25': 22, 'tk-exam-26': 24, 'tk-exam-27': 27, 'tk-exam-28': 25, 'tk-exam-29': 29, 'ext-xaut2024': 13, 'ext-sau2024': 12, 'ext-sxu2024': 8 });
+    expected['tk-exam-30'] = 25;
     for (const paper of papers) expect(all.filter(s => s.paper === paper.id).length, paper.id).toBe(expected[paper.id]);
     expect(cards.filter(c => !c.id.startsWith('pattern-'))).toHaveLength(100);
     expect(all.filter(s => s.paper === 'zt2026').reduce((sum, s) => sum + (s.score ?? 0), 0)).toBe(150);
@@ -116,6 +117,10 @@ describe('内容完整性', () => {
     const course29 = all.filter(s => s.paper === 'tk-exam-29');
     expect(course29.filter(s => s.score !== undefined)).toHaveLength(12);
     expect(course29.reduce((sum, s) => sum + (s.score ?? 0), 0)).toBe(50);
+    // 课程30填空及计算二/三/四/五明确计分，拆问不擅自平分。
+    const course30 = all.filter(s => s.paper === 'tk-exam-30');
+    expect(course30.filter(s => s.score !== undefined)).toHaveLength(14);
+    expect(course30.reduce((sum, s) => sum + (s.score ?? 0), 0)).toBe(70);
   });
   it('id 唯一', () => {
     for (const list of [knowledge, patterns, problems, cards]) {

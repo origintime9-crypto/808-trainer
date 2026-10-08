@@ -50,13 +50,37 @@ import { tkExam26 } from './problems/tk-exam-26';
 import { tkExam27 } from './problems/tk-exam-27';
 import { tkExam28 } from './problems/tk-exam-28';
 import { tkExam29 } from './problems/tk-exam-29';
+import { tkExam30 } from './problems/tk-exam-30';
 import { xaut2024, sau2024, sxu2024 } from './problems/external';
 
 export { knowledge, CHAPTERS, papers, patterns };
 
-const allProblems: Problem[] = [...zt2026, ...zt2023, ...zt2024, ...zt2025, ...zt2018, ...zt2017, ...zt2016, ...choicesShared, ...zpShared, ...tkReview, ...tkTotal, ...hw1, ...hw2, ...hw3, ...hw4, ...hw5, ...hw6, ...hw7, ...tkKey, ...tkExam01, ...tkExam02, ...tkExam03, ...tkExam04, ...tkExam05, ...tkExam06, ...tkExam07, ...tkExam08, ...tkExam09, ...tkExam10, ...tkExam11, ...tkExam12, ...tkExam13, ...tkExam14, ...tkExam15, ...tkExam16, ...tkExam17, ...tkExam18, ...tkExam19, ...tkExam20, ...tkExam21, ...tkExam22, ...tkExam23, ...tkExam24, ...tkExam25, ...tkExam26, ...tkExam27, ...tkExam28, ...tkExam29, ...xaut2024, ...sau2024, ...sxu2024];
+const allProblems: Problem[] = [...zt2026, ...zt2023, ...zt2024, ...zt2025, ...zt2018, ...zt2017, ...zt2016, ...choicesShared, ...zpShared, ...tkReview, ...tkTotal, ...hw1, ...hw2, ...hw3, ...hw4, ...hw5, ...hw6, ...hw7, ...tkKey, ...tkExam01, ...tkExam02, ...tkExam03, ...tkExam04, ...tkExam05, ...tkExam06, ...tkExam07, ...tkExam08, ...tkExam09, ...tkExam10, ...tkExam11, ...tkExam12, ...tkExam13, ...tkExam14, ...tkExam15, ...tkExam16, ...tkExam17, ...tkExam18, ...tkExam19, ...tkExam20, ...tkExam21, ...tkExam22, ...tkExam23, ...tkExam24, ...tkExam25, ...tkExam26, ...tkExam27, ...tkExam28, ...tkExam29, ...tkExam30, ...xaut2024, ...sau2024, ...sxu2024];
 // 完全同题合并来源，保留最早录入的编号；选项不同的变式仍保留。
 const duplicateOf: Record<string, string> = {
+  'tk-exam-30-1-1': 'tk-exam-07-1-1',
+  'tk-exam-30-1-2': 'tk-exam-07-1-2',
+  'tk-exam-30-1-3': 'tk-exam-07-1-3',
+  'tk-exam-30-1-4': 'tk-exam-07-1-4',
+  'tk-exam-30-1-5': 'tk-exam-07-1-5',
+  'tk-exam-30-1-6': 'tk-exam-11-1-10',
+  'tk-exam-30-1-7': 'tk-exam-12-1-7',
+  'tk-exam-30-1-8': 'tk-exam-08-1-8',
+  'tk-exam-30-1-9': 'hw5-5-2-2',
+  'tk-exam-30-1-10': 'tk-exam-08-1-10',
+  'tk-exam-30-21-1': 'tk-exam-07-22-1',
+  'tk-exam-30-21-2': 'tk-exam-07-22-2',
+  'tk-exam-30-2-3': 'tk-exam-07-2-1',
+  'tk-exam-30-2-5': 'tk-exam-06-2-4',
+  'tk-exam-30-31-1': 'tk-exam-10-32-1',
+  'tk-exam-30-31-2': 'tk-exam-10-32-2',
+  'tk-exam-30-31-3': 'tk-exam-10-32-3',
+  'tk-exam-30-32-1': 'tk-review-23-1',
+  'tk-exam-30-32-2a': 'tk-exam-07-32-2a',
+  'tk-exam-30-32-2b': 'tk-exam-07-32-2b',
+  'tk-exam-30-32-2c': 'tk-exam-07-32-2c',
+  'tk-exam-30-32-3': 'tk-review-23-2',
+  'tk-exam-30-32-4': 'tk-exam-07-32-4',
   'tk-exam-29-1-1': 'tk-exam-11-1-1',
   'tk-exam-29-1-2': 'tk-exam-11-1-2',
   'tk-exam-29-1-3': 'tk-exam-11-1-3',
