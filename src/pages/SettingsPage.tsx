@@ -125,7 +125,7 @@ export function SettingsPage() {
       <section className="card">
         <h2>题库概况</h2>
         <p>
-          试卷 {papers.length} 套，题目 {problems.length} 道，知识卡片 {cards.length} 张；本机记录 {events.length} 条。
+          资料 {papers.length} 组，其中课程题库 {papers.filter(p => /^tk-exam-\d+$/.test(p.id)).length} 套；题目 {problems.length} 道，知识卡片 {cards.length} 张；本机记录 {events.length} 条。
         </p>
         <p className="muted small">
           解答独立求解，数值与变换关系用 SymPy 复核；标「已勘误」的题写明资料中的错误。回忆卷内容不清或缺失时标「存疑」，请结合题目说明使用。

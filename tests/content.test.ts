@@ -37,6 +37,7 @@ describe('内容完整性', () => {
     expect(new Set(all.map(s => `${s.paper}:${s.no}`)).size).toBe(all.length);
     Object.assign(expected, { 'tk-exam-16': 22, 'tk-exam-17': 27, 'tk-exam-18': 23, 'tk-exam-19': 22, 'tk-exam-20': 27, 'tk-exam-21': 27, 'tk-exam-22': 21, 'tk-exam-23': 20, 'tk-exam-24': 25, 'tk-exam-25': 22, 'tk-exam-26': 24, 'tk-exam-27': 27, 'tk-exam-28': 25, 'tk-exam-29': 29, 'ext-xaut2024': 13, 'ext-sau2024': 12, 'ext-sxu2024': 8 });
     expected['tk-exam-30'] = 25;
+    expected.wmq1 = 25;
     for (const paper of papers) expect(all.filter(s => s.paper === paper.id).length, paper.id).toBe(expected[paper.id]);
     expect(cards.filter(c => !c.id.startsWith('pattern-'))).toHaveLength(100);
     expect(all.filter(s => s.paper === 'zt2026').reduce((sum, s) => sum + (s.score ?? 0), 0)).toBe(150);

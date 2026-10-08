@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="700" viewBox="0 0 660 700" role="img">
+<title>奇偶分量；竖线只表示左右极限的跳变</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="660" height="700" fill="white"/>
+<text x="330" y="33" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">偶分量 fₑ(t)</text>
+<path d="M38 180.0H617" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M325.5 292V52" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="632" y="187.0" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<path d="M176.8888888888889 180.0v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="176.8888888888889" y="207.0" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">−1</text>
+<path d="M325.5 180.0v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="325.5" y="207.0" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">0</text>
+<path d="M474.1111111111111 180.0v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="474.1111111111111" y="207.0" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">1</text>
+<polyline points="87.72,180.00 176.89,180.00 176.89,110.00 325.50,180.00 474.11,110.00 474.11,180.00 563.28,180.00" fill="none" stroke="#0f766e" stroke-width="3.2"/>
+<path d="M321.5 250.0h4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="315.5" y="257.0" text-anchor="end" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">−1/2</text>
+<path d="M321.5 110.0h4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="315.5" y="117.0" text-anchor="end" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">1/2</text>
+<text x="330" y="327" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">竖线表示跳变，不指定跳变单点的取值</text>
+<text x="330" y="383" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">奇分量 fₒ(t)</text>
+<path d="M38 530.0H617" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M325.5 642V402" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="632" y="537.0" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<path d="M176.8888888888889 530.0v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="176.8888888888889" y="557.0" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">−1</text>
+<path d="M325.5 530.0v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="325.5" y="557.0" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">0</text>
+<path d="M474.1111111111111 530.0v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="474.1111111111111" y="557.0" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">1</text>
+<polyline points="87.72,530.00 176.89,530.00 176.89,600.00 474.11,460.00 474.11,530.00 563.28,530.00" fill="none" stroke="#0f766e" stroke-width="3.2"/>
+<path d="M321.5 600.0h4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="315.5" y="607.0" text-anchor="end" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">−1/2</text>
+<path d="M321.5 460.0h4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="315.5" y="467.0" text-anchor="end" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">1/2</text>
+<text x="330" y="677" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">竖线表示跳变，不指定跳变单点的取值</text>
+</svg>

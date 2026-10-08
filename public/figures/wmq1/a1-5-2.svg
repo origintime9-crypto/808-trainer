@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="350" viewBox="0 0 660 350" role="img">
+<title>f(−2−t)u(−t)</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="660" height="350" fill="white"/>
+<text x="330" y="33" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">f(−2−t)u(−t)</text>
+<path d="M38 265.61538461538464H617" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M520.0454545454545 292V52" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="632" y="272.61538461538464" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<path d="M155.27272727272725 265.61538461538464v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="155.27272727272725" y="292.61538461538464" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">−3</text>
+<path d="M398.45454545454544 265.61538461538464v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="398.45454545454544" y="292.61538461538464" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">−1</text>
+<path d="M520.0454545454545 265.61538461538464v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="520.0454545454545" y="292.61538461538464" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">0</text>
+<polyline points="58.00,265.62 155.27,265.62 155.27,104.08 398.45,265.62 593.00,265.62" fill="none" stroke="#0f766e" stroke-width="3.2"/>
+<path d="M516.0454545454545 184.84615384615387h4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="510.0454545454545" y="191.84615384615387" text-anchor="end" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">A/2</text>
+<path d="M516.0454545454545 104.07692307692307h4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="510.0454545454545" y="111.07692307692307" text-anchor="end" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">A</text>
+<text x="330" y="327" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">非零区间 (−3, −1)，门函数不再截断</text>
+</svg>
