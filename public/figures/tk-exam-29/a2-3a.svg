@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="386" viewBox="0 0 720 386" role="img">
+<title>三谐波信号复级数系数的双边幅度谱</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="386" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">双边幅度谱 |Cₙ|：第二谐波幅度1</text>
+<path d="M56 267H690" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M360 283V64" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M126 267V225.0" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="126" cy="225.0" r="4" fill="#0f766e"/>
+<text x="126" y="213.0" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0.5</text>
+<text x="126" y="299" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−3</text>
+<path d="M204 267V183" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="204" cy="183" r="4" fill="#0f766e"/>
+<text x="204" y="171" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="204" y="299" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−2</text>
+<path d="M282 267V99" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="282" cy="99" r="4" fill="#0f766e"/>
+<text x="282" y="87" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<text x="282" y="299" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<path d="M360 267V183" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="360" cy="183" r="4" fill="#0f766e"/>
+<text x="378" y="171" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="350" y="299" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M438 267V99" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="438" cy="99" r="4" fill="#0f766e"/>
+<text x="438" y="87" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<text x="438" y="299" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M516 267V183" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="516" cy="183" r="4" fill="#0f766e"/>
+<text x="516" y="171" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="516" y="299" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<path d="M594 267V225.0" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="594" cy="225.0" r="4" fill="#0f766e"/>
+<text x="594" y="213.0" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0.5</text>
+<text x="594" y="299" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<text x="675" y="321" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω/ω₀</text>
+<text x="328" y="77" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">|Cₙ|</text>
+<text x="360" y="348" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">C₀=1；未列出的整数谐波系数为0</text>
+<text x="360" y="376" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">若画广义FT，谱线强度另乘2π</text>
+</svg>
