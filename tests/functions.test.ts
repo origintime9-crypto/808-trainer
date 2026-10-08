@@ -111,6 +111,7 @@ describe('云端接口', () => {
       expect((init.headers as Record<string, string>).Authorization).toBe('Bearer test-gemini-secret');
       const received = JSON.parse(await new Response(init.body).text());
       expect(received.model).toBe(model);
+      expect(received).not.toHaveProperty('temperature');
       expect(received.response_format.type).toBe('json_schema');
       expect(received.messages[1].content).toContainEqual({ type: 'image_url', image_url: { url: 'data:image/jpeg;base64,dGVzdA==' } });
       expect(received.messages[1].content[0].text).toContain('【标准答案】');

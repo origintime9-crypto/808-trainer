@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="351" viewBox="0 0 720 351" role="img">
+<title>课程23一3：原LT的因果开关区间，不是累计斜坡</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="351" fill="white"/>
+<text x="360" y="29" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">f=Σ(−1)ⁿu(t−n)：每两秒的开关波段</text>
+<path d="M42 241H690" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M88 265V79" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="43.00,241.00 88.00,241.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="88.00,115.00 175.00,115.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="88" cy="115" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<circle cx="175" cy="115" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<path d="M88 241V115" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4 4"/>
+<text x="77" y="271" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<polyline points="175.00,241.00 262.00,241.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="175" cy="241" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<circle cx="262" cy="241" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<path d="M175 241V115" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4 4"/>
+<text x="175" y="271" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<polyline points="262.00,115.00 349.00,115.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="262" cy="115" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<circle cx="349" cy="115" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<path d="M262 241V115" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4 4"/>
+<text x="262" y="271" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<polyline points="349.00,241.00 436.00,241.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="349" cy="241" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<circle cx="436" cy="241" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<path d="M349 241V115" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4 4"/>
+<text x="349" y="271" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<polyline points="436.00,115.00 523.00,115.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="436" cy="115" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<circle cx="523" cy="115" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<path d="M436 241V115" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4 4"/>
+<text x="436" y="271" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">4</text>
+<polyline points="523.00,241.00 610.00,241.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="523" cy="241" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<circle cx="610" cy="241" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<path d="M523 241V115" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4 4"/>
+<text x="523" y="271" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">5</text>
+<polyline points="610.00,115.00 670.90,115.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="610" cy="115" r="4" fill="white" stroke="#0f766e" stroke-width="2"/>
+<path d="M610 241V115" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4 4"/>
+<text x="610" y="271" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">6</text>
+<text x="67" y="121" text-anchor="end" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="119" y="88" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">f(t)</text>
+<text x="689" y="271" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<text x="360" y="314" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">开圈不规定跳点；t&lt;0按因果扩展为0</text>
+<text x="360" y="341" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2m&lt;t&lt;2m+1为1，下一秒为0；m≥0</text>
+</svg>
