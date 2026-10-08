@@ -48,13 +48,28 @@ import { tkExam24 } from './problems/tk-exam-24';
 import { tkExam25 } from './problems/tk-exam-25';
 import { tkExam26 } from './problems/tk-exam-26';
 import { tkExam27 } from './problems/tk-exam-27';
+import { tkExam28 } from './problems/tk-exam-28';
 import { xaut2024, sau2024, sxu2024 } from './problems/external';
 
 export { knowledge, CHAPTERS, papers, patterns };
 
-const allProblems: Problem[] = [...zt2026, ...zt2023, ...zt2024, ...zt2025, ...zt2018, ...zt2017, ...zt2016, ...choicesShared, ...zpShared, ...tkReview, ...tkTotal, ...hw1, ...hw2, ...hw3, ...hw4, ...hw5, ...hw6, ...hw7, ...tkKey, ...tkExam01, ...tkExam02, ...tkExam03, ...tkExam04, ...tkExam05, ...tkExam06, ...tkExam07, ...tkExam08, ...tkExam09, ...tkExam10, ...tkExam11, ...tkExam12, ...tkExam13, ...tkExam14, ...tkExam15, ...tkExam16, ...tkExam17, ...tkExam18, ...tkExam19, ...tkExam20, ...tkExam21, ...tkExam22, ...tkExam23, ...tkExam24, ...tkExam25, ...tkExam26, ...tkExam27, ...xaut2024, ...sau2024, ...sxu2024];
+const allProblems: Problem[] = [...zt2026, ...zt2023, ...zt2024, ...zt2025, ...zt2018, ...zt2017, ...zt2016, ...choicesShared, ...zpShared, ...tkReview, ...tkTotal, ...hw1, ...hw2, ...hw3, ...hw4, ...hw5, ...hw6, ...hw7, ...tkKey, ...tkExam01, ...tkExam02, ...tkExam03, ...tkExam04, ...tkExam05, ...tkExam06, ...tkExam07, ...tkExam08, ...tkExam09, ...tkExam10, ...tkExam11, ...tkExam12, ...tkExam13, ...tkExam14, ...tkExam15, ...tkExam16, ...tkExam17, ...tkExam18, ...tkExam19, ...tkExam20, ...tkExam21, ...tkExam22, ...tkExam23, ...tkExam24, ...tkExam25, ...tkExam26, ...tkExam27, ...tkExam28, ...xaut2024, ...sau2024, ...sxu2024];
 // 完全同题合并来源，保留最早录入的编号；选项不同的变式仍保留。
 const duplicateOf: Record<string, string> = {
+  'tk-exam-28-1-1': 'tk-exam-06-1-1',
+  'tk-exam-28-1-2': 'tk-exam-06-1-2',
+  'tk-exam-28-1-3': 'tk-exam-06-1-3',
+  'tk-exam-28-1-4': 'tk-exam-06-1-4',
+  'tk-exam-28-1-5': 'tk-exam-06-1-5',
+  'tk-exam-28-1-6': 'tk-exam-11-1-6',
+  'tk-exam-28-1-7': 'tk-exam-11-1-7',
+  'tk-exam-28-1-8': 'tk-exam-11-1-8',
+  'tk-exam-28-1-9': 'tk-exam-11-1-9',
+  'tk-exam-28-1-10': 'tk-exam-11-1-10',
+  'tk-exam-28-32-1a': 'tk-exam-11-23-1a',
+  'tk-exam-28-32-1b': 'tk-exam-11-23-1b',
+  'tk-exam-28-32-1c': 'tk-exam-11-23-1c',
+  'tk-exam-28-32-2': 'tk-exam-11-23-2',
   'tk-exam-27-1-1': 'tk-exam-05-1-1',
   'tk-exam-27-1-2': 'tk-exam-05-1-2',
   'tk-exam-27-1-3': 'zt2023-1-5',

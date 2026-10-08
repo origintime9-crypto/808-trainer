@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="486" viewBox="0 0 720 486" role="img">
+<title>级联基本单元：两个延时器，反馈+1/2、前馈−2及反馈−1/2</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="486" fill="white"/>
+<text x="360" y="29" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">级联实现：两个延时器</text>
+<circle cx="151" cy="122" r="18" fill="white" stroke="#334155" stroke-width="1.7"/>
+<text x="151" y="129" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Σ</text>
+<circle cx="379" cy="122" r="18" fill="white" stroke="#334155" stroke-width="1.7"/>
+<text x="379" y="129" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Σ</text>
+<circle cx="554" cy="122" r="18" fill="white" stroke="#334155" stroke-width="1.7"/>
+<text x="554" y="129" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Σ</text>
+<path d="M43 122H132" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="54" y="100" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">x[n]</text>
+<path d="M169 122H360" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="242" y="100" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">v[n]</text>
+<path d="M397 122H535" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="464" y="100" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">w[n]</text>
+<path d="M572 122H689" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="644" y="100" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y[n]</text>
+<circle cx="272" cy="122" r="3" fill="#334155"/>
+<path d="M272 122V205" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="243.0" y="206" width="58" height="40" fill="white" stroke="#334155" stroke-width="1.7"/>
+<text x="272" y="233" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">z⁻¹</text>
+<path d="M272 246V285H229" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="171.0" y="265" width="58" height="40" fill="white" stroke="#334155" stroke-width="1.7"/>
+<text x="200" y="292" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">+1/2</text>
+<path d="M171 285H151V141" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<circle cx="272" cy="285" r="3" fill="#334155"/>
+<path d="M272 285H321" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="321.0" y="265" width="58" height="40" fill="white" stroke="#334155" stroke-width="1.7"/>
+<text x="350" y="292" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−2</text>
+<path d="M379 285V141" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<circle cx="645" cy="122" r="3" fill="#334155"/>
+<path d="M645 122V205" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="616.0" y="206" width="58" height="40" fill="white" stroke="#334155" stroke-width="1.7"/>
+<text x="645" y="233" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">z⁻¹</text>
+<path d="M645 246V285H603" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="545.0" y="265" width="58" height="40" fill="white" stroke="#334155" stroke-width="1.7"/>
+<text x="574" y="292" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1/2</text>
+<path d="M545 285H515V170H554V141" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="272" y="330" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">存v[n−1]</text>
+<text x="645" y="330" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">存y[n−1]</text>
+<text x="360" y="377" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">v=x+(1/2)v[-1]；w=v−2v[-1]</text>
+<text x="360" y="412" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y=w−(1/2)y[-1]；增益符号只算一次</text>
+<text x="360" y="451" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">零初态回算H=(1−2q)/[(1−q/2)(1+q/2)]</text>
+</svg>

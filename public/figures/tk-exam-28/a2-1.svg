@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="484" viewBox="0 0 720 484" role="img">
+<title>矩形输入与一阶因果LTI时域输出：先上升，t=2之后指数衰减</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="484" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">x(t)=u(t)−u(t−2)，零状态时域输出</text>
+<path d="M62 167H690" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M137 182V68" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="81" y="81" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">x(t)</text>
+<path d="M137 167V172" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="127" y="196" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M235 167V172" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="235" y="196" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M333 167V172" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="333" y="196" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<path d="M431 167V172" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="431" y="196" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<path d="M529 167V172" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="529" y="196" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">4</text>
+<path d="M627 167V172" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="627" y="196" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">5</text>
+<text x="685" y="197" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<polyline points="83.10,167.00 137.00,167.00 137.00,77.00 333.00,77.00 333.00,167.00 646.60,167.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="121" y="84" text-anchor="end" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M62 371H690" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M137 386V272" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="81" y="285" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y(t)</text>
+<path d="M137 371V376" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="127" y="400" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M235 371V376" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="235" y="400" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M333 371V376" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="333" y="400" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<path d="M431 371V376" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="431" y="400" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<path d="M529 371V376" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="529" y="400" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">4</text>
+<path d="M627 371V376" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="627" y="400" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">5</text>
+<text x="685" y="401" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<polyline points="83.10,371.00 137.00,371.00 137.00,371.00 138.96,367.86 140.92,364.85 142.88,361.95 144.84,359.17 146.80,356.50 148.76,353.93 150.72,351.46 152.68,349.09 154.64,346.81 156.60,344.63 158.56,342.52 160.52,340.50 162.48,338.56 164.44,336.70 166.40,334.90 168.36,333.18 170.32,331.53 172.28,329.94 174.24,328.41 176.20,326.95 178.16,325.54 180.12,324.18 182.08,322.88 184.04,321.63 186.00,320.43 187.96,319.28 189.92,318.17 191.88,317.10 193.84,316.08 195.80,315.10 197.76,314.15 199.72,313.24 201.68,312.37 203.64,311.53 205.60,310.73 207.56,309.95 209.52,309.21 211.48,308.50 213.44,307.81 215.40,307.15 217.36,306.52 219.32,305.91 221.28,305.33 223.24,304.76 225.20,304.22 227.16,303.71 229.12,303.21 231.08,302.73 233.04,302.27 235.00,301.83 236.96,301.40 238.92,300.99 240.88,300.60 242.84,300.23 244.80,299.86 246.76,299.52 248.72,299.18 250.68,298.86 252.64,298.55 254.60,298.26 256.56,297.97 258.52,297.70 260.48,297.44 262.44,297.18 264.40,296.94 266.36,296.71 268.32,296.49 270.28,296.27 272.24,296.06 274.20,295.86 276.16,295.67 278.12,295.49 280.08,295.31 282.04,295.15 284.00,294.98 285.96,294.83 287.92,294.68 289.88,294.53 291.84,294.39 293.80,294.26 295.76,294.13 297.72,294.01 299.68,293.89 301.64,293.78 303.60,293.67 305.56,293.57 307.52,293.46 309.48,293.37 311.44,293.28 313.40,293.19 315.36,293.10 317.32,293.02 319.28,292.94 321.24,292.86 323.20,292.79 325.16,292.72 327.12,292.65 329.08,292.59 331.04,292.53 333.00,292.47 334.96,295.54 336.92,298.50 338.88,301.35 340.84,304.08 342.80,306.70 344.76,309.22 346.72,311.64 348.68,313.97 350.64,316.21 352.60,318.36 354.56,320.42 356.52,322.40 358.48,324.31 360.44,326.14 362.40,327.90 364.36,329.59 366.32,331.21 368.28,332.77 370.24,334.27 372.20,335.71 374.16,337.10 376.12,338.43 378.08,339.70 380.04,340.93 382.00,342.11 383.96,343.24 385.92,344.33 387.88,345.38 389.84,346.38 391.80,347.35 393.76,348.27 395.72,349.16 397.68,350.02 399.64,350.84 401.60,351.63 403.56,352.39 405.52,353.12 407.48,353.82 409.44,354.50 411.40,355.14 413.36,355.77 415.32,356.36 417.28,356.94 419.24,357.49 421.20,358.02 423.16,358.53 425.12,359.02 427.08,359.49 429.04,359.94 431.00,360.37 432.96,360.79 434.92,361.19 436.88,361.57 438.84,361.94 440.80,362.30 442.76,362.64 444.72,362.97 446.68,363.28 448.64,363.58 450.60,363.88 452.56,364.15 454.52,364.42 456.48,364.68 458.44,364.93 460.40,365.17 462.36,365.40 464.32,365.62 466.28,365.83 468.24,366.03 470.20,366.22 472.16,366.41 474.12,366.59 476.08,366.76 478.04,366.93 480.00,367.09 481.96,367.24 483.92,367.39 485.88,367.53 487.84,367.67 489.80,367.80 491.76,367.92 493.72,368.04 495.68,368.16 497.64,368.27 499.60,368.38 501.56,368.48 503.52,368.58 505.48,368.68 507.44,368.77 509.40,368.85 511.36,368.94 513.32,369.02 515.28,369.10 517.24,369.17 519.20,369.24 521.16,369.31 523.12,369.38 525.08,369.44 527.04,369.50 529.00,369.56 530.96,369.62 532.92,369.67 534.88,369.72 536.84,369.77 538.80,369.82 540.76,369.87 542.72,369.91 544.68,369.96 546.64,370.00 548.60,370.04 550.56,370.07 552.52,370.11 554.48,370.14 556.44,370.18 558.40,370.21 560.36,370.24 562.32,370.27 564.28,370.30 566.24,370.33 568.20,370.35 570.16,370.38 572.12,370.40 574.08,370.43 576.04,370.45 578.00,370.47 579.96,370.49 581.92,370.51 583.88,370.53 585.84,370.55 587.80,370.57 589.76,370.58 591.72,370.60 593.68,370.62 595.64,370.63 597.60,370.65 599.56,370.66 601.52,370.67 603.48,370.69 605.44,370.70 607.40,370.71 609.36,370.72 611.32,370.73 613.28,370.74 615.24,370.75 617.20,370.76 619.16,370.77 621.12,370.78 623.08,370.79 625.04,370.80 627.00,370.81 628.96,370.81 630.92,370.82 632.88,370.83 634.84,370.83 636.80,370.84 638.76,370.85 640.72,370.85 642.68,370.86 644.64,370.86 646.60,370.87" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M333 371V292.4652511110987" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<text x="421" y="275" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">峰值(1−e⁻⁴)/2≈0.491</text>
+<text x="119" y="296" text-anchor="end" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1/2</text>
+<text x="360" y="453" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">输入t=2关断；输出连续并向0衰减</text>
+</svg>

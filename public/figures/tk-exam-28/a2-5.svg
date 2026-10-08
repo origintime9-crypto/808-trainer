@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="376" viewBox="0 0 720 376" role="img">
+<title>有限长指数核的阶跃响应：t=1以后为1−e⁻¹</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="376" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">s(t)：t=1后保持1−e⁻¹</text>
+<path d="M62 268H690" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M163 286V79" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="81.05,268.00 163.00,268.00 163.00,268.00 164.49,265.96 165.98,263.94 167.47,261.94 168.96,259.96 170.45,258.00 171.94,256.06 173.43,254.14 174.92,252.24 176.41,250.36 177.90,248.49 179.39,246.65 180.88,244.82 182.37,243.01 183.86,241.22 185.35,239.45 186.84,237.69 188.33,235.95 189.82,234.23 191.31,232.53 192.80,230.84 194.29,229.17 195.78,227.52 197.27,225.88 198.76,224.26 200.25,222.65 201.74,221.07 203.23,219.49 204.72,217.94 206.21,216.39 207.70,214.87 209.19,213.36 210.68,211.86 212.17,210.38 213.66,208.91 215.15,207.46 216.64,206.02 218.13,204.60 219.62,203.19 221.11,201.80 222.60,200.42 224.09,199.05 225.58,197.69 227.07,196.35 228.56,195.03 230.05,193.71 231.54,192.41 233.03,191.13 234.52,189.85 236.01,188.59 237.50,187.34 238.99,186.10 240.48,184.88 241.97,183.66 243.46,182.46 244.95,181.27 246.44,180.10 247.93,178.93 249.42,177.78 250.91,176.64 252.40,175.51 253.89,174.39 255.38,173.28 256.87,172.18 258.36,171.09 259.85,170.02 261.34,168.95 262.83,167.90 264.32,166.86 265.81,165.82 267.30,164.80 268.79,163.79 270.28,162.78 271.77,161.79 273.26,160.81 274.75,159.84 276.24,158.87 277.73,157.92 279.22,156.97 280.71,156.04 282.20,155.11 283.69,154.20 285.18,153.29 286.67,152.39 288.16,151.50 289.65,150.62 291.14,149.75 292.63,148.89 294.12,148.03 295.61,147.18 297.10,146.35 298.59,145.52 300.08,144.70 301.57,143.88 303.06,143.08 304.55,142.28 306.04,141.49 307.53,140.71 309.02,139.94 310.51,139.17 312.00,138.42 654.70,138.42" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M163 138.41528544014568H312" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<path d="M312 268V138.41528544014568" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<text x="154" y="299" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="312" y="299" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="461" y="299" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<text x="610" y="299" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<text x="148" y="145.41528544014568" text-anchor="end" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1−e⁻¹</text>
+<text x="685" y="300" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<text x="360" y="347" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">阶跃终值等于核面积与H(0)</text>
+</svg>

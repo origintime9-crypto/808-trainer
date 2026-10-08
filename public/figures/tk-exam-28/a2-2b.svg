@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="394" viewBox="0 0 720 394" role="img">
+<title>X(z)：原点五重零、单位圆五个极点</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="394" fill="white"/>
+<text x="360" y="29" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">X(z)：原点五重零、单位圆五个极点</text>
+<path d="M55 204H676" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M295 348V49" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<circle cx="295" cy="204" r="130" fill="none" stroke="#94a3b8" stroke-dasharray="4 4"/>
+<text x="678" y="229" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Re z</text>
+<text x="327" y="60" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Im z</text>
+<circle cx="295.0" cy="204.0" r="6" fill="white" stroke="#0f766e" stroke-width="2.5"/>
+<text x="316.0" y="230.0" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">5重</text>
+<path d="M419.0 198.0L431.0 210.0M419.0 210.0L431.0 198.0" fill="none" stroke="#b45309" stroke-width="2.5"/>
+<path d="M380.9238815542512 106.07611844574882L392.9238815542512 118.07611844574882M380.9238815542512 118.07611844574882L392.9238815542512 106.07611844574882" fill="none" stroke="#b45309" stroke-width="2.5"/>
+<path d="M197.07611844574882 106.07611844574882L209.07611844574882 118.07611844574882M197.07611844574882 118.07611844574882L209.07611844574882 106.07611844574882" fill="none" stroke="#b45309" stroke-width="2.5"/>
+<path d="M197.07611844574882 289.9238815542512L209.07611844574882 301.9238815542512M197.07611844574882 301.9238815542512L209.07611844574882 289.9238815542512" fill="none" stroke="#b45309" stroke-width="2.5"/>
+<path d="M380.9238815542511 289.9238815542512L392.9238815542511 301.9238815542512M380.9238815542511 301.9238815542512L392.9238815542511 289.9238815542512" fill="none" stroke="#b45309" stroke-width="2.5"/>
+<path d="M165 204V210" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="165" y="233" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<path d="M425 204V210" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="425" y="233" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M555 204V210" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="555" y="233" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<text x="512" y="62" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">○ 零点   × 极点</text>
+<text x="505" y="92" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ROC：|z|&gt;1</text>
+<text x="360" y="371" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">极点1及eʲ⁽²ᵐ⁺¹⁾π/4；外侧ROC不含单位圆</text>
+</svg>
