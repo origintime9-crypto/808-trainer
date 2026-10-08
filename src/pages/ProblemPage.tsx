@@ -8,7 +8,7 @@ import { suggestedMinutes } from '../engine/queue';
 import { dateLabel, go, kpLabel, patternLabel, relDay, sourceLabel, stars } from '../format';
 import { kpById } from '../content';
 import { app, getProblemList, useDerived } from '../state';
-import { GRADE_LABELS, MISTAKE_TAGS, type AiResult, type AttemptEvent, type Grade, type MistakeTag } from '../types';
+import { GRADE_LABELS, MISTAKE_TAGS, type AiResult, type AttemptEvent, type Grade, type MistakeTag, type RecognitionReview } from '../types';
 
 function mmss(sec: number): string {
   return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
@@ -24,6 +24,8 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
   const [submitted, setSubmitted] = useState(!!exam?.attempt);
   const [copied, setCopied] = useState('');
   const [ai, setAi] = useState<AiResult | undefined>(exam?.attempt?.ai);
+  const [recognition, setRecognition] = useState<RecognitionReview | undefined>(exam?.attempt?.recognition);
+  const [aiRevision, setAiRevision] = useState(0);
   const [saveError, setSaveError] = useState('');
   const startRef = useRef(Date.now()-(exam?.attempt?.sec??0)*1000);
   const [elapsed, setElapsed] = useState(exam?.attempt?.sec??0);
@@ -60,9 +62,9 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
   };
 
   const submit = () => {
-    if (grade === null) return;
+    if (grade === null || (ai && !recognition)) return;
     const sec = Math.max(0, Math.round(((stopRef.current ?? Date.now()) - startRef.current) / 1000));
-    try { app.record({ kind: 'attempt', problemId: id, grade, tags: grade < 3 ? tags : [], sec, ...(ai ? { ai } : {}), ...(exam ? {examId:exam.id} : {}) }); setSubmitted(true); }
+    try { app.record({ kind: 'attempt', problemId: id, grade, tags: grade < 3 ? tags : [], sec, ...(ai ? { ai } : {}), ...(recognition ? { recognition } : {}), ...(exam ? {examId:exam.id} : {}) }); setSubmitted(true); }
     catch { setSaveError('浏览器未能保存记录，请先导出备份并检查存储空间。'); }
   };
   const navigate = (target: string) => onNavigate ? onNavigate(target) : go(`#/p/${target}`);
@@ -135,7 +137,7 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
         {copied && <p className="hint">{copied}</p>}
       </section>
 
-      {!p.options && <AiGradePanel problem={p} maxScore={exam?.score} disabled={submitted} onResult={r => { setAi(r ?? undefined); setGrade(r?.grade ?? null); setTags(r?.tags ?? []); if (r) reveal(); }} />}
+      {!p.options && <AiGradePanel key={`${id}-${aiRevision}`} problem={p} maxScore={exam?.score} disabled={submitted} onResult={r => { setAi(r ?? undefined); setRecognition(undefined); setGrade(r?.grade ?? null); setTags(r?.tags ?? []); if (r) reveal(); }} onRecognition={r => { setRecognition(r ?? undefined); if (!r || r.status !== 'checked') { setGrade(null); setTags([]); } }} />}
 
       {shown && (
         <section className="card answer">
@@ -177,7 +179,8 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
               </div>
             </>
           )}
-          <button className="primary" disabled={grade === null} onClick={submit}>记录</button>
+          {ai && !recognition && <p className="muted small">请先在批改区选择转写复核情况。</p>}
+          <button className="primary" disabled={grade === null || !!(ai && !recognition)} onClick={submit}>记录</button>
           {saveError && <p className="hint" role="alert">{saveError}</p>}
         </section>
       )}
@@ -196,7 +199,7 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
             </p>
           )}
           <div className="actions">
-            {exam && <button onClick={()=>{setSubmitted(false);setAi(undefined);}}>重新评分</button>}
+            {exam && <button onClick={()=>{setSubmitted(false);setAi(undefined);setRecognition(undefined);setAiRevision(n=>n+1);}}>重新评分</button>}
             {nextId ? <button className="primary" onClick={() => navigate(nextId)}>下一题</button> : onComplete ? <button className="primary" onClick={onComplete}>查看整卷结果</button> : <button className="primary" onClick={() => go('#/today')}>回到今日</button>}
           </div>
         </section>
@@ -214,7 +217,7 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
                 <li key={a.id}>
                   {dateLabel(a.t)} · <span className={`g${a.grade}`}>{GRADE_LABELS[a.grade]}</span> · {mmss(a.sec)}
                   {a.tags.length > 0 && ` · ${a.tags.join('、')}`}
-                  {a.ai && <details><summary>AI 点评 · {a.ai.model}</summary><Md>{a.ai.transcript}</Md><Md>{a.ai.feedback}</Md></details>}
+                  {a.ai && <details><summary>AI 点评 · {a.ai.model}</summary><Md>{a.ai.transcript}</Md><Md>{a.ai.feedback}</Md><p className="muted small">转写复核：{a.recognition?.status === 'checked' ? '转写正确' : a.recognition?.status === 'corrected' ? '已修正' : a.recognition?.status === 'unreadable' ? '照片看不清' : '未标注'}</p>{a.recognition?.status === 'corrected' && <><h3>修正后的转写</h3><Md preserveBadMath>{a.recognition.transcript}</Md></>}</details>}
                 </li>
               ))}
             </ul>

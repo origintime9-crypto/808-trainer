@@ -6,6 +6,7 @@ import { problemById } from '../src/content';
 import { exportJson, parseImport } from '../src/engine/store';
 import { replay } from '../src/engine/scheduler';
 import { computeMastery } from '../src/engine/mastery';
+import { readEvent } from '../src/engine/events';
 import type { AttemptEvent, TrainerEvent } from '../src/types';
 
 const p = problemById.get('zt2026-10')!;
@@ -50,5 +51,34 @@ describe('外部批改与统计复核', () => {
     const audit = gradingAudit(events, now);
     expect(audit).toMatchObject({ confirmed: 2, adjusted: 1, unclear: 1 });
     expect(audit.models).toHaveLength(2);
+  });
+  it('转写修正与评分修正分别统计，旧记录未标注复核仍正常还原', () => {
+    const base: AttemptEvent = { id: 'old', t: now, kind: 'attempt', problemId: p.id, grade: 1, tags: ['计算失误'], sec: 300, ai: { ...result, grade: 1 } };
+    const checked: AttemptEvent = { ...base, id: 'checked', recognition: { status: 'checked' } };
+    const corrected: AttemptEvent = { ...base, id: 'corrected', grade: 3, tags: [], recognition: { status: 'corrected', transcript: '$H(s)=2/(s+1)$' } };
+    const unreadable: AttemptEvent = { ...base, id: 'unreadable', recognition: { status: 'unreadable' } };
+    const restored = parseImport(exportJson([base, checked, corrected, unreadable]));
+    const audit = gradingAudit([...restored, corrected], now);
+    expect(audit).toMatchObject({ confirmed: 4, adjusted: 1, reviewed: 3, correctedTranscript: 1, unreadable: 1, unreviewed: 1 });
+    expect(audit.models[0]).toMatchObject({ reviewed: 3, correctedTranscript: 1, unreadable: 1 });
+    expect(restored.find(e => e.id === 'old')).not.toHaveProperty('recognition');
+    expect(restored.find(e => e.id === 'corrected')).toMatchObject({ grade: 3, ai: { grade: 1, transcript: payload.transcript }, recognition: corrected.recognition });
+    const manual = restored.map(e => e.kind === 'attempt' ? { ...e, ai: undefined, recognition: undefined } : e);
+    expect(computeMastery(restored, now).kp('4.6')).toEqual(computeMastery(manual, now).kp('4.6'));
+    expect(replay(restored, '2026-12-20').problems.get(p.id)?.inMistakes).toBe(replay(manual, '2026-12-20').problems.get(p.id)?.inMistakes);
+  });
+  it('转写修正必须有原批改和真正修改的文字，不接受空白或照片字符串', () => {
+    const base: AttemptEvent = { id: 'review', t: now, kind: 'attempt', problemId: p.id, grade: 3, tags: [], sec: 90, ai: result };
+    for (const recognition of [{ status: 'other' }, { status: 'corrected', transcript: '' }, { status: 'corrected', transcript: payload.transcript }, { status: 'corrected', transcript: 'data:image/png;base64,AAAA' }])
+      expect(readEvent({ ...base, recognition })).toBeNull();
+    expect(readEvent({ ...base, ai: undefined, recognition: { status: 'checked' } })).toBeNull();
+    expect(readEvent({ ...base, recognition: { status: 'checked', photo: 'data:image/png;base64,AAAA', secret: 'should-drop' } })).toMatchObject({ recognition: { status: 'checked' } });
+    expect(JSON.stringify(readEvent({ ...base, recognition: { status: 'checked', photo: 'data:image/png;base64,AAAA' } }))).not.toContain('data:image');
+  });
+  it('模型在返回值中自称复核正确，不产生用户复核标记', () => {
+    const parsed = parseExternalGrade(JSON.stringify({ ...payload, recognition: { status: 'checked' }, reviewed: true }), p, 'Gemini')!;
+    expect(parsed).not.toHaveProperty('recognition');
+    const event: AttemptEvent = { id: 'model-claim', t: now, kind: 'attempt', problemId: p.id, grade: 3, tags: [], sec: 30, ai: parsed };
+    expect(gradingAudit([event], now)).toMatchObject({ reviewed: 0, unreviewed: 1 });
   });
 });

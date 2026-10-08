@@ -57,11 +57,11 @@ describe('云端接口', () => {
     const env: Env = { DB: new MemoryD1(), SYNC_KEY: 'test-pass' };
     const p = problemById.get('zt2026-10')!;
     const ai = parseExternalGrade(JSON.stringify({ problemId: p.id, transcript: '$H(s)=1$', grade: 3, tags: [], feedback: '检查', photos: ['data:image/png;base64,AAAA'] }), p, 'Gemini')!;
-    const confirmed = { ...event('external-confirmed'), grade: 0, tags: ['方法不会'], ai };
+    const confirmed = { ...event('external-confirmed'), grade: 0, tags: ['方法不会'], ai, recognition: { status: 'corrected', transcript: '$H(s)=2$', photos: ['data:image/png;base64,AAAA'] } };
     expect((await sync({ request: req({ since: 0, events: [confirmed] }), env })).status).toBe(200);
     const other = await (await sync({ request: req({ since: 0, events: [] }), env })).json();
     expect(other.events).toHaveLength(1);
-    expect(other.events[0]).toMatchObject({ grade: 0, tags: ['方法不会'], ai: { grade: 3, model: 'Gemini（手动导入）' } });
+    expect(other.events[0]).toMatchObject({ grade: 0, tags: ['方法不会'], ai: { grade: 3, model: 'Gemini（手动导入）' }, recognition: { status: 'corrected', transcript: '$H(s)=2$' } });
     expect(JSON.stringify(other.events)).not.toContain('data:image');
   });
   it('大量记录分页返回，游标不会跳过未返回的数据', async () => {
@@ -248,6 +248,8 @@ describe('AI 输出解析', () => {
     expect(parseAiResult('不是JSON', 'vision')).toBeNull();
     expect(parseAiResult(JSON.stringify({ ...value, grade: 5 }), 'vision')).toBeNull();
     expect(parseAiResult(JSON.stringify({ ...value, tags: ['其他'] }), 'vision')).toBeNull();
+    expect(parseAiResult(JSON.stringify({ ...value, transcript: 'data:image/png;base64,AAAA' }), 'vision')).toBeNull();
+    expect(parseAiResult(JSON.stringify({ ...value, steps: [{ step: '识别', ok: true, comment: 'data:image/png;base64,AAAA' }] }), 'vision')).toBeNull();
   });
   it('模型公式无法排版时保留可核对的原式，不猜写乘号或导数', () => {
     const render = (text: string) => renderToStaticMarkup(createElement(Md, { children: normalizeAiMarkdown(text), preserveBadMath: true }));

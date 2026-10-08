@@ -80,6 +80,11 @@ export interface AiResult {
   score?: number;
 }
 
+/** 由用户复核作答转写，独立于模型的评分建议。旧记录可不含此字段。 */
+export type RecognitionReview =
+  | { status: 'checked' | 'unreadable' }
+  | { status: 'corrected'; transcript: string };
+
 interface EventBase {
   id: string;
   t: number;
@@ -92,6 +97,7 @@ export interface AttemptEvent extends EventBase {
   tags: MistakeTag[];
   sec: number;
   ai?: AiResult;
+  recognition?: RecognitionReview;
   examId?: string;
 }
 

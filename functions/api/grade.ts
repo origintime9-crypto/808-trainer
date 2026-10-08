@@ -45,7 +45,10 @@ export async function onRequestPost(ctx: Context): Promise<Response> {
           await upstream.body?.cancel().catch(() => undefined);
           if (await pauseBeforeRetry(controller.signal) && !controller.signal.aborted) continue;
         }
-        return json({ error: `模型暂时无法批改（${upstream.status}），请稍后重试或复制提示词` }, 502);
+        const message = upstream.status === 429 ? '模型调用额度或频率受限' :
+          [401, 403].includes(upstream.status) ? '服务端模型 Key 或访问权限异常' :
+          upstream.status === 404 ? '服务端模型或接口地址不可用' : '模型暂时无法批改';
+        return json({ error: `${message}（${upstream.status}）。可使用下方 Gemini 网页备用批改，或对照答案手动评分；失败请求不计入进度。` }, 502);
       }
       // 只读取文本响应，不透传上游响应头，也不把异常或密钥返回前端。
       let response = await upstream.text();
@@ -56,7 +59,7 @@ export async function onRequestPost(ctx: Context): Promise<Response> {
     // 仅记录固定诊断词，不记录异常原文、口令或图片请求。
     const hints = error instanceof Error ? ['stream', 'duplex', 'redirect', 'fetch', 'header', 'timeout', 'abort', 'illegal invocation', 'url', 'certificate', 'connection', 'protocol', 'body', 'character'].filter(word => error.message.toLowerCase().includes(word)) : [];
     console.error('808-grade-upstream', error instanceof Error ? error.name : 'unknown', hints);
-    return json({ error: '模型连接失败或超时，请稍后重试；也可以复制批改提示词' }, 502);
+    return json({ error: '模型连接失败或超时。可使用下方 Gemini 网页备用批改，或对照答案手动评分；失败请求不计入进度。' }, 502);
   }
   finally { clearTimeout(timeout); }
 }

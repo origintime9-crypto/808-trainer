@@ -1,4 +1,4 @@
-import { MISTAKE_TAGS, type AiResult, type ExamItem, type TrainerEvent } from '../types';
+import { MISTAKE_TAGS, type AiResult, type ExamItem, type RecognitionReview, type TrainerEvent } from '../types';
 
 const record = (x: unknown): x is Record<string, unknown> => !!x && typeof x === 'object' && !Array.isArray(x);
 const str = (x: unknown, max: number) => typeof x === 'string' && x.length <= max;
@@ -9,13 +9,14 @@ export function readAiResult(x: unknown): AiResult | null {
   if (!record(x) || !int(x.grade, 0, 3) || !tags(x.tags) || !str(x.transcript, 50000) || !str(x.feedback, 50000)) return null;
   if (x.score !== undefined && (typeof x.score !== 'number' || !Number.isFinite(x.score) || x.score < 0 || x.score > 150)) return null;
   if (x.steps !== undefined && (!Array.isArray(x.steps) || x.steps.length > 100 || !x.steps.every(s => record(s) && str(s.step, 10000) && typeof s.ok === 'boolean' && str(s.comment, 10000)))) return null;
-  return {
+  const result: AiResult = {
     grade: x.grade as AiResult['grade'], tags: [...new Set(x.tags as AiResult['tags'])],
     transcript: x.transcript as string, feedback: x.feedback as string,
     model: str(x.model, 200) ? x.model as string : '',
     ...(x.steps ? { steps: x.steps as AiResult['steps'] } : {}),
     ...(x.score !== undefined ? { score: x.score as number } : {}),
   };
+  return /data:image\//i.test(JSON.stringify(result)) ? null : result;
 }
 
 /** 只保留进度字段，禁止把照片、口令等额外数据写入事件。 */
@@ -26,7 +27,17 @@ export function readEvent(x: unknown): TrainerEvent | null {
     if (x.examId !== undefined && (!str(x.examId, 200) || !x.examId)) return null;
     const ai = x.ai === undefined ? undefined : readAiResult(x.ai);
     if (ai === null) return null;
-    return { ...base, kind: 'attempt', problemId: x.problemId as string, grade: x.grade as 0 | 1 | 2 | 3, tags: [...new Set(x.tags as AiResult['tags'])], sec: x.sec as number, ...(ai ? { ai } : {}), ...(x.examId ? { examId: x.examId as string } : {}) };
+    let recognition: RecognitionReview | undefined;
+    if (x.recognition !== undefined) {
+      const r = x.recognition;
+      if (!ai || !record(r)) return null;
+      if (r.status === 'checked' || r.status === 'unreadable') recognition = { status: r.status };
+      else if (r.status === 'corrected' && str(r.transcript, 50000) && (r.transcript as string).trim() &&
+        (r.transcript as string).trim() !== ai.transcript.trim() && !/data:image\//i.test(r.transcript as string))
+        recognition = { status: 'corrected', transcript: r.transcript as string };
+      else return null;
+    }
+    return { ...base, kind: 'attempt', problemId: x.problemId as string, grade: x.grade as 0 | 1 | 2 | 3, tags: [...new Set(x.tags as AiResult['tags'])], sec: x.sec as number, ...(ai ? { ai } : {}), ...(recognition ? { recognition } : {}), ...(x.examId ? { examId: x.examId as string } : {}) };
   }
   if (x.kind === 'review' && str(x.cardId, 200) && x.cardId && int(x.rating, 1, 4))
     return { ...base, kind: 'review', cardId: x.cardId as string, rating: x.rating as 1 | 2 | 3 | 4 };

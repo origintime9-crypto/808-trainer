@@ -113,6 +113,7 @@ test('照片压缩与 AI 预填，确认前不记分，保存不含照片或口�
   await expect(page.locator('label.tag').filter({ hasText: '计算失误' })).toHaveClass(/on/);
   expect(await records(page)).toHaveLength(0);
   await expect(page.locator('.photo-previews img')).toHaveCount(0);
+  await page.getByLabel('转写复核').selectOption('checked');
   await page.getByRole('button', { name: '记录', exact: true }).click();
   const saved = await records(page);
   expect(saved).toHaveLength(1);

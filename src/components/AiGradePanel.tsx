@@ -3,11 +3,11 @@ import { compressPhoto, gradePhotos, normalizeAiMarkdown, parseExternalGrade } f
 import { buildExternalGradePrompt, copyText } from '../ai/prompt';
 import { useSyncStatus } from '../engine/sync';
 import { useSettings } from '../state';
-import type { AiResult, Problem } from '../types';
+import type { AiResult, Problem, RecognitionReview } from '../types';
 import { GRADE_LABELS } from '../types';
 import { Md } from './Markdown';
 
-export function AiGradePanel({ problem, onResult, disabled, maxScore }: { problem: Problem; onResult: (r: AiResult | null) => void; disabled: boolean; maxScore?: number }) {
+export function AiGradePanel({ problem, onResult, onRecognition, disabled, maxScore }: { problem: Problem; onResult: (r: AiResult | null) => void; onRecognition: (r: RecognitionReview | null) => void; disabled: boolean; maxScore?: number }) {
   const settings = useSettings();
   const { health } = useSyncStatus();
   const [photos, setPhotos] = useState<string[]>([]);
@@ -17,37 +17,46 @@ export function AiGradePanel({ problem, onResult, disabled, maxScore }: { proble
   const [result, setResult] = useState<AiResult | null>(null);
   const [external, setExternal] = useState('');
   const [source, setSource] = useState<'Gemini' | 'ChatGPT'>('Gemini');
+  const [recognition, setRecognition] = useState('');
+  const [transcript, setTranscript] = useState('');
+  const [fallbackOpen, setFallbackOpen] = useState(false);
   const controller = useRef<AbortController | null>(null);
   const mounted = useRef(true);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; controller.current?.abort(); }; }, []);
   const enabled = health?.ai && settings.aiEnabled;
+  const resetReview = () => { setRecognition(''); setTranscript(''); onRecognition(null); };
+  const review = (status: string, text = transcript) => {
+    setRecognition(status); setTranscript(text);
+    const changed = text.trim() && text.trim() !== result?.transcript.trim() && !/data:image\//i.test(text);
+    onRecognition(status === 'checked' || status === 'unreadable' ? { status } : status === 'corrected' && changed ? { status: 'corrected', transcript: text } : null);
+  };
   const choose = async (files: FileList | null) => {
     if (!files) return;
     if (files.length > 3) { setMessage('最多选择 3 张照片'); return; }
-    setResult(null); setRaw(''); setPhotos([]); onResult(null);
+    setResult(null); setRaw(''); setPhotos([]); onResult(null); resetReview();
     setBusy(true); setMessage('正在缩小照片…');
     try { const values = await Promise.all(Array.from(files).map(compressPhoto)); if (mounted.current) { setPhotos(values); setMessage('照片已准备好，点击「开始 AI 批改」发送。'); } }
     catch (e) { if (mounted.current) setMessage((e as Error).message); }
     finally { if (mounted.current) setBusy(false); }
   };
   const grade = async () => {
-    setBusy(true); setMessage('正在识别并批改…'); setRaw(''); setResult(null); onResult(null);
+    setBusy(true); setMessage('正在识别并批改…'); setRaw(''); setResult(null); onResult(null); resetReview();
     controller.current = new AbortController();
     const timeout = setTimeout(() => controller.current?.abort(), 65000);
     try {
       const output = await gradePhotos(problem, health!.model, settings.syncKey, photos, controller.current.signal, maxScore);
       if (!mounted.current) return;
       setResult(output.result); setPhotos([]);
-      if (output.result) { onResult(output.result); setMessage('已预填自评和错因，请核对后点击「记录」。'); }
-      else { setRaw(output.raw); setMessage('模型返回格式未能识别，请阅读原文并手动评分。'); }
-    } catch (e) { if (mounted.current) setMessage(e instanceof Error && e.name === 'AbortError' ? '批改已取消或超时，可以重试' : (e as Error).message); }
+      if (output.result) { setTranscript(output.result.transcript); onResult(output.result); setMessage('已预填评分和错因。请先复核转写，再确认评分并点击「记录」。'); }
+      else { setRaw(output.raw); setFallbackOpen(true); setMessage('模型返回格式未能识别，请阅读原文并手动评分，或使用下方备用批改。'); }
+    } catch (e) { if (mounted.current) { setFallbackOpen(true); setMessage(e instanceof Error && e.name === 'AbortError' ? '批改已取消或超时，可重试或使用下方备用批改。' : (e as Error).message); } }
     finally { clearTimeout(timeout); if (mounted.current) setBusy(false); }
   };
   const importResult = () => {
-    setResult(null); setRaw(''); onResult(null);
+    setResult(null); setRaw(''); onResult(null); resetReview();
     const parsed = parseExternalGrade(external, problem, source, maxScore);
     if (!parsed) { setMessage(`未读取到本题（${problem.id}）的有效批改。请复制当前题提示词，粘贴模型返回的完整 JSON；不会保存这次输入。`); return; }
-    setResult(parsed); setPhotos([]); setExternal(''); onResult(parsed);
+    setResult(parsed); setTranscript(parsed.transcript); setPhotos([]); setExternal(''); onResult(parsed);
     setMessage('已读取文字批改并预填评分。请先核对转写，再确认评分和错因，点击「记录」才计入学习统计。');
   };
   return <section className="card ai-panel">
@@ -59,7 +68,7 @@ export function AiGradePanel({ problem, onResult, disabled, maxScore }: { proble
       <div className="actions"><button disabled={busy || disabled || !photos.length} className="primary" onClick={() => void grade()}>开始 AI 批改</button>{busy && <button onClick={() => controller.current?.abort()}>取消批改</button>}</div>
     </> : <p className="muted small">{health?.ai ? '可在设置中开启拍照批改。' : '可复制提示词到 Gemini 或 ChatGPT，附上手写照片批改。'}</p>}
     <div className="actions"><button onClick={() => void copyText(buildExternalGradePrompt(problem, maxScore)).then(ok => setMessage(ok ? '已复制。粘贴到 Gemini 或 ChatGPT，附上作答照片；将返回的 JSON 粘贴到下方。' : '复制失败，请检查剪贴板权限。'))}>复制批改提示词</button><a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer">打开 Gemini</a></div>
-    <details className="external-grade">
+    <details className="external-grade" open={fallbackOpen} onToggle={e => setFallbackOpen(e.currentTarget.open)}>
       <summary>粘贴 Gemini / ChatGPT 批改结果</summary>
       <p className="muted small">接口忙碌时，可在模型网页上传照片批改，再粘贴文字结果。本题题号 {problem.id}。读取只预填建议，确认「记录」后才保存和同步。</p>
       <label>批改来源<select value={source} disabled={busy || disabled} onChange={e => setSource(e.target.value as 'Gemini' | 'ChatGPT')}><option>Gemini</option><option>ChatGPT</option></select></label>
@@ -67,7 +76,11 @@ export function AiGradePanel({ problem, onResult, disabled, maxScore }: { proble
       <button disabled={busy || disabled || !external.trim()} onClick={importResult}>读取批改结果</button>
     </details>
     {message && <p className="hint" role="status">{message}</p>}
-    {result && <div><p><b>AI 建议：{GRADE_LABELS[result.grade]}</b>{result.score !== undefined && ` · 估分 ${result.score}`}</p><h3>关键步骤转写</h3><Md preserveBadMath>{normalizeAiMarkdown(result.transcript)}</Md>{result.steps?.map((s, i) => <Md key={i} preserveBadMath>{normalizeAiMarkdown((s.ok ? '✓ ' : '× ') + s.step + '：' + s.comment)}</Md>)}<Md preserveBadMath>{normalizeAiMarkdown(result.feedback)}</Md><p className="muted small">请核对公式、正负号和下标。最终学习统计采用你确认的评分；若转写有误，可忽略本次建议后手动评分。</p><button disabled={busy || disabled} onClick={() => { setResult(null); onResult(null); setMessage('已忽略本次 AI 建议，请按实际作答手动评分。'); }}>忽略 AI 建议</button></div>}
+    {result && <div><p><b>AI 建议：{GRADE_LABELS[result.grade]}</b>{result.score !== undefined && ` · 估分 ${result.score}`}</p><h3>关键步骤转写</h3><Md preserveBadMath>{normalizeAiMarkdown(result.transcript)}</Md>
+      <div className="recognition-review"><label>转写复核<select aria-label="转写复核" value={recognition} disabled={busy || disabled} onChange={e => review(e.target.value)}><option value="">请核对公式、正负号和下标</option><option value="checked">转写正确</option><option value="corrected">转写有误，我来修正</option><option value="unreadable">照片看不清，按实际作答自评</option></select></label>
+      {recognition === 'corrected' && <div><label>修正后的转写<textarea aria-label="修正后的转写" value={transcript} maxLength={50000} rows={6} disabled={busy || disabled} onChange={e => review('corrected', e.target.value)} /></label><Md preserveBadMath>{normalizeAiMarkdown(transcript)}</Md><p className="muted small">修正后请重新选择评分和错因。原点评依据原转写，修正内容保留用于复核。</p></div>}
+      {recognition === 'unreadable' && <p className="muted small">请按纸上实际作答重新选择评分和错因，或忽略本次建议后重新拍照。</p>}
+      </div>{recognition && recognition !== 'checked' && <p className="muted small">以下是依据原转写给出的 AI 点评。</p>}{result.steps?.map((s, i) => <Md key={i} preserveBadMath>{normalizeAiMarkdown((s.ok ? '✓ ' : '× ') + s.step + '：' + s.comment)}</Md>)}<Md preserveBadMath>{normalizeAiMarkdown(result.feedback)}</Md><p className="muted small">最终学习统计采用你确认的评分。先选择转写复核情况，再点击「记录」保存和同步。</p><button disabled={busy || disabled} onClick={() => { setResult(null); onResult(null); resetReview(); setMessage('已忽略本次 AI 建议，请按实际作答手动评分。'); }}>忽略 AI 建议</button></div>}
     {raw && <pre className="ai-raw">{raw}</pre>}
   </section>;
 }
