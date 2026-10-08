@@ -84,6 +84,8 @@ export function computeMastery(events: TrainerEvent[], now: number, schedule?: S
         a.attempts += 1;
         if (e.grade < 3) for (const t of e.tags) a.tags[t] = (a.tags[t] ?? 0) + 1;
       }
+      // 保留原练习次数与错因；存疑及状态变量拓展作答不作为808能力证据。
+      if (!fits808(p.id)) continue;
     } else if (e.kind === 'review') {
       const c = cardById.get(e.cardId);
       if (!c) continue;
@@ -148,7 +150,7 @@ export function priority(stars: number, m: number, paperCount: number, evidence?
 }
 
 export function masteryStatus(m: Mastery): '待测' | '需补强' | '巩固中' | '较稳固' | '需复习' {
-  if (!m.attempts && !m.reviews) return '待测';
+  if (!m.uniqueProblems && !m.reviews) return '待测';
   if (m.ability >= 0.7 && m.forgetting >= 0.2) return '需复习';
   if (m.ability < 0.55 || m.m < 0.5) return '需补强';
   if (m.uniqueProblems >= 3 && m.ability >= 0.8 && m.m >= 0.72 && m.retention >= 0.85) return '较稳固';

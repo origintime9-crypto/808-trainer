@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="364" viewBox="0 0 720 364" role="img">
+<title>课程26二2：因果阶跃响应上升至1后保持</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="364" fill="white"/>
+<text x="360" y="31" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">由原输入输出确定阶跃响应s(t)</text>
+<path d="M46 261H690" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M176 278V73" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="64.80,261.00 176.00,261.00 315.00,123.00 662.50,123.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M176 261V267" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="167" y="293" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M315 261V267" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="315" y="293" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M454 261V267" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="454" y="293" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<path d="M593 261V267" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="593" y="293" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<text x="159" y="129" text-anchor="end" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="207" y="76" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">s(t)</text>
+<text x="688" y="294" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<text x="360" y="336" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">h(t)在0..1为1；s(t)在t≥1保持1</text>
+</svg>

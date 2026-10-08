@@ -85,6 +85,7 @@ test('真实弱项比熟练项多推题，重新作答即时改变知识点掌�
     await w.getByRole('button',{name:/我做完了，看答案|不确定，直接看答案/}).click();
     await w.getByRole('button',{name:'全对',exact:true}).click();
     await w.getByRole('button',{name:'记录',exact:true}).click();
+    await expect(w.locator('.result')).toContainText('明天');
     await w.goto('./#/knowledge');await expect(point(w)).toContainText('掌握度 30%');
     await expect(point(w)).toContainText('4 道不同题验证');
     await point(w).screenshot({path:'work/screenshots/adaptive808-updated-point-mobile.png'});
@@ -107,4 +108,25 @@ test('已过关题长期未复习重新进入到期队列，并显示808遗忘�
   await page.goto('./#/readiness');await fits(page);
   await page.screenshot({path:'work/screenshots/adaptive808-forgetting-mobile.png'});
   expect(proof.errors).toEqual([]);expect(proof.writes).toEqual([]);
+});
+
+test('手动作答存疑题及混合状态变量题保留记录，808水平继续显示待测',async({page,context})=>{
+  const extension:AttemptEvent={kind:'attempt',id:'browser808-extension',problemId:'tk-review-26',grade:3,t:NOW,tags:[],sec:300};
+  await prepare(context,[extension]);const proof=observe(page);
+  await page.clock.install({time:new Date(NOW)});
+  await page.setViewportSize({width:375,height:812});
+  await page.goto('./#/readiness');
+  await expect(page.locator('.readiness-stats>div>b')).toHaveText(['0%','0%','待测']);
+  await page.goto('./#/p/tk-exam-26-31-1');
+  await expect(page.locator('main')).toContainText('题干/答案存疑');
+  await page.getByRole('button',{name:'我做完了，看答案',exact:true}).click();
+  await page.getByRole('button',{name:'全对',exact:true}).click();
+  await page.getByRole('button',{name:'记录',exact:true}).click();
+  const stored=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)??'[]'),EVENT);
+  expect(stored.filter((e:{kind:string})=>e.kind==='attempt')).toHaveLength(2);
+  await page.goto('./#/readiness');
+  await expect(page.locator('.readiness-stats>div>b')).toHaveText(['0%','0%','待测']);
+  await expect(page.locator('.card-head .badge').first()).toHaveText('仍需补测');
+  await fits(page);expect(proof.errors).toEqual([]);expect(proof.writes).toEqual([]);
+  await page.screenshot({path:'work/screenshots/adaptive808-conditional-mobile.png'});
 });

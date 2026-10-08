@@ -6,7 +6,7 @@ import { generateMock } from '../src/engine/mock';
 import { cardQueue, duePractice, recommendNew } from '../src/engine/queue';
 import { readiness808 } from '../src/engine/readiness';
 import { DEFAULT_SETTINGS } from '../src/engine/store';
-import { DAY, replay, targetRetention } from '../src/engine/scheduler';
+import { DAY, dayDiff, replay, targetRetention } from '../src/engine/scheduler';
 import type { AttemptEvent, ReviewEvent, TrainerEvent } from '../src/types';
 
 const NOW = new Date('2026-10-08T10:00:00+08:00').getTime(), EXAM='2026-12-20';
@@ -48,6 +48,16 @@ describe('808依据与水平画像',()=>{
     const emphasized=[...target808Points].sort((a,b)=>b[1]-a[1])[0][0];
     expect(examEmphasis(emphasized)).toBeGreaterThan(examEmphasis('1.1'));
     expect(targetRetention([emphasized])).toBeGreaterThan(targetRetention(['1.1']));
+  });
+  it('存疑题和混合状态变量拓展保留练习历史，但不产生808已测证据',()=>{
+    const ids=['tk-exam-26-31-1','tk-review-26'];
+    const events=ids.map(id=>attempt(id,3)), saved=JSON.stringify(events);
+    const mi=computeMastery(events,NOW), level=readiness808(mi,events,NOW);
+    expect(mi.kp('4.6').attempts).toBe(2);
+    expect(mi.kp('4.6').uniqueProblems).toBe(0);expect(masteryStatus(mi.kp('4.6'))).toBe('待测');
+    expect(level.coverage).toBe(0);expect(level.validatedCoverage).toBe(0);expect(level.measuredMastery).toBeNull();
+    expect(level.types.every(type=>type.practiced===0)).toBe(true);
+    expect(JSON.stringify(events)).toBe(saved);expect(replay(events,EXAM).problems.size).toBe(2);
   });
 });
 
@@ -93,8 +103,10 @@ describe('不同题证据与个人记忆',()=>{
   it('同日两次全对仍在错题本，隔日再全对才移出',()=>{
     const events=[attempt(single[0].id,0,NOW),attempt(single[0].id,3,NOW+1000),attempt(single[0].id,3,NOW+2000)];
     expect(replay(events,EXAM).problems.get(single[0].id)!.inMistakes).toBe(true);
+    expect(dayDiff(NOW,replay(events,EXAM).problems.get(single[0].id)!.card.due.getTime())).toBe(1);
     events.push(attempt(single[0].id,3,NOW+DAY));
     expect(replay(events,EXAM).problems.get(single[0].id)!.inMistakes).toBe(false);
+    expect(dayDiff(NOW+DAY,replay(events,EXAM).problems.get(single[0].id)!.card.due.getTime())).toBeGreaterThan(1);
   });
   it('相同全对反馈，重要考点的到期日更早',()=>{
     const low=problems.find(p=>p.kps.length===1&&kpById.get(p.kps[0])?.stars===1)!;

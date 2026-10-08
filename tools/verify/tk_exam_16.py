@@ -99,7 +99,8 @@ for harmonic in [-8, -3, 0, 1, 2, 3, 5, 8]:
     eq('二4 FS定义积分n='+str(harmonic), cs[harmonic], expected)
 eq('二4 第一实谐波单边幅度', 2*Abs(cs[3]), 2)
 eq('二4 第二实谐波单边幅度', 2*Abs(cs[8]), 1)
-eq('二4 复系数完整重构原信号', sum(cs[j]*exp(I*j*pi*v/6) for j in [-8, -3, 3, 8]), fs_signal)
+# 使用同一Euler基核对恒等式，避免自动展开高次三角多项式耗时数分钟。
+eq('二4 复系数完整重构原信号', expand(sum(cs[j]*exp(I*j*pi*v/6) for j in [-8, -3, 3, 8]).rewrite(exp)), expand(fs_signal.rewrite(exp)))
 
 # 标准二阶有理解释；若只数有限极点，另核对含无穷远极点的右边序列。
 pole = expand_complex(exp(I*pi/3))/2

@@ -104,7 +104,6 @@ export function replay(events: TrainerEvent[], examDate: string): Schedule {
       const base = prev?.card ?? createEmptyCard<FsrsCard>(new Date(e.t));
       // 不会、部分对的题第二天必须重做
       const finalDaily = lastDailyAttempt.get(e.problemId + ':' + startOfToday(e.t)) === e.id;
-      const next = finalDaily ? clampDue(f.next(base, new Date(e.t), GRADE_TO_RATING[e.grade]).card, e.t, e.grade <= 1 ? 1 : cap, examDate) : base;
       // 回放状态只属于本次调用，可原地累积，避免长历史反复复制；不修改原始事件。
       const attempts = prev?.attempts ?? [];
       attempts.push(e);
@@ -113,6 +112,9 @@ export function replay(events: TrainerEvent[], examDate: string): Schedule {
       let inMistakes = wasInMistakes;
       if (e.grade < 3) inMistakes = true;
       else if (wasInMistakes && streak >= 2) inMistakes = false;
+      // 首次纠正还需隔日确认；不能用Easy长间隔把未过关错题推迟数天。
+      const retryDays = e.grade <= 1 || (e.grade === 3 && inMistakes) ? 1 : cap;
+      const next = finalDaily ? clampDue(f.next(base, new Date(e.t), GRADE_TO_RATING[e.grade]).card, e.t, retryDays, examDate) : base;
       problems.set(e.problemId, { card: next, attempts, inMistakes, mastered: !inMistakes, streak });
     } else if (e.kind === 'note') {
       notes.set(e.problemId, e.text);

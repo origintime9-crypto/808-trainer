@@ -22,7 +22,7 @@ export function ReadinessPage() {
         <div><b>{percent(profile.validatedCoverage)}</b><span>换题验证覆盖</span><small>至少三道不同题的证据</small></div>
         <div><b>{profile.measuredMastery === null ? '待测' : percent(profile.measuredMastery)}</b><span>已测掌握估计</span><small>计入当前记忆保持情况</small></div>
       </div>
-      <p className="muted small">覆盖按重要程度加权。未做题的考点单列待测；只复习卡片还不能验证解题能力。这些是根据自评与批改记录的估计，不能当作预测考试分数。</p>
+      <p className="muted small">覆盖按重要程度加权，水平估计只采用题面明确、符合808范围的作答证据。未做题的考点单列待测；只复习卡片还不能验证解题能力。这些是根据自评与批改记录的估计，不能当作预测考试分数。</p>
       <div className="actions"><a className="button primary" href="#/mock?mode=adaptive">做一套 808 补强测评卷</a><a href="#/mock">标准模拟卷 →</a></div>
     </section>
     <section className="card">
@@ -32,7 +32,7 @@ export function ReadinessPage() {
         <a href={'#/practice?kp=' + k.id}>
           <span><b>{k.id} {k.title}</b> <span className="stars">{stars(k.stars)}</span> <span className={'badge ' + (k.status==='需补强'?'bad':k.status==='较稳固'?'good':'')}>{k.status}</span></span>
           <span className="small muted">{k.measured ? '掌握估计 ' + percent(k.mastery.m) + ' · ' + k.mastery.uniqueProblems + ' 道不同题' : '尚未做题验证'} · 中北真题 {k.years} 套</span>
-          <span className="small muted">{k.mastery.attempts+k.mastery.reviews ? '记忆保持估计 ' + percent(k.mastery.retention) + ' · ' : ''}{k.examPoints>0 ? '最近原卷约 ' + k.examPoints.toFixed(1) + ' 分权重' : '重点表考点，仍需覆盖'}</span>
+          <span className="small muted">{k.mastery.uniqueProblems+k.mastery.reviews ? '记忆保持估计 ' + percent(k.mastery.retention) + ' · ' : ''}{k.examPoints>0 ? '最近原卷约 ' + k.examPoints.toFixed(1) + ' 分权重' : '重点表考点，仍需覆盖'}</span>
         </a>
       </li>)}</ul>
       <p className="muted small">基准：现有中北重点表、已录入中北真题及{target808Paper.title}。综合题的分值按涉及考点平均分配，仅用于估计权重；拓展状态变量题不计入本页。</p>
