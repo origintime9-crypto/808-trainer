@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="390" viewBox="0 0 660 390" role="img">
+<title>4.20(2) 零极点图</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="660" height="390" fill="white"/>
+<text x="330" y="34" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">4.20(2) 零点 ○、极点 ×</text>
+<path d="M40 211H621" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M462.72727272727275 326V64" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="632" y="219" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">σ</text>
+<text x="483.72727272727275" y="76" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">jω</text>
+<path d="M303.6363636363636 211v6" fill="none" stroke="#334155" stroke-width="1.8"/>
+<path d="M462.72727272727275 211v6" fill="none" stroke="#334155" stroke-width="1.8"/>
+<circle cx="303.64" cy="211.00" r="7" fill="white" stroke="#2563eb" stroke-width="3"/>
+<path d="M296.6363636363636 126l14 14M296.6363636363636 140l14 -14" fill="none" stroke="#dc2626" stroke-width="3"/>
+<path d="M296.6363636363636 282l14 14M296.6363636363636 296l14 -14" fill="none" stroke="#dc2626" stroke-width="3"/>
+<text x="303.6363636363636" y="243" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">−1</text>
+<text x="462.72727272727275" y="243" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">0</text>
+<path d="M303.6363636363636 133H462.72727272727275" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<text x="447.72727272727275" y="139" text-anchor="end" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">+j</text>
+<path d="M303.6363636363636 289H462.72727272727275" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<text x="447.72727272727275" y="295" text-anchor="end" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">−j</text>
+<text x="330" y="365" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">因果 ROC：σ&gt;−1；BIBO 稳定</text>
+</svg>
