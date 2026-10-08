@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="401" viewBox="0 0 720 401" role="img">
+<title>卷积输出原点为1，后续为负的二分之一幂尾</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="401" fill="white"/>
+<text x="360" y="31" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y[n]=δ[n]−(1/2)ⁿu[n−1]</text>
+<path d="M58 243H695" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M195 323V85" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<circle cx="67" cy="243" r="4" fill="#0f766e"/>
+<text x="67" y="342" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−2</text>
+<circle cx="131" cy="243" r="4" fill="#0f766e"/>
+<text x="131" y="342" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<path d="M195 243V114" fill="none" stroke="#0f766e" stroke-width="2.5"/>
+<circle cx="195" cy="114" r="4" fill="#0f766e"/>
+<text x="185" y="342" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M259 243V307.5" fill="none" stroke="#0f766e" stroke-width="2.5"/>
+<circle cx="259" cy="307.5" r="4" fill="#0f766e"/>
+<text x="259" y="342" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<path d="M323 243V275.25" fill="none" stroke="#0f766e" stroke-width="2.5"/>
+<circle cx="323" cy="275.25" r="4" fill="#0f766e"/>
+<text x="323" y="342" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<path d="M387 243V259.125" fill="none" stroke="#0f766e" stroke-width="2.5"/>
+<circle cx="387" cy="259.125" r="4" fill="#0f766e"/>
+<text x="387" y="342" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">3</text>
+<path d="M451 243V251.0625" fill="none" stroke="#0f766e" stroke-width="2.5"/>
+<circle cx="451" cy="251.0625" r="4" fill="#0f766e"/>
+<text x="451" y="342" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">4</text>
+<path d="M515 243V247.03125" fill="none" stroke="#0f766e" stroke-width="2.5"/>
+<circle cx="515" cy="247.03125" r="4" fill="#0f766e"/>
+<text x="515" y="342" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">5</text>
+<path d="M579 243V245.015625" fill="none" stroke="#0f766e" stroke-width="2.5"/>
+<circle cx="579" cy="245.015625" r="4" fill="#0f766e"/>
+<text x="579" y="342" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">6</text>
+<path d="M643 243V244.0078125" fill="none" stroke="#0f766e" stroke-width="2.5"/>
+<circle cx="643" cy="244.0078125" r="4" fill="#0f766e"/>
+<text x="643" y="342" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">7</text>
+<text x="176" y="120" text-anchor="end" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="269" y="315.5" text-anchor="start" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1/2</text>
+<text x="685" y="264" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">n</text>
+<text x="360" y="380" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">首项1；之后−1/2、−1/4、−1/8⋯，全和0</text>
+</svg>

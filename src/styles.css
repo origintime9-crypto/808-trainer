@@ -241,3 +241,11 @@ table.rank tbody tr:hover { background: #fafbfc; }
 .md-inline, .md-inline p { display: inline; margin: 0; }
 .katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; }
 .katex { font-size: 1.05em; }
+
+/* 依据近期作答调整学习方法，手机上保留简洁的可展开步骤。 */
+.learning-plan { border-top: 1px solid var(--line); padding: 12px 0; }
+.learning-plan h3 { margin: 0 0 6px; font-size: 1rem; line-height: 1.5; }
+.learning-plan summary { cursor: pointer; color: var(--brand); padding: 4px 0; }
+.learning-plan ol { padding-left: 1.5em; margin: 8px 0; font-size: .9rem; }
+.learning-plan li { margin-bottom: 6px; line-height: 1.6; }
+.learning-plan > a { display: inline-block; margin-top: 8px; font-size: .88rem; }

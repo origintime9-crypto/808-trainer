@@ -2,6 +2,7 @@ import { StudyNav } from '../components/StudyNav';
 import { target808Paper } from '../content/target808';
 import { mockResult, mockSessions, validMockSession } from '../engine/mock';
 import { readiness808 } from '../engine/readiness';
+import { learningPlan } from '../engine/learning';
 import { stars } from '../format';
 import { useDerived, useEvents } from '../state';
 
@@ -13,6 +14,8 @@ export function ReadinessPage() {
   const sessions = mockSessions(events).filter(validMockSession);
   const finished = sessions.filter(s => s.finished).sort((a,b) => b.start - a.start);
   const latest = finished[0], result = latest ? mockResult(latest, events) : undefined;
+  const planPoints = [...profile.points.filter(k => k.measured), ...profile.points.filter(k => !k.measured)].slice(0,3);
+  const plans = planPoints.map(k => ({ point: k, plan: learningPlan(k.id, mi, events, now) }));
   return <div><StudyNav active="readiness"/>
     <section className="card">
       <div className="card-head readiness-head"><h1>我的 808 适配水平</h1><span className="badge">{profile.level}</span></div>
@@ -37,6 +40,17 @@ export function ReadinessPage() {
       </li>)}</ul>
       <p className="muted small">基准：现有中北重点表、已录入中北真题及{target808Paper.title}。综合题的分值按涉及考点平均分配，仅用于估计权重；拓展状态变量题不计入本页。</p>
       <a href="#/knowledge">查看全部知识点 →</a>
+    </section>
+    <section className="card learning-plans">
+      <h2>根据做题调整复习方法</h2>
+      <p className="muted small">评分和错因记录更新后，建议会随之调整。是否有效，要用换题和跨日复测验证；建议还没有经过你的长期学习数据校准。</p>
+      {plans.map(({point:k,plan}) => <article className="learning-plan" key={k.id} data-learning-kp={k.id} data-method={plan.method}>
+        <h3>{k.id} {k.title} · {plan.title}</h3>
+        <p className="muted small">{plan.reason}</p>
+        <details><summary>怎么练</summary><ol>{plan.steps.map(step => <li key={step}>{step}</li>)}</ol></details>
+        <a href={'#/practice?kp='+k.id}>练这个考点 →</a>
+      </article>)}
+      <a className="small" href="https://github.com/origintime9-crypto/808-trainer/blob/main/LEARNING_RESEARCH.md" target="_blank" rel="noreferrer">查看研究与算法方案 ↗</a>
     </section>
     <section className="card">
       <h2>原卷题型适配</h2>

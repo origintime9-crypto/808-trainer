@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="372" viewBox="0 0 720 372" role="img">
+<title>仅示例：额外取原图未标折点c=2时的y1，不代表题面已给c=2</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="372" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">条件示例：额外取原折点c=2</text>
+<text x="360" y="64" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y₁(t)=f₁(t+1)u(−t)，右图f₂不参与</text>
+<path d="M42 275H690" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M570 295V83" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="62.50,275.00 135.00,275.00 280.00,130.00 570.00,130.00 570.00,275.00 671.50,275.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M135 275V282" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="135" y="305" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−3</text>
+<path d="M280 275V282" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="280" y="305" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−2</text>
+<path d="M425 275V282" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="425" y="305" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<path d="M570 275V282" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="560" y="305" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="553" y="137" text-anchor="end" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="681" y="306" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<text x="360" y="347" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">原题c未标数值；此图只展示c=2的条件解</text>
+</svg>

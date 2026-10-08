@@ -5,7 +5,7 @@ import { problems } from '../../src/content';
 
 const KEY = 'trainer808.events.v1';
 const SET = 'trainer808.settings.v1';
-const base = 'http://127.0.0.1:18080';
+const base = (process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:18080').replace(/\/$/, '');
 const health = { ok: true, ai: false, sync: false, model: '' };
 const records = (page: Page) => page.evaluate(k => JSON.parse(localStorage.getItem(k) ?? '[]'), KEY);
 const mockHealth = (context: BrowserContext, data = health) => context.route('**/api/health', route => route.fulfill({ json: data }));
