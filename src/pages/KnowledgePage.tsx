@@ -4,6 +4,7 @@ import { domains, topics, matchesCategory } from '../content/taxonomy';
 import { StudyNav } from '../components/StudyNav';
 import { stars } from '../format';
 import { useDerived } from '../state';
+import { masteryStatus } from '../engine/mastery';
 
 export function KnowledgePage() {
   const {sched,mi}=useDerived();
@@ -27,7 +28,7 @@ export function KnowledgePage() {
           return <div className="knowledge-topic" key={t.id}><div className="card-head"><h3>{t.title}</h3><a className="small" href={`#/practice?domain=${d.id}&topic=${t.id}`}>专题 {total.all} 题 →</a></div>
             <div className="knowledge-grid">{t.knowledge.map(k=> {
               const s=stats([k.id]),m=mi.kp(k.id),tested=m.attempts+m.reviews>0;
-              return <article className="knowledge-node" key={k.id}><a className="knowledge-title" href={`#/practice?kp=${k.id}`}>{k.id} {k.title}</a><span className="stars" aria-label={`${k.stars}星`}>{stars(k.stars)}</span><p className="muted small">{k.scope}</p><div className="small">{s.all} 题 · {s.todo} 未做 · 中北真题 {kpPapers.get(k.id)?.size??0} 套</div><div className="knowledge-actions"><span className="small muted">{tested?`掌握度 ${Math.round(m.m*100)}%`:'尚未测评'}</span>{s.wrong>0&&<a className="badge bad" href={`#/practice?kp=${k.id}&status=wrong`}>错题 {s.wrong}</a>}<a className="small" href={`#/practice?kp=${k.id}&status=todo`}>练新题 →</a></div></article>;
+              return <article className="knowledge-node" key={k.id}><a className="knowledge-title" href={`#/practice?kp=${k.id}`}>{k.id} {k.title}</a><span className="stars" aria-label={`${k.stars}星`}>{stars(k.stars)}</span><p className="muted small">{k.scope}</p><div className="small">{s.all} 题 · {s.todo} 未做 · 中北真题 {kpPapers.get(k.id)?.size??0} 套</div><div className="knowledge-actions"><span className="small muted">{tested?'掌握度 '+Math.round(m.m*100)+'% · '+masteryStatus(m):'尚未测评'}</span>{s.wrong>0&&<a className="badge bad" href={`#/practice?kp=${k.id}&status=wrong`}>错题 {s.wrong}</a>}<a className="small" href={`#/practice?kp=${k.id}&status=todo`}>练新题 →</a></div>{tested&&<p className="small muted">记忆保持估计 {Math.round(m.retention*100)}% · {m.uniqueProblems} 道不同题验证</p>}</article>;
             })}</div>
           </div>;
         })}</section>;

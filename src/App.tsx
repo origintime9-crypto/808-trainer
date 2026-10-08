@@ -14,6 +14,7 @@ const ExamPage = lazy(() => import('./pages/ExamPage').then(m => ({ default: m.E
 const KnowledgePage = lazy(() => import('./pages/KnowledgePage').then(m => ({ default: m.KnowledgePage })));
 const MockPage = lazy(() => import('./pages/MockPage').then(m => ({ default: m.MockPage })));
 const MockExamPage = lazy(() => import('./pages/MockExamPage').then(m => ({ default: m.MockExamPage })));
+const ReadinessPage = lazy(() => import('./pages/ReadinessPage').then(m => ({ default: m.ReadinessPage })));
 
 const TABS = [
   { path: 'today', label: '今日', icon: '◎' },
@@ -46,13 +47,14 @@ export function App() {
   const route = useRoute();
   const [path] = route.split('?');
   const [section, arg] = path.split('/');
-  const active = ['p', 'exam', 'knowledge', 'mock'].includes(section) ? 'practice' : section;
+  const active = ['p', 'exam', 'knowledge', 'mock', 'readiness'].includes(section) ? 'practice' : section;
 
   let page;
   if (section === 'p' && arg) page = <ProblemPage key={arg} id={decodeURIComponent(arg)} />;
   else if (section === 'exam' && arg) page = <ExamPage key={arg} paper={decodeURIComponent(arg)} />;
   else if (section === 'practice') page = <PracticePage />;
   else if (section === 'knowledge') page = <KnowledgePage />;
+  else if (section === 'readiness') page = <ReadinessPage />;
   else if (section === 'mock' && arg) page = <MockExamPage key={arg} id={decodeURIComponent(arg)}/>;
   else if (section === 'mock') page = <MockPage/>;
   else if (section === 'review') page = <ReviewPage />;

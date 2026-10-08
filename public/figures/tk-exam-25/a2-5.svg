@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="398" viewBox="0 0 720 398" role="img">
+<title>课程25二5：原坐标标反，明确采用左负4右正4的条件图</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="398" fill="white"/>
+<text x="360" y="31" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">采用横轴−4/+4的条件波形</text>
+<path d="M55 274H688" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M360 292V72" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="80.00,274.00 136.00,274.00 136.00,111.00 360.00,274.00 584.00,111.00 584.00,274.00 640.00,274.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M136 274V280" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="136" y="307" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−4</text>
+<path d="M360 274V280" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="350" y="307" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M584 274V280" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="584" y="307" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">4</text>
+<text x="344" y="117" text-anchor="end" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="390" y="88" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y(t)</text>
+<text x="687" y="302" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<text x="360" y="346" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">原图左印4、右印−4，条件解释已写明</text>
+<text x="360" y="381" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Y(jω)=2R(2ω)，Y(0)=4</text>
+</svg>

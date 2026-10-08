@@ -6,14 +6,17 @@ import { newId } from '../engine/store';
 import { app, useEvents } from '../state';
 import { StudyNav } from '../components/StudyNav';
 import { MockPrint } from '../components/MockPrint';
+import { useDerived } from '../state';
 
 export function MockPage() {
   const events=useEvents();
+  const {mi}=useDerived();
+  const [mode,setMode]=useState<'standard'|'adaptive'>(()=>new URLSearchParams(window.location.hash.split('?')[1]??'').get('mode')==='adaptive'?'adaptive':'standard');
   const [template,setTemplate]=useState('zt2026'), [pool,setPool]=useState<MockPool>('mixed'), [seed,setSeed]=useState('selected-a'), [name,setName]=useState('精选模拟卷 A'), [error,setError]=useState('');
   const preview=useMemo(()=> {
-    try {return {items:generateMock(template,pool,seed,new Set(events.filter(e=>e.kind==='attempt').map(e=>e.problemId))),error:''};}
+    try {return {items:generateMock(template,pool,seed,new Set(events.filter(e=>e.kind==='attempt').map(e=>e.problemId)),mode==='adaptive'?mi:undefined),error:''};}
     catch(e) {return {items:[],error:(e as Error).message};}
-  },[template,pool,seed,events]);
+  },[template,pool,seed,events,mode,mi]);
   const sessions=mockSessions(events).filter(validMockSession), original=preview.items.filter(i=>i.match==='original').length;
   const count=new Map<string,number>();
   for (const i of preview.items) {
@@ -25,12 +28,14 @@ export function MockPage() {
     if (!preview.items.length) return;
     try {
       const examId=newId();
-      app.record({kind:'exam',examId,action:'start',title:name,template,minutes:180,items:preview.items});
+      app.record({kind:'exam',examId,action:'start',title:mode==='adaptive'?'808补强测评 · '+name:name,template,minutes:180,items:preview.items});
       go(`#/mock/${examId}`);
     } catch {setError('未能保存模拟卷，请检查本机存储或先导出备份。');}
   }
   return <div><StudyNav active="mock"/>
     <section className="card"><h2>按真题结构组模拟卷</h2><p className="muted">保留中北原卷的题号、题型与分值，按考点、解题方法和作答量匹配题目。整卷不重复选同一道题，存疑题默认排除。</p>
+      <label className="mock-mode">组卷目标<select value={mode} onChange={e=>setMode(e.target.value as 'standard'|'adaptive')}><option value="standard">标准模拟卷</option><option value="adaptive">808薄弱考点补强</option></select></label>
+      {mode==='adaptive'&&<p className="hint">在中北原卷结构内，优先挑选薄弱、临近遗忘和待测的808考点。题位数量与分值不变；若只选外校，取题仍受三份精选范围限制。</p>}
       <div className="filters"><label>真题模板<select value={template} onChange={e=>setTemplate(e.target.value)}>{templatePapers.map(p=><option value={p.id} key={p.id}>{p.title} · 150分</option>)}</select></label><label>取题范围<select value={pool} onChange={e=>setPool(e.target.value as MockPool)}><option value="mixed">精选外校 + 中北题库</option><option value="selected">优先用三份外校精选</option><option value="local">中北真题与课程题库</option></select></label></div>
       <div className="actions">{['A','B','C'].map((v,i)=><button key={v} className={seed===`selected-${v.toLowerCase()}`?'primary':''} onClick={()=>{setSeed(`selected-${v.toLowerCase()}`);setName(`精选模拟卷 ${v}`);}} aria-label={`选择精选模拟卷 ${v}`}>精选 {i+1}</button>)}<button onClick={()=>{setSeed(newId());setName('随机模拟卷');}}>再换一套</button></div>
       <p className="muted small">“优先外校”仅从这三份精选选替换题，题位不足时沿用对应中北原题。原题未标明的分值不会补写到题源。2016 卷小题合计 149 分、回忆卷缺独立分值，暂未列作 150 分模板。</p>

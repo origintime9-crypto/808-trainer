@@ -28,7 +28,7 @@ test('2026 十题 → 错题与薄弱点 → 三张卡片 → 导出清空导入
   await expect(page.locator('.rows')).toContainText('十');
   await expect(page.locator('.rows')).toContainText('计算失误');
   await page.goto('/#/analysis');
-  await expect(page.locator('tr').filter({ hasText: '4.6 系统函数' })).toContainText('42%');
+  await expect(page.locator('tr').filter({ hasText: '4.6 系统函数' })).toContainText('47%');
   await page.goto('/#/review');
   for (let i = 0; i < 3; i++) {
     await page.getByRole('button', { name: '显示答案', exact: true }).click();
@@ -52,18 +52,21 @@ test('2026 十题 → 错题与薄弱点 → 三张卡片 → 导出清空导入
   await expect(page.locator('.rows')).toContainText('计算失误');
 });
 
-test('选择题自动预填，连续两次全对移出错题本', async ({ page, context }) => {
+test('选择题自动预填，隔日连续两次全对移出错题本', async ({ page, context }) => {
   await mockHealth(context);
+  const start=new Date('2026-10-08T10:00:00+08:00');
+  await page.clock.install({time:start});
   await page.goto('/#/p/zt2023-2-1');
   await page.locator('.option').nth(0).click();
   await expect(page.locator('.grade.g0')).toHaveClass(/on/);
   await page.getByRole('button', { name: '记录', exact: true }).click();
   for (let i = 0; i < 2; i++) {
+    await page.clock.setSystemTime(new Date(start.getTime()+(i+1)*86_400_000));
     await page.reload();
     await page.locator('.option').nth(2).click();
     await expect(page.locator('.grade.g3')).toHaveClass(/on/);
     await page.getByRole('button', { name: '记录', exact: true }).click();
-    await expect(page.locator('.result')).toContainText(i === 0 ? '再全对一次' : '连续两次全对');
+    await expect(page.locator('.result')).toContainText(i === 0 ? '隔天再全对一次' : '隔日连续两次全对');
   }
   await page.goto('/#/mistakes');
   await expect(page.getByText('错题本是空的。')).toBeVisible();

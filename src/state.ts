@@ -77,7 +77,8 @@ export function useDerived() {
   const minute = useMinute();
   return useMemo(() => {
     const now = Date.now();
-    return { now, sched: replay(ev, st.examDate), mi: computeMastery(ev, now) };
+    const sched = replay(ev.filter(e => e.t <= now), st.examDate);
+    return { now, sched, mi: computeMastery(ev, now, sched) };
     // minute 只用来让结果按分钟刷新
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ev, st.examDate, minute]);

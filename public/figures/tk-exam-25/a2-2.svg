@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="389" viewBox="0 0 720 389" role="img">
+<title>课程25二2：电流能谱密度，两个分离带宽及毫安换算</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="389" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">两带能谱密度：电流已换算为安培</text>
+<text x="360" y="63" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Ψₓ(ω)单位 A²·s²；ωc=2π×10⁶ rad/s</text>
+<path d="M51 245H337" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M193 263V93" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="58.00,245.00 119.00,245.00 119.00,126.00 267.00,126.00 267.00,245.00 325.00,245.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M119 245V251" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="119" y="276" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<path d="M193 245V251" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="185" y="276" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M267 245V251" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="267" y="276" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="193" y="305" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">(ω+ωc)/(2000π)</text>
+<text x="193" y="108" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">10⁻⁶/16</text>
+<path d="M397 245H683" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M539 263V93" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="404.00,245.00 465.00,245.00 465.00,126.00 613.00,126.00 613.00,245.00 671.00,245.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M465 245V251" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="465" y="276" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<path d="M539 245V251" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="531" y="276" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<path d="M613 245V251" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="613" y="276" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">1</text>
+<text x="539" y="305" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">(ω−ωc)/(2000π)</text>
+<text x="539" y="108" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">10⁻⁶/16</text>
+<text x="360" y="344" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">每带宽4000π rad/s；两带没有重叠</text>
+<text x="360" y="378" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Parseval：250 mA²·s = 0.25 mJ（1 Ω）</text>
+</svg>

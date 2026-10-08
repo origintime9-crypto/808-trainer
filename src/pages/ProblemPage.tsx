@@ -187,12 +187,12 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
           {st.inMistakes ? (
             <p>
               已记入错题本，<b>{relDay(now, st.card.due.getTime())}</b>重做。
-              {st.streak === 1 && ' 再全对一次就能移出错题本。'}
+              {st.streak === 1 && ' 隔天再全对一次就能移出错题本。'}
             </p>
           ) : (
             <p>
               <b>已过关。</b>
-              {st.attempts.length > 1 ? '连续两次全对，已移出错题本。' : ''}
+              {st.streak >= 2 && st.attempts.some(a=>a.grade<3) ? '隔日连续两次全对，已移出错题本。' : '知识点是否掌握，还需换题验证。'}
             </p>
           )}
           <div className="actions">

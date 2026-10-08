@@ -79,10 +79,10 @@ describe('掌握度与优先级', () => {
     expect(bad.tags['计算失误']).toBe(1);
   });
 
-  it('旧记录权重衰减', () => {
+  it('遗忘不会把原来的错题回升为平均掌握', () => {
     const recent = computeMastery([attempt('zt2026-10', 0, T0)], T0).kp('4.6').m;
     const old = computeMastery([attempt('zt2026-10', 0, T0 - 42 * DAY)], T0).kp('4.6').m;
-    expect(old).toBeGreaterThan(recent);
+    expect(old).toBeLessThan(recent);
   });
 
   it('优先级随星级、薄弱程度、真题频次增大', () => {
@@ -114,11 +114,11 @@ describe('导出导入', () => {
   });
 });
 describe('推荐队列', () => {
-  it('不推荐已做题，同一题型最多一次', () => {
+  it('不推荐已做题，同一道题不重复，题型允许补强', () => {
     const ev = [attempt('zt2026-10', 1, T0)];
     const queue = recommendNew(replay(ev, EXAM), ev, { ...DEFAULT_SETTINGS, newProblemsPerDay: 30 }, computeMastery(ev, T0), T0);
     expect(queue).not.toContain('zt2026-10');
-    const pats = queue.map(id => problemById.get(id)?.pattern).filter(Boolean);
-    expect(new Set(pats).size).toBe(pats.length);
+    expect(new Set(queue).size).toBe(queue.length);
+    expect(queue.every(id => problemById.has(id))).toBe(true);
   });
 });

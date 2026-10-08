@@ -5,6 +5,7 @@ import { GRADE_LABELS } from '../types';
 import { paperProblems } from '../engine/paper';
 import { StudyNav } from '../components/StudyNav';
 import { domains, topics, matchesCategory } from '../content/taxonomy';
+import { problemPriority } from '../engine/mastery';
 
 const STATUS = { all: '全部', todo: '未做', wrong: '错题本', done: '已过关' } as const;
 type Status = keyof typeof STATUS;
@@ -25,7 +26,7 @@ function setQuery(patch: Record<string, string>) {
 }
 
 export function PracticePage() {
-  const { sched } = useDerived();
+  const { sched, mi, now } = useDerived();
   const q = readQuery();
   const paper = q.get('paper') ?? '';
   const chapter = q.get('ch') ?? '';
@@ -35,6 +36,7 @@ export function PracticePage() {
   const topic = q.get('topic') ?? '';
   const type = q.get('type') ?? '';
   const status = (q.get('status') ?? 'all') as Status;
+  const sort = q.get('sort') ?? 'adaptive';
 
   const list = (paper ? paperProblems(paper) : problems).filter((p) => {
     if (paper && !p.sources.some((s) => s.paper === paper)) return false;
@@ -49,6 +51,14 @@ export function PracticePage() {
     if (status === 'done' && !st?.mastered) return false;
     return true;
   });
+  if (!paper && sort !== 'source') {
+    const value = (id: string) => {
+      const state = sched.problems.get(id);
+      const multiplier = !state || state.inMistakes || state.card.due.getTime() <= now ? 1 : 0.3;
+      return problemPriority(id, mi) * multiplier;
+    };
+    list.sort((a,b) => value(b.id) - value(a.id) || a.id.localeCompare(b.id));
+  }
   const ids = list.map((p) => p.id);
 
   let estimate: { got: number; done: number; total: number } | null = null;
@@ -69,6 +79,7 @@ export function PracticePage() {
   return (
     <div>
       <StudyNav active="practice"/>
+      {!paper&&<label className="practice-sort">题目顺序<select value={sort} onChange={e=>setQuery({sort:e.target.value})}><option value="adaptive">808重点与薄弱点优先</option><option value="source">题库原顺序</option></select></label>}
       <section className="card filters">
         <label>
           试卷

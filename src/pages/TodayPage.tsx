@@ -1,11 +1,11 @@
-import { cardQueue, dueMistakes, recommendNew } from '../engine/queue';
-import { rankKnowledge } from '../engine/mastery';
+import { cardQueue, duePractice, recommendNew } from '../engine/queue';
+import { rankKnowledge, recommendationReason, type MasteryIndex } from '../engine/mastery';
 import { DAY, dayDiff, startOfToday } from '../engine/scheduler';
 import { problemById } from '../content';
 import { go, kpLabel, patternLabel, sourceLabel, stars } from '../format';
 import { setProblemList, useDerived, useEvents, useSettings } from '../state';
 
-function ProblemLinks({ ids, empty }: { ids: string[]; empty: string }) {
+function ProblemLinks({ ids, empty, mi }: { ids: string[]; empty: string; mi?: MasteryIndex }) {
   if (ids.length === 0) return <p className="muted">{empty}</p>;
   return (
     <ul className="rows">
@@ -20,6 +20,7 @@ function ProblemLinks({ ids, empty }: { ids: string[]; empty: string }) {
             >
               <span>{sourceLabel(p)}</span>
               <span className="muted small">{patternLabel(p.pattern) || p.kps.map(kpLabel).join('，')}</span>
+              {mi&&<span className="adaptive-reason small">{recommendationReason(id, mi)}</span>}
             </a>
           </li>
         );
@@ -34,9 +35,9 @@ export function TodayPage() {
   const events = useEvents();
   const days = Math.max(0, dayDiff(now, new Date(`${settings.examDate}T09:00:00`).getTime()));
   const q = cardQueue(sched, events, settings, mi, now);
-  const mistakes = dueMistakes(sched, now);
+  const mistakes = duePractice(sched, mi, now);
   const fresh = recommendNew(sched, events, settings, mi, now);
-  const weak = rankKnowledge(mi).filter((r) => r.stars >= 3).slice(0, 5);
+  const weak = rankKnowledge(mi).filter((r) => r.stars >= 3 && !r.id.startsWith('8.')).slice(0, 5);
   const today = startOfToday(now);
   const doneProblems = events.filter((e) => e.kind === 'attempt' && e.t >= today).length;
   const doneCards = events.filter((e) => e.kind === 'review' && e.t >= today).length;
@@ -62,6 +63,7 @@ export function TodayPage() {
           {settings.lastExport ? '已超过 3 天没有导出备份。' : '还没有导出过备份。'}点这里备份进度，换设备或清理浏览器前留一份。
         </div>
       )}
+      <section className="card"><div className="card-head"><h2>我对 808 准备得怎么样</h2><a href="#/readiness">查看适配水平 →</a></div><p className="muted small">按中北重点考点和原卷要求核对覆盖、掌握和薄弱项，也可以生成保持原卷结构的补强测评卷。</p></section>
 
       <section className="card">
         <div className="card-head">
@@ -77,14 +79,15 @@ export function TodayPage() {
       </section>
 
       <section className="card">
-        <h2>到期错题 <span className="count">{mistakes.length}</span></h2>
-        <ProblemLinks ids={mistakes} empty="今天没有需要重做的错题。" />
+        <h2>到期重做 <span className="count">{mistakes.length}</span></h2>
+        <p className="muted small">错题优先；已过关的题也会到期复习，防止“当时会、现在忘了”。</p>
+        <ProblemLinks ids={mistakes} mi={mi} empty="今天没有需要重做的题。" />
       </section>
 
       <section className="card">
         <h2>推荐新题</h2>
-        <p className="muted small">按知识点优先级挑选，优先真题，同一题型不重复。</p>
-        <ProblemLinks ids={fresh} empty="今日新题额度已完成，或题库里的题都做过了。可以去「刷题」页按卷练习。" />
+        <p className="muted small">按808考点的重要程度、薄弱情况和遗忘风险挑题；弱项可连续练，熟练考点后移，预留少量待测点。</p>
+        <ProblemLinks ids={fresh} mi={mi} empty="今日新题额度已完成，或适合808的题都做过了。可以去「刷题」页按卷练习。" />
       </section>
 
       <section className="card">

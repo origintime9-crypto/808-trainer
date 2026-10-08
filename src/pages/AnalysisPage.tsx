@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { kpPapers, patternPapers, paperYears } from '../content';
-import { rankKnowledge, rankPatterns, tagTotals, type Ranked } from '../engine/mastery';
+import { masteryStatus, rankKnowledge, rankPatterns, tagTotals, type Ranked } from '../engine/mastery';
 import { go, stars } from '../format';
 import { useDerived, useEvents } from '../state';
 import { MISTAKE_TAGS } from '../types';
@@ -16,7 +16,7 @@ function Table({ rows, kind }: { rows: Ranked[]; kind: 'kp' | 'pattern' }) {
             <th>真题出现</th>
             <th>掌握度</th>
             <th>练习</th>
-            <th title="星级/5 × (1−掌握度) × (1 + 出现套数/7)">优先级</th>
+            <th title="808重点、真题频次、原卷分值、薄弱程度、遗忘风险和待测需求">优先级</th>
           </tr>
         </thead>
         <tbody>
@@ -38,10 +38,10 @@ function Table({ rows, kind }: { rows: Ranked[]; kind: 'kp' | 'pattern' }) {
                     <span className="muted">未测</span>
                   )}
                 </td>
-                <td className="small">{r.mastery.attempts} 题 / {r.mastery.reviews} 卡</td>
-                <td title={`星级 ${r.factors.star.toFixed(2)} × 薄弱 ${r.factors.gap.toFixed(2)} × 频次 ${r.factors.freq.toFixed(2)}`}>
+                <td className="small">{r.mastery.uniqueProblems} 道不同题 / {r.mastery.reviews} 次卡片</td>
+                <td title={'重点 ' + r.stars + ' 星 · 中北真题 ' + r.years + ' 套 · 原卷权重 ' + r.factors.exam.toFixed(2) + ' · 遗忘风险 ' + Math.round(r.mastery.forgetting*100) + '%'}>
                   {(r.priority * 100).toFixed(0)}
-                  <div className="small muted" style={{ whiteSpace: 'nowrap', fontSize: '10px' }}>{r.factors.star.toFixed(2)} × {r.factors.gap.toFixed(2)} × {r.factors.freq.toFixed(2)}</div>
+                  <div className="small muted">{masteryStatus(r.mastery)}{tested?' · 记忆 '+Math.round(r.mastery.retention*100)+'%':''}</div>
                 </td>
               </tr>
             );
@@ -89,7 +89,7 @@ export function AnalysisPage() {
             </label>
           )}
         </div>
-        <p className="muted small">按优先级排序。优先级 = 星级 × 薄弱程度 × 中北真题频次；点击一行去刷对应的题。<a href="#/knowledge">查看知识分类 →</a></p>
+        <p className="muted small">按808考点重要程度、薄弱程度和遗忘风险排序。少量记录需继续换题验证，反复一道题不会判定整个考点稳固。<a href="#/readiness">查看808适配水平 →</a></p>
         <Table rows={rows} kind={tab} />
       </section>
     </div>

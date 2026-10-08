@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="402" viewBox="0 0 720 402" role="img">
+<title>课程25三1：有限极点负1和2，三个不同ROC</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="720" height="402" fill="white"/>
+<text x="360" y="30" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">H(s)无有限零点；极点−1、2</text>
+<rect x="66" y="68" width="193" height="197" fill="#fff7ed"/>
+<rect x="259" y="68" width="273" height="197" fill="#ecfdf5"/>
+<rect x="532" y="68" width="139" height="197" fill="#fff7ed"/>
+<path d="M46 215H690" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M350 278V61" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M259 71V274" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<path d="M252 208L266 222M252 222L266 208" fill="none" stroke="#0f766e" stroke-width="2.8"/>
+<text x="259" y="302" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1</text>
+<path d="M532 71V274" fill="none" stroke="#334155" stroke-width="1.8" stroke-dasharray="4 4"/>
+<path d="M525 208L539 222M525 222L539 208" fill="none" stroke="#0f766e" stroke-width="2.8"/>
+<text x="532" y="302" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">2</text>
+<text x="340" y="300" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">0</text>
+<text x="375" y="66" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">jω</text>
+<text x="683" y="244" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">σ</text>
+<text x="158" y="99" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Re s&lt;−1</text>
+<text x="392" y="99" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">−1&lt;Re s&lt;2</text>
+<text x="605" y="99" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">Re s&gt;2</text>
+<text x="360" y="346" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">中间条带：包含虚轴，稳定且非因果</text>
+<text x="360" y="386" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">左ROC非因果不稳定；右ROC因果不稳定</text>
+</svg>
