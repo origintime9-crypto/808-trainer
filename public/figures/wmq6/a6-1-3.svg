@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="425" viewBox="0 0 680 425" role="img">
+<title>6.1(3)：右移一拍的增长指数</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="680" height="425" fill="white"/>
+<text x="340" y="30" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">6.1(3)：右移一拍的增长指数</text>
+<path d="M43 278.57H628" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M219.14 324V63" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="241.14285714285714" y="65" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">样值</text>
+<text x="618" y="347" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">n</text>
+<path d="M70.00 278.57V278.57" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="70.00" cy="278.57" r="4" fill="#2563eb"/>
+<text x="70.0" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">−2</text>
+<path d="M144.57 278.57V278.57" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="144.57" cy="278.57" r="4" fill="#2563eb"/>
+<text x="144.57142857142856" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">−1</text>
+<path d="M219.14 278.57V278.57" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="219.14" cy="278.57" r="4" fill="#2563eb"/>
+<text x="219.14285714285714" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">0</text>
+<path d="M293.71 278.57V268.69" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="293.71" cy="268.69" r="4" fill="#2563eb"/>
+<text x="293.71428571428567" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">1</text>
+<path d="M368.29 278.57V258.82" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="368.29" cy="258.82" r="4" fill="#2563eb"/>
+<text x="368.2857142857143" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">2</text>
+<path d="M442.86 278.57V239.07" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="442.86" cy="239.07" r="4" fill="#2563eb"/>
+<text x="442.8571428571429" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">3</text>
+<path d="M517.43 278.57V199.58" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="517.43" cy="199.58" r="4" fill="#2563eb"/>
+<text x="517.4285714285713" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">4</text>
+<path d="M592.00 278.57V120.59" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="592.00" cy="120.59" r="4" fill="#2563eb"/>
+<text x="592.0" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">5</text>
+<text x="207.14285714285714" y="125.59420289855072" text-anchor="end" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">16</text>
+<text x="340" y="385" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">首样值位于n=1，高度1；此后2, 4, 8, 16。</text>
+<text x="340" y="413" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">实心点仅表示整数下标样值；点之间不连线。</text>
+</svg>

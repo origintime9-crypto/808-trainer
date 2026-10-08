@@ -122,6 +122,29 @@ describe('掌握度与优先级', () => {
     expect(uncertain.kp('5.2').uniqueProblems).toBe(0);
     expect(uncertain.pattern('nyquist').uniqueProblems).toBe(0);
   });
+
+  it('教材离散相关与卷积分开，旧单位样值题来源合并不增加作答，初态存疑保留记录但不增加能力证据', () => {
+    const correlated = computeMastery([attempt('wmq6-6-20-2a', 1, T0)], T0);
+    expect(correlated.kp('6.5').uniqueProblems).toBe(1);
+    expect(correlated.pattern('correlation').uniqueProblems).toBe(1);
+    expect(correlated.kp('6.2').attempts).toBe(0);
+    expect(correlated.pattern('conv-sum').attempts).toBe(0);
+    expect(rankPatterns(correlated).find(p => p.id === 'correlation')!.stars).toBe(1);
+    expect(kpById.get('6.2')!.stars).toBe(5);
+    expect(kpById.get('6.4')!.stars).toBe(5);
+    const old = attempt('tk-key-17-2', 1, T0);
+    const restored = mergeEvents([old], parseImport(exportJson([old])));
+    expect(restored).toEqual([old]);
+    expect(problemById.get(old.problemId)!.sources.some(s => s.paper === 'wmq6' && s.no === '6.16(1b)')).toBe(true);
+    expect(problemById.has('wmq6-6-16-1b')).toBe(false);
+    const merged = computeMastery(restored, T0);
+    expect(merged.pattern('discrete-diagram').uniqueProblems).toBe(1);
+    expect(merged.kp('6.5').attempts).toBe(0);
+    const uncertain = computeMastery(['wmq6-6-15-1', 'wmq6-6-15-2', 'wmq6-6-16-1a'].map(id => attempt(id, 3, T0)), T0);
+    expect(uncertain.kp('6.4').attempts).toBe(3);
+    expect(uncertain.kp('6.4').uniqueProblems).toBe(0);
+    expect(uncertain.pattern('diff-eq-solve').uniqueProblems).toBe(0);
+  });
 });
 
 describe('导出导入', () => {

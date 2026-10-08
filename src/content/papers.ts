@@ -19,6 +19,7 @@ export const papers: Paper[] = [
   { id: 'wmq3', year: 0, examType: '—', kind: '习题', title: '王明泉教材补题 · 第 3 章' },
   { id: 'wmq4', year: 0, examType: '—', kind: '习题', title: '王明泉教材补题 · 第 4 章' },
   { id: 'wmq5', year: 0, examType: '—', kind: '习题', title: '王明泉教材补题 · 第 5 章' },
+  { id: 'wmq6', year: 0, examType: '—', kind: '习题', title: '王明泉教材补题 · 第 6 章' },
   { id: 'tk-key', year: 0, examType: '—', kind: '题库', title: '重点题必看（手写整理）' },
   { id: 'tk-exam-01', year: 0, examType: '—', kind: '题库', title: '中北课程题库 01（考试试题及答案）', totalScore: 100 },
   { id: 'tk-exam-02', year: 0, examType: '—', kind: '题库', title: '中北课程题库 02（考试试题及答案）', totalScore: 100 },

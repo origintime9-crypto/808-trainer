@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="425" viewBox="0 0 680 425" role="img">
+<title>6.1(5)：相位为−π/10的余弦序列</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="680" height="425" fill="white"/>
+<text x="340" y="30" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">6.1(5)：相位为−π/10的余弦序列</text>
+<path d="M43 199.58H628" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M207.37 324V63" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="229.36842105263156" y="65" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">样值</text>
+<text x="618" y="347" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">n</text>
+<path d="M70.00 199.58V278.57" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="70.00" cy="278.57" r="4" fill="#2563eb"/>
+<path d="M97.47 199.58V278.57" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="97.47" cy="278.57" r="4" fill="#2563eb"/>
+<text x="97.47368421052632" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">−4</text>
+<path d="M124.95 199.58V248.40" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="124.95" cy="248.40" r="4" fill="#2563eb"/>
+<path d="M152.42 199.58V199.58" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="152.42" cy="199.58" r="4" fill="#2563eb"/>
+<text x="152.42105263157896" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">−2</text>
+<path d="M179.89 199.58V150.76" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="179.89" cy="150.76" r="4" fill="#2563eb"/>
+<path d="M207.37 199.58V120.59" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="207.37" cy="120.59" r="4" fill="#2563eb"/>
+<text x="207.36842105263156" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">0</text>
+<path d="M234.84 199.58V120.59" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="234.84" cy="120.59" r="4" fill="#2563eb"/>
+<path d="M262.32 199.58V150.76" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="262.32" cy="150.76" r="4" fill="#2563eb"/>
+<text x="262.31578947368416" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">2</text>
+<path d="M289.79 199.58V199.58" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="289.79" cy="199.58" r="4" fill="#2563eb"/>
+<path d="M317.26 199.58V248.40" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="317.26" cy="248.40" r="4" fill="#2563eb"/>
+<text x="317.2631578947368" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">4</text>
+<path d="M344.74 199.58V278.57" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="344.74" cy="278.57" r="4" fill="#2563eb"/>
+<path d="M372.21 199.58V278.57" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="372.21" cy="278.57" r="4" fill="#2563eb"/>
+<text x="372.2105263157895" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">6</text>
+<path d="M399.68 199.58V248.40" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="399.68" cy="248.40" r="4" fill="#2563eb"/>
+<path d="M427.16 199.58V199.58" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="427.16" cy="199.58" r="4" fill="#2563eb"/>
+<text x="427.15789473684214" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">8</text>
+<path d="M454.63 199.58V150.76" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="454.63" cy="150.76" r="4" fill="#2563eb"/>
+<path d="M482.11 199.58V120.59" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="482.11" cy="120.59" r="4" fill="#2563eb"/>
+<text x="482.10526315789474" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">10</text>
+<path d="M509.58 199.58V120.59" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="509.58" cy="120.59" r="4" fill="#2563eb"/>
+<path d="M537.05 199.58V150.76" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="537.05" cy="150.76" r="4" fill="#2563eb"/>
+<text x="537.0526315789474" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">12</text>
+<path d="M564.53 199.58V199.58" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="564.53" cy="199.58" r="4" fill="#2563eb"/>
+<path d="M592.00 199.58V248.40" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="592.00" cy="248.40" r="4" fill="#2563eb"/>
+<text x="592.0" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">14</text>
+<text x="195.36842105263156" y="283.5652173913044" text-anchor="end" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">−0.951</text>
+<text x="195.36842105263156" y="125.59420289855072" text-anchor="end" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">0.951</text>
+<text x="340" y="385" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">基本周期10；x(0)=x(1)=cos(π/10)≈0.9511。</text>
+<text x="340" y="413" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">实心点仅表示整数下标样值；点之间不连线。</text>
+</svg>

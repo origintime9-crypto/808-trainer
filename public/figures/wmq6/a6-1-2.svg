@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="425" viewBox="0 0 680 425" role="img">
+<title>6.1(2)：左边负指数，原点为−1/2</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="680" height="425" fill="white"/>
+<text x="340" y="30" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">6.1(2)：左边负指数，原点为−1/2</text>
+<path d="M43 120.59H628" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M331.00 324V63" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="353.0" y="65" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">样值</text>
+<text x="618" y="347" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">n</text>
+<path d="M70.00 120.59V278.57" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="70.00" cy="278.57" r="4" fill="#2563eb"/>
+<text x="70.0" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">−4</text>
+<path d="M135.25 120.59V199.58" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="135.25" cy="199.58" r="4" fill="#2563eb"/>
+<text x="135.25" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">−3</text>
+<path d="M200.50 120.59V160.09" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="200.50" cy="160.09" r="4" fill="#2563eb"/>
+<text x="200.5" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">−2</text>
+<path d="M265.75 120.59V140.34" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="265.75" cy="140.34" r="4" fill="#2563eb"/>
+<text x="265.75" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">−1</text>
+<path d="M331.00 120.59V130.47" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="331.00" cy="130.47" r="4" fill="#2563eb"/>
+<text x="331.0" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">0</text>
+<path d="M396.25 120.59V120.59" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="396.25" cy="120.59" r="4" fill="#2563eb"/>
+<text x="396.25" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">1</text>
+<path d="M461.50 120.59V120.59" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="461.50" cy="120.59" r="4" fill="#2563eb"/>
+<text x="461.5" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">2</text>
+<path d="M526.75 120.59V120.59" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="526.75" cy="120.59" r="4" fill="#2563eb"/>
+<text x="526.75" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">3</text>
+<path d="M592.00 120.59V120.59" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="592.00" cy="120.59" r="4" fill="#2563eb"/>
+<text x="592.0" y="347" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">4</text>
+<text x="319.0" y="283.5652173913044" text-anchor="end" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="4" paint-order="stroke fill">−8</text>
+<text x="340" y="385" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">n&gt;0为0；左侧样值−8, −4, −2, −1, −1/2。</text>
+<text x="340" y="413" text-anchor="middle" font-size="17" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">实心点仅表示整数下标样值；点之间不连线。</text>
+</svg>
