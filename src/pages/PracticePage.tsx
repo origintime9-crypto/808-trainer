@@ -6,6 +6,7 @@ import { paperProblems } from '../engine/paper';
 import { StudyNav } from '../components/StudyNav';
 import { domains, topics, matchesCategory } from '../content/taxonomy';
 import { problemPriority } from '../engine/mastery';
+import { REFERENCE_LABELS, reference808, type ReferenceClass } from '../content/difficulty808';
 
 const STATUS = { all: '全部', todo: '未做', wrong: '错题本', done: '已过关' } as const;
 type Status = keyof typeof STATUS;
@@ -35,6 +36,7 @@ export function PracticePage() {
   const domain = q.get('domain') ?? '';
   const topic = q.get('topic') ?? '';
   const type = q.get('type') ?? '';
+  const reference = q.get('reference') ?? '';
   const status = (q.get('status') ?? 'all') as Status;
   const sort = q.get('sort') ?? 'adaptive';
 
@@ -45,6 +47,7 @@ export function PracticePage() {
     if (pattern && p.pattern !== pattern) return false;
     if ((domain || topic) && !matchesCategory(p.kps, domain, topic)) return false;
     if (type && p.type !== type) return false;
+    if (reference && reference808(p.id).category !== reference) return false;
     const st = sched.problems.get(p.id);
     if (status === 'todo' && st) return false;
     if (status === 'wrong' && !st?.inMistakes) return false;
@@ -122,6 +125,7 @@ export function PracticePage() {
         <label>领域<select value={domain} onChange={e=>setQuery({domain:e.target.value,topic:'',kp:'',ch:''})}><option value="">全部</option>{domains.map(d=><option value={d.id} key={d.id}>{d.title}</option>)}</select></label>
         <label>专题<select value={topic} onChange={e=>setQuery({topic:e.target.value,kp:'',ch:''})}><option value="">全部</option>{topics.filter(t=>!domain||t.domain===domain).map(t=><option key={t.id} value={t.id}>{t.title}</option>)}</select></label>
         <label>作答题型<select value={type} onChange={e=>setQuery({type:e.target.value})}><option value="">全部</option>{['填空','选择','计算','画图','分析','简答'].map(t=><option key={t}>{t}</option>)}</select></label>
+        <label>808参考难度<select value={reference} onChange={e=>setQuery({reference:e.target.value})}><option value="">全部</option>{(Object.keys(REFERENCE_LABELS) as ReferenceClass[]).map(c=><option value={c} key={c}>{REFERENCE_LABELS[c]}</option>)}</select></label>
         <button className="ghost" onClick={()=>go('#/practice')}>清空筛选</button>
       </section>
 
@@ -157,6 +161,7 @@ export function PracticePage() {
                   </span>
                   <span className="muted small">
                     {p.type} · {patternLabel(p.pattern) || p.kps.join('、')}
+                    {' · '+REFERENCE_LABELS[reference808(p.id).category]}
                     {last ? ` · 上次：${GRADE_LABELS[last.grade]}` : ''}
                   </span>
                 </a>
@@ -165,6 +170,7 @@ export function PracticePage() {
           })}
         </ul>
         {list.length === 0 && <p className="muted">没有符合条件的题。</p>}
+        {reference&&<p className="muted small">以现有2026中北808的题面、解题方法和作答量作初始参照，不代表经过考生数据标定。“其他考点补充”包含往年真题涉及的内容，只是单年卷没有相近题位。课程卷数量先收在约30套。</p>}
       </section>
     </div>
   );

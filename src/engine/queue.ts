@@ -1,5 +1,6 @@
 import { cardById, cards, kpById, kpPapers, paperById, problemById, problems } from '../content';
 import { examEmphasis, fits808 } from '../content/target808';
+import { problemDemand } from '../content/difficulty808';
 import type { Settings, TrainerEvent } from '../types';
 import { priority, problemPriority, type MasteryIndex } from './mastery';
 import { DAY, endOfToday, isNewCard, startOfToday, type Schedule } from './scheduler';
@@ -108,7 +109,5 @@ export function recommendNew(sched: Schedule, events: TrainerEvent[], settings: 
 
 export function suggestedMinutes(problemId: string): number {
   const p = problemById.get(problemId);
-  if (p?.minutes) return p.minutes;
-  const score = p?.sources.find((s) => s.score)?.score ?? 5;
-  return Math.max(2, Math.round(score * 1.2));
+  return p ? problemDemand(p).minutes : 6;
 }

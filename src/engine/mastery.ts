@@ -3,6 +3,7 @@ import type { MistakeTag, TrainerEvent } from '../types';
 import { MISTAKE_TAGS } from '../types';
 import { replay, retrievability, startOfToday, type Schedule } from './scheduler';
 import { examEmphasis, fits808 } from '../content/target808';
+import { REFERENCE_LABELS, reference808, referencePriority } from '../content/difficulty808';
 
 export interface Mastery {
   /** 当前掌握估计 0~1；无证据时先验0.5，并显示待测。 */
@@ -198,7 +199,8 @@ export function problemPriority(problemId: string, mi: MasteryIndex): number {
   const pm = pat ? mi.pattern(pat.id) : undefined;
   const patScore = pat && pm ? priority(Math.max(...pat.kps.map((id) => kpById.get(id)?.stars ?? 1)), pm.m, patternPapers.get(pat.id)?.size ?? 0, pm, Math.max(1, ...pat.kps.map(examEmphasis))).value : 0;
   const knowledgeScore = 0.7 * Math.max(0, ...kpScores) + 0.3 * (kpScores.reduce((sum, value) => sum + value, 0) / Math.max(1, kpScores.length));
-  return Math.max(knowledgeScore, patScore);
+  const ability = p.kps.reduce((sum,id)=>sum+mi.kp(id).ability,0) / Math.max(1,p.kps.length);
+  return Math.max(knowledgeScore, patScore) * referencePriority(problemId, ability);
 }
 
 /** 给用户可读的推荐原因，避免只显示一个不透明分数。 */
@@ -210,5 +212,6 @@ export function recommendationReason(problemId: string, mi: MasteryIndex): strin
   if (!top) return '补充练习';
   const status = masteryStatus(top.m);
   const reason = status === '待测' ? '补充测评' : status === '需复习' ? '临近遗忘，安排复习' : status === '需补强' ? '薄弱考点补强' : '换题巩固';
-  return (top.k?.title ?? top.id) + ' · ' + reason + (top.k && top.k.stars >= 4 ? ' · 重点考点' : '');
+  return (top.k?.title ?? top.id) + ' · ' + reason + (top.k && top.k.stars >= 4 ? ' · 重点考点' : '') +
+    ' · ' + REFERENCE_LABELS[reference808(problemId).category];
 }

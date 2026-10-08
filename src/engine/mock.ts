@@ -2,17 +2,14 @@ import { paperById, papers, problemById, problems } from '../content';
 import { paperProblems, SCORE_COEF } from './paper';
 import type { AttemptEvent, ExamEvent, ExamItem, Problem, TrainerEvent } from '../types';
 import { problemPriority, type MasteryIndex } from './mastery';
+import { compareDemand, problemDemand } from '../content/difficulty808';
 
 export type MockPool = 'mixed' | 'selected' | 'local';
 export const templatePapers = papers.filter(p => p.kind === '真题' && !p.school && p.totalScore === 150 && paperProblems(p.id).every(q => q.sources.find(s => s.paper === p.id)?.score) && paperProblems(p.id).reduce((v,q)=>v+(q.sources.find(s=>s.paper===p.id)?.score??0),0) === 150);
 export const selectedPapers = papers.filter(p => !!p.school);
 
 function workload(p: Problem): number {
-  if (p.minutes) return p.minutes;
-  const scores = p.sources.flatMap(s => s.score ? [s.score] : []);
-  if (scores.length) return Math.max(...scores)*1.2;
-  const questions = (p.stem.match(/\([1-9]\)|（[1-9]）/g) ?? []).length;
-  return p.type === '分析' ? Math.max(10, questions*4) : p.type === '画图' ? 8 : Math.max(6,questions*4);
+  return problemDemand(p).minutes;
 }
 function family(p: Problem): string {
   const discrete = p.kps.some(k => /^[67]\./.test(k));
@@ -25,6 +22,7 @@ function fits(anchor: Problem, p: Problem, score: number): boolean {
   // 含离散内容的题不混入纯连续题位，反之亦然。
   if ((a==='discrete' || a==='both') !== (b==='discrete' || b==='both')) return false;
   if (!p.kps.some(k=>anchor.kps.includes(k))) return false;
+  if (!compareDemand(anchor,p).comparable) return false;
   const target = score*1.2, time = workload(p);
   return time <= Math.max(8,target*1.5) && time >= (score>=10 ? target*.55 : 2);
 }
@@ -47,7 +45,8 @@ export function generateMock(template: string, pool: MockPool, seed: string, att
     }).map(p=> {
       const same = p.pattern && p.pattern===a.pattern;
       const external = p.sources.some(s=>paperById.get(s.paper)?.school);
-      const value = p.id===a.id ? -1000 : (same?40:0)+p.kps.filter(k=>a.kps.includes(k)).length*8+(external?22:0)+(attempted.has(p.id)?0:6)-Math.abs(workload(p)-score*1.2)*2+noise(seed,p.id)*16;
+      const value = p.id===a.id ? -1000 : (same?40:0)+p.kps.filter(k=>a.kps.includes(k)).length*8+
+        compareDemand(a,p).closeness*20+(external?12:0)+(attempted.has(p.id)?0:6)-Math.abs(workload(p)-score*1.2)*2+noise(seed,p.id)*16;
       return { p, value: value + (adaptive && p.id !== a.id ? 35 * problemPriority(p.id, adaptive) : 0) };
     }).sort((a,b)=>b.value-a.value || a.p.id.localeCompare(b.p.id));
   });

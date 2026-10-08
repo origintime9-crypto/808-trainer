@@ -3,7 +3,8 @@ import { target808Paper } from '../content/target808';
 import { mockResult, mockSessions, validMockSession } from '../engine/mock';
 import { readiness808 } from '../engine/readiness';
 import { learningPlan } from '../engine/learning';
-import { stars } from '../format';
+import { sourceLabel, stars } from '../format';
+import { problemById } from '../content';
 import { useDerived, useEvents } from '../state';
 
 const percent = (value: number) => Math.round(value * 100) + '%';
@@ -27,6 +28,17 @@ export function ReadinessPage() {
       </div>
       <p className="muted small">覆盖按重要程度加权，水平估计只采用题面明确、符合808范围的作答证据。未做题的考点单列待测；只复习卡片还不能验证解题能力。这些是根据自评与批改记录的估计，不能当作预测考试分数。</p>
       <div className="actions"><a className="button primary" href="#/mock?mode=adaptive">做一套 808 补强测评卷</a><a href="#/mock">标准模拟卷 →</a></div>
+    </section>
+    <section className="card" data-reference-808>
+      <h2>接近808难度的作答验证</h2>
+      <p>原卷 {profile.reference.total} 个题位，已用相近题验证 {profile.reference.measured} 个；最近练习日首次评分全对 {profile.reference.full} 个，其中参考用时内全对 {profile.reference.timedFull} 个。</p>
+      <p className="muted small">题位验证覆盖 {percent(profile.reference.coverage)}，另有 {profile.reference.foundation} 道基础补齐题、{profile.reference.stretch} 道综合拓展题。基础练习和拓展题不会替代相近难度的题位验证；同一道题只能验证一个题位。</p>
+      <details><summary>查看尚未验证的题位</summary>
+        <ul className="rows">{profile.reference.slots.filter(s=>!s.measured).map(s=><li key={s.referenceId}><a href={'#/p/'+s.referenceId}><b>{s.no} · {sourceLabel(problemById.get(s.referenceId)!)}</b><span className="muted small">用原卷题检验这一题位 →</span></a></li>)}</ul>
+        {profile.reference.measured===profile.reference.total&&<p>所有题位都有相近题记录，继续用换题和整卷验证。</p>}
+      </details>
+      <p className="muted small">参照现有2026中北808题面，按解题方法、综合程度、题型与预计用时筛选。难度为初始参考估计；采用每题最近练习日的第一次评分，日内改分不增加验证。记录未区分看提示与闭卷，用时也可能受暂停影响，这里不能当作考试分数预测。</p>
+      <a href="#/practice?reference=near">练贴近808的题 →</a>
     </section>
     <section className="card">
       <h2>最影响 808 准备的考点</h2>
