@@ -31,7 +31,7 @@ class MemoryD1 {
 }
 const event = (id: string): TrainerEvent => ({ id, t: 1000, kind: 'attempt', problemId: 'zt2026-10', grade: 1, tags: ['计算失误'], sec: 90 });
 const req = (body: unknown, token = 'test-pass') => new Request('https://test.local/api/sync', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify(body) });
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers(); vi.restoreAllMocks(); });
 
 describe('云端接口', () => {
   it('健康检查只报告功能状态，不暴露密钥', async () => {
@@ -131,6 +131,85 @@ describe('云端接口', () => {
     const r = await grade({ request: req({}), env });
     expect(r.status).toBe(502); expect(await r.text()).not.toContain('secret-ai');
     expect((await grade({ request: req({}), env: { SYNC_KEY: 'test-pass' } })).status).toBe(503);
+  });
+  it('临时503短暂退避后只重试一次，照片和模型参数原样保留', async () => {
+    vi.useFakeTimers();
+    const env = { SYNC_KEY: 'test-pass', AI_API_KEY: 'secret-ai', AI_BASE_URL: 'https://model.example/v1', AI_MODEL: 'gemini-3.8-flash' };
+    const body = buildGradeRequest(problemById.get('zt2026-10')!, env.AI_MODEL, ['data:image/jpeg;base64,dGVzdA==']);
+    let firstCall!: () => void;
+    const called = new Promise<void>(resolve => { firstCall = resolve; });
+    const forwarded = vi.fn(async (_target: unknown, init: RequestInit) => {
+      expect((init.headers as Record<string, string>).Authorization).toBe('Bearer secret-ai');
+      expect(init.redirect).toBe('manual');
+      expect(JSON.parse(await new Response(init.body).text())).toEqual(body);
+      if (forwarded.mock.calls.length === 1) { firstCall(); return new Response('secret-ai', { status: 503 }); }
+      return new Response(JSON.stringify({ content: 'secret-ai test-pass' }), { headers: { 'X-Secret': 'secret-ai' } });
+    });
+    vi.stubGlobal('fetch', forwarded);
+    const pending = grade({ request: req(body), env });
+    await called;
+    expect(forwarded).toHaveBeenCalledOnce();
+    await vi.advanceTimersByTimeAsync(1_500);
+    const r = await pending;
+    expect(r.status).toBe(200); expect(forwarded).toHaveBeenCalledTimes(2);
+    const response = await r.text();
+    expect(response).not.toContain('secret-ai'); expect(response).not.toContain('test-pass');
+    expect(r.headers.get('X-Secret')).toBeNull(); expect(vi.getTimerCount()).toBe(0);
+  });
+  it('连续503停止于两次请求，不把上游错误正文透传', async () => {
+    vi.useFakeTimers();
+    let firstCall!: () => void;
+    const called = new Promise<void>(resolve => { firstCall = resolve; });
+    const forwarded = vi.fn(async () => { firstCall(); return new Response('secret-ai private-upstream-detail', { status: 503 }); });
+    vi.stubGlobal('fetch', forwarded);
+    const pending = grade({ request: req({}), env: { SYNC_KEY: 'test-pass', AI_API_KEY: 'secret-ai', AI_BASE_URL: 'https://model.example/v1', AI_MODEL: 'vision' } });
+    await called;
+    await vi.advanceTimersByTimeAsync(1_500);
+    const r = await pending;
+    expect(r.status).toBe(502); expect(forwarded).toHaveBeenCalledTimes(2);
+    const response = await r.text();
+    expect(response).toContain('503'); expect(response).not.toContain('secret-ai'); expect(response).not.toContain('private-upstream-detail');
+    expect(vi.getTimerCount()).toBe(0);
+  });
+  it('已耗时35秒的503不再重发，避免占用剩余期限', async () => {
+    vi.useFakeTimers();
+    let firstCall!: () => void;
+    const called = new Promise<void>(resolve => { firstCall = resolve; });
+    const forwarded = vi.fn(() => {
+      firstCall();
+      return new Promise<Response>(resolve => setTimeout(() => resolve(new Response(null, { status: 503 })), 35_000));
+    });
+    vi.stubGlobal('fetch', forwarded);
+    const pending = grade({ request: req({}), env: { SYNC_KEY: 'test-pass', AI_API_KEY: 'secret-ai', AI_BASE_URL: 'https://model.example/v1', AI_MODEL: 'vision' } });
+    await called;
+    await vi.advanceTimersByTimeAsync(35_000);
+    expect((await pending).status).toBe(502); expect(forwarded).toHaveBeenCalledOnce(); expect(vi.getTimerCount()).toBe(0);
+  });
+  it('重试仍受原55秒总期限约束，超时不启动第三次请求', async () => {
+    vi.useFakeTimers();
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    let firstCall!: () => void;
+    const called = new Promise<void>(resolve => { firstCall = resolve; });
+    const forwarded = vi.fn((_target: unknown, init: RequestInit) => {
+      if (forwarded.mock.calls.length === 1) { firstCall(); return Promise.resolve(new Response(null, { status: 503 })); }
+      return new Promise<Response>((_resolve, reject) => {
+        init.signal!.addEventListener('abort', () => reject(new DOMException('abort', 'AbortError')), { once: true });
+      });
+    });
+    vi.stubGlobal('fetch', forwarded);
+    const pending = grade({ request: req({}), env: { SYNC_KEY: 'test-pass', AI_API_KEY: 'secret-ai', AI_BASE_URL: 'https://model.example/v1', AI_MODEL: 'vision' } });
+    await called;
+    await vi.advanceTimersByTimeAsync(1_500);
+    expect(forwarded).toHaveBeenCalledTimes(2);
+    await vi.advanceTimersByTimeAsync(53_500);
+    const r = await pending;
+    expect(r.status).toBe(502); expect(await r.text()).toContain('超时'); expect(forwarded).toHaveBeenCalledTimes(2); expect(vi.getTimerCount()).toBe(0);
+  });
+  it.each([400, 402, 403, 429])('上游%s不自动重发', async status => {
+    const forwarded = vi.fn(async () => new Response('private-upstream-detail', { status }));
+    vi.stubGlobal('fetch', forwarded);
+    const r = await grade({ request: req({}), env: { SYNC_KEY: 'test-pass', AI_API_KEY: 'secret-ai', AI_BASE_URL: 'https://model.example/v1', AI_MODEL: 'vision' } });
+    expect(r.status).toBe(502); expect(forwarded).toHaveBeenCalledOnce(); expect(await r.text()).not.toContain('private-upstream-detail');
   });
   it('模型地址跳转时不把服务端 Key 转交其他网址', async () => {
     const forwarded = vi.fn(async (_target: unknown, init: RequestInit) => {
