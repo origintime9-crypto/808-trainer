@@ -34,7 +34,7 @@ const methods: Record<string, string> = {
   'discrete-diagram': 'discrete-system', 'hz-roc-all': 'discrete-system',
   'full-response-decomp': 'initial-response', 'ode-s-solve': 'initial-response',
   'diff-eq-solve': 'initial-response', routh: 'extension', 'state-space': 'extension',
-  concept: 'concept', 'inverse-system': 'inverse',
+  concept: 'concept', 'inverse-system': 'inverse', correlation: 'correlation',
 };
 export function problemDemand(p: Problem): Demand {
   const anchorLevel = referenceLevels[p.id];

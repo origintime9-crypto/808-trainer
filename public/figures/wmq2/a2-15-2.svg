@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="350" viewBox="0 0 660 350" role="img">
+<title>零状态：宽度 2 与宽度 1 矩形卷积</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="660" height="350" fill="white"/>
+<text x="330" y="34" text-anchor="middle" font-size="23" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">零状态：宽度 2 与宽度 1 矩形卷积</text>
+<path d="M38 258H617" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M117.94871794871796 285V57" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="632" y="264" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t</text>
+<path d="M117.94871794871796 258v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="117.94871794871796" y="290" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">0</text>
+<path d="M252.82051282051282 258v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="252.82051282051282" y="290" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">1</text>
+<path d="M387.69230769230774 258v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="387.69230769230774" y="290" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">2</text>
+<path d="M522.5641025641025 258v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="522.5641025641025" y="290" text-anchor="middle" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">3</text>
+<polyline points="64.00,258.00 117.95,258.00 252.82,126.00 387.69,126.00 522.56,258.00 590.00,258.00" fill="none" stroke="#0f766e" stroke-width="3.2"/>
+<path d="M113.94871794871796 126.0h4" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="107.94871794871796" y="133.0" text-anchor="end" font-size="21" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">1</text>
+<text x="330" y="331" text-anchor="middle" font-size="19" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">末段为 3−t，t=3 连续回到零</text>
+</svg>
