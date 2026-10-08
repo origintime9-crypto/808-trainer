@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="415" viewBox="0 0 680 415" role="img">
+<title>5.7(3)：三角零状态响应</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="680" height="415" fill="white"/>
+<text x="340" y="31" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">5.7(3)：三角零状态响应（纵轴除以T）</text>
+<path d="M45 267H630" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M165.0 283V63" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M165.0 267v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="165.0" y="302" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill">0</text>
+<path d="M315.0 267v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="315.0" y="302" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill">1</text>
+<path d="M465.0 267v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="465.0" y="302" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill">2</text>
+<text x="153.0" y="123.0" text-anchor="end" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill">1</text>
+<text x="188.0" y="69" text-anchor="middle" font-size="20" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill">y/T</text>
+<polyline points="112.50,267.00 165.00,267.00 315.00,117.00 465.00,267.00 555.00,267.00" fill="none" stroke="#2563eb" stroke-width="3"/>
+<text x="610" y="329" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">t/T</text>
+<text x="340" y="365" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">支撑[0,2T]，顶点(T,T)，上升和下降斜率±1。</text>
+<text x="340" y="393" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">y=t·u(t)−2(t−T)u(t−T)+(t−2T)u(t−2T)。</text>
+</svg>

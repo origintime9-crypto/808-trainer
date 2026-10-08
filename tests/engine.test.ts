@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { computeMastery, priority } from '../src/engine/mastery';
+import { computeMastery, priority, rankPatterns } from '../src/engine/mastery';
 import { DAY, dayDiff, replay } from '../src/engine/scheduler';
 import { mergeEvents, parseImport, exportJson } from '../src/engine/store';
 import type { AttemptEvent, ReviewEvent, TrainerEvent } from '../src/types';
 import { DEFAULT_SETTINGS } from '../src/engine/store';
 import { recommendNew } from '../src/engine/queue';
-import { problemById } from '../src/content';
+import { kpById, problemById } from '../src/content';
 
 const T0 = new Date('2026-10-06T10:00:00').getTime();
 const EXAM = '2026-12-20';
@@ -89,6 +89,38 @@ describe('掌握度与优先级', () => {
     expect(priority(5, 0.5, 0).value).toBeGreaterThan(priority(3, 0.5, 0).value);
     expect(priority(5, 0.2, 0).value).toBeGreaterThan(priority(5, 0.8, 0).value);
     expect(priority(3, 0.5, 6).value).toBeGreaterThan(priority(3, 0.5, 0).value);
+  });
+
+  it('旧保持题进度合并教材来源后只归因于保持和卷积，频域抽样与存疑题分别统计', () => {
+    const old = attempt('zt2016-4-4', 1, T0);
+    const events = mergeEvents([old], parseImport(exportJson([old])));
+    expect(events).toEqual([old]);
+    const hold = problemById.get(old.problemId)!;
+    expect(hold.sources.some(s => s.paper === 'wmq5' && s.no === '5.7(4)')).toBe(true);
+    const mi = computeMastery(events, T0);
+    expect(mi.kp('5.4').uniqueProblems).toBe(1);
+    expect(mi.kp('2.4').uniqueProblems).toBe(1);
+    expect(mi.pattern('sample-hold').uniqueProblems).toBe(1);
+    expect(mi.kp('5.2').attempts).toBe(0);
+    expect(mi.pattern('nyquist').attempts).toBe(0);
+    expect(mi.pattern('filter-output').attempts).toBe(0);
+    const cards = computeMastery([...events, review('pattern-sample-hold', 1, T0)], T0);
+    expect(cards.kp('5.4').reviews).toBe(1);
+    expect(cards.pattern('sample-hold').reviews).toBe(1);
+    expect(cards.kp('5.2').reviews).toBe(0);
+    expect(cards.pattern('filter-output').reviews).toBe(0);
+    const ranked = rankPatterns(cards);
+    expect(ranked.find(p => p.id === 'sample-hold')!.stars).toBe(1);
+    expect(ranked.find(p => p.id === 'frequency-sampling')!.stars).toBe(1);
+    expect(kpById.get('5.2')!.stars).toBe(3);
+    const frequency = computeMastery([attempt('wmq5-5-5', 2, T0)], T0);
+    expect(frequency.kp('5.5').uniqueProblems).toBe(1);
+    expect(frequency.pattern('frequency-sampling').uniqueProblems).toBe(1);
+    expect(frequency.kp('5.2').attempts).toBe(0);
+    const uncertain = computeMastery([attempt('wmq5-5-4', 3, T0), attempt('wmq5-5-6', 3, T0)], T0);
+    expect(uncertain.kp('5.2').attempts).toBe(2);
+    expect(uncertain.kp('5.2').uniqueProblems).toBe(0);
+    expect(uncertain.pattern('nyquist').uniqueProblems).toBe(0);
   });
 });
 

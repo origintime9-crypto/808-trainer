@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="450" viewBox="0 0 680 450" role="img">
+<title>5.6：双侧带状谱的临界复制支撑（条件解）</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8Z" fill="#334155"/></marker></defs>
+<rect width="680" height="450" fill="white"/>
+<text x="340" y="31" text-anchor="middle" font-size="22" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">5.6：双侧带状谱的临界复制支撑（条件解）</text>
+<path d="M45 267H630" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M337.0 283V63" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M101.44444444444444 267v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="101.44444444444444" y="299" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill">−4</text>
+<path d="M160.33333333333331 267v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="160.33333333333331" y="299" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill">−3</text>
+<path d="M219.22222222222223 267v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="219.22222222222223" y="299" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill">−2</text>
+<path d="M278.1111111111111 267v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="278.1111111111111" y="299" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill">−1</text>
+<path d="M337.0 267v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="337.0" y="299" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill">0</text>
+<path d="M395.8888888888889 267v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="395.8888888888889" y="299" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill">1</text>
+<path d="M454.77777777777777 267v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="454.77777777777777" y="299" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill">2</text>
+<path d="M513.6666666666667 267v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="513.6666666666667" y="299" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill">3</text>
+<path d="M572.5555555555555 267v5" fill="none" stroke="#334155" stroke-width="1.8"/>
+<text x="572.5555555555555" y="299" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill">4</text>
+<text x="597" y="328" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155" stroke="white" stroke-width="5" paint-order="stroke fill">ω/ω₁</text>
+<polyline points="101.44,267.00 101.44,128.54 160.33,128.54 160.33,267.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="278.11,267.00 278.11,128.54 337.00,128.54 337.00,267.00" fill="none" stroke="#0f766e" stroke-width="3"/>
+<polyline points="219.22,267.00 219.22,128.54 278.11,128.54 278.11,267.00" fill="none" stroke="#2563eb" stroke-width="3"/>
+<polyline points="395.89,267.00 395.89,128.54 454.78,128.54 454.78,267.00" fill="none" stroke="#2563eb" stroke-width="3"/>
+<polyline points="337.00,267.00 337.00,128.54 395.89,128.54 395.89,267.00" fill="none" stroke="#d97706" stroke-width="3"/>
+<polyline points="513.67,267.00 513.67,128.54 572.56,128.54 572.56,267.00" fill="none" stroke="#d97706" stroke-width="3"/>
+<text x="340" y="354" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">蓝：原谱；绿/橙：平移−2ω₁/+2ω₁的副本。</text>
+<text x="340" y="386" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">矩形仅示意支撑；普通双侧谱在临界处只碰边界。</text>
+<text x="340" y="419" text-anchor="middle" font-size="18" font-family="Arial,Microsoft YaHei,sans-serif" fill="#334155">ω₂=2ω₁，ωₛ=ω₂；其他副本按2ω₁继续平移。</text>
+</svg>
