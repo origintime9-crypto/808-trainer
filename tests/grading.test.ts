@@ -81,4 +81,16 @@ describe('外部批改与统计复核', () => {
     const event: AttemptEvent = { id: 'model-claim', t: now, kind: 'attempt', problemId: p.id, grade: 3, tags: [], sec: 30, ai: parsed };
     expect(gradingAudit([event], now)).toMatchObject({ reviewed: 0, unreviewed: 1 });
   });
+  it('转写正确、修正、看不清互斥计数；错因调整与评分调整分别计算', () => {
+    const base: AttemptEvent = { id: 'checked', t: now, kind: 'attempt', problemId: p.id, grade: 3, tags: ['计算失误', '粗心审题'], sec: 120, ai: { ...result, tags: ['粗心审题', '计算失误'] }, recognition: { status: 'checked' } };
+    const tagChanged: AttemptEvent = { ...base, id: 'tag-changed', tags: ['公式记错'] };
+    const corrected: AttemptEvent = { ...base, id: 'corrected', grade: 0, recognition: { status: 'corrected', transcript: '$H(s)=2$' } };
+    const unreadable: AttemptEvent = { ...base, id: 'unreadable', recognition: { status: 'unreadable' } };
+    const old: AttemptEvent = { ...base, id: 'old', recognition: undefined };
+    const restored = parseImport(exportJson([base, tagChanged, corrected, unreadable, old]));
+    const audit = gradingAudit([...restored, tagChanged], now);
+    expect(audit).toMatchObject({ confirmed: 5, reviewed: 4, checkedTranscript: 2, correctedTranscript: 1, unreadable: 1, unreviewed: 1, adjusted: 1, adjustedTags: 1 });
+    expect(audit.reviewed).toBe(audit.checkedTranscript + audit.correctedTranscript + audit.unreadable);
+    expect(audit.confirmed).toBe(audit.reviewed + audit.unreviewed);
+  });
 });

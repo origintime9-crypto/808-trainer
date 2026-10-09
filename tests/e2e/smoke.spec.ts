@@ -95,7 +95,12 @@ test('照片压缩与 AI 预填，确认前不记分，保存不含照片或口�
     const body = route.request().postDataJSON();
     expect(route.request().headers().authorization).toBe('Bearer test-sync-only');
     expect(body.model).toBe('vision-mock');
-    const photos = body.messages[1].content.filter((c: { type: string }) => c.type === 'image_url');
+    const content = body.messages[1].content;
+    const studentStart = content.findIndex((c: { type: string; text?: string }) => c.type === 'text' && c.text?.startsWith('【学生作答照片】'));
+    expect(studentStart).toBeGreaterThan(0);
+    const figures = content.slice(0, studentStart).filter((c: { type: string }) => c.type === 'image_url');
+    expect(figures).toHaveLength(1); expect(figures[0].image_url.url).toMatch(/^data:image\/png;base64,/);
+    const photos = content.slice(studentStart + 1).filter((c: { type: string }) => c.type === 'image_url');
     expect(photos).toHaveLength(3);
     expect(photos.every((c: { image_url: { url: string } }) => c.image_url.url.startsWith('data:image/jpeg;base64,'))).toBeTruthy();
     sent = true;

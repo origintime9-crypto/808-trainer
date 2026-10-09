@@ -10,6 +10,7 @@ import { generateMock, mockResult, mockSessions, validMockSession } from '../src
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Md } from '../src/components/Markdown';
+import { GradeApiError, readGradeDiagnostic } from '../src/ai/errors';
 
 class MemoryD1 {
   rows: { seq: number; id: string; data: string }[] = [];
@@ -222,6 +223,33 @@ describe('云端接口', () => {
     const r = await grade({ request: req({}), env: { SYNC_KEY: 'test-pass', AI_API_KEY: 'secret-ai', AI_BASE_URL: 'https://model.example/v1', AI_MODEL: 'vision' } });
     expect(r.status).toBe(502); expect(forwarded).toHaveBeenCalledOnce(); expect(await r.text()).not.toContain('private-upstream-detail');
   });
+  it('额度故障只返回固定诊断与等待秒数，不透传上游正文或误报每日额度', async () => {
+    const env = { SYNC_KEY: 'test-pass', AI_API_KEY: 'secret-ai', AI_BASE_URL: 'https://model.example/v1', AI_MODEL: 'vision' };
+    const forwarded = vi.fn(async () => Response.json({ error: { message: 'secret-ai test-pass private-detail', details: [
+      { '@type': 'type.googleapis.com/google.rpc.RetryInfo', retryDelay: '32.2s' },
+    ] } }, { status: 429 }));
+    vi.stubGlobal('fetch', forwarded);
+    const response = await grade({ request: req({}), env });
+    const data = await response.json();
+    expect(data.diagnostic).toEqual({ kind: 'limited', upstreamStatus: 429, retryAfterSeconds: 33 });
+    expect(forwarded).toHaveBeenCalledOnce();
+    for (const secret of ['secret-ai', 'test-pass', 'private-detail']) expect(JSON.stringify(data)).not.toContain(secret);
+    forwarded.mockImplementation(async () => Response.json({ error: { details: [
+      { '@type': 'type.googleapis.com/google.rpc.QuotaFailure', violations: [{ quotaId: 'GenerateRequestsPerDayPerProjectPerModel-FreeTier' }] },
+    ] } }, { status: 429 }));
+    expect((await (await grade({ request: req({}), env })).json()).diagnostic).toEqual({ kind: 'daily-quota', upstreamStatus: 429 });
+  });
+  it('只保留有效的等待时间与故障类别，额度、余额、服务忙碌分别提示', async () => {
+    const env = { SYNC_KEY: 'test-pass', AI_API_KEY: 'secret-ai', AI_BASE_URL: 'https://model.example/v1', AI_MODEL: 'vision' };
+    for (const [status, kind] of [[429, 'limited'], [402, 'billing']] as const) {
+      const forwarded = vi.fn(async () => new Response('private-detail', { status, headers: { 'Retry-After': '90000' } }));
+      vi.stubGlobal('fetch', forwarded);
+      expect((await (await grade({ request: req({}), env })).json()).diagnostic).toEqual({ kind, upstreamStatus: status });
+      expect(forwarded).toHaveBeenCalledOnce();
+    }
+    expect(readGradeDiagnostic({ kind: 'limited', retryAfterSeconds: Infinity, upstreamStatus: '429', photo: 'data:image/png;base64,AAAA' })).toEqual({ kind: 'limited' });
+    expect(readGradeDiagnostic({ kind: 'private-detail' })).toBeNull();
+  });
   it('模型地址跳转时不把服务端 Key 转交其他网址', async () => {
     const forwarded = vi.fn(async (_target: unknown, init: RequestInit) => {
       expect(init.redirect).toBe('manual');
@@ -268,8 +296,17 @@ describe('AI 输出解析', () => {
   it('缺少题面分值或模型超出总分时不预填数字估分', async () => {
     for (const [id, proposed, expected] of [['tk-key-1-2', 3, undefined], ['zt2026-10', 100, undefined], ['zt2026-10', 4.5, 4.5]] as const) {
       vi.stubGlobal('fetch', vi.fn(async () => Response.json({ choices: [{ message: { content: JSON.stringify({ ...value, score: proposed }) } }] })));
-      const output = await gradePhotos(problemById.get(id)!, 'vision', 'test-pass', ['data:image/jpeg;base64,dGVzdA==']);
+      // 此处只检查数字估分边界；真实题图发送在浏览器流程中检查。
+      const output = await gradePhotos({ ...problemById.get(id)!, figures: [] }, 'vision', 'test-pass', ['data:image/jpeg;base64,dGVzdA==']);
       expect(output.result?.grade).toBe(1); expect(output.result?.score).toBe(expected);
+    }
+  });
+  it('客户端保留结构化故障，失败请求不生成有效批改', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => Response.json({ error: '服务忙碌', diagnostic: { kind: 'busy', upstreamStatus: 503, upstreamDetail: 'private-detail' } }, { status: 502 })));
+    try { await gradePhotos(problemById.get('tk-key-1-2')!, 'gemini-3.8-flash', 'test-pass', ['data:image/jpeg;base64,dGVzdA==']); throw new Error('应返回故障'); }
+    catch (error) {
+      expect(error).toBeInstanceOf(GradeApiError);
+      expect((error as GradeApiError).diagnostic).toEqual({ kind: 'busy', upstreamStatus: 503 });
     }
   });
 });

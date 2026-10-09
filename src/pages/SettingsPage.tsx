@@ -78,9 +78,9 @@ export function SettingsPage() {
       <section className="card grading-audit">
         <h2>批改复核记录</h2>
         <p className="muted small">掌握度、错题本和模拟卷估分使用你最终确认的评分。AI 原建议保留供复核；未确认、超时或格式错误的结果不计入这里。</p>
-        <div className="readiness-stats"><div><b>{grading.confirmed}</b><small>已确认的辅助批改记录</small></div><div><b>{grading.adjusted}</b><small>人工调整评分的记录</small></div><div><b>{grading.unclear}</b><small>转写含 [看不清] 的记录</small></div></div>
-        <div className="readiness-stats"><div><b>{grading.reviewed}</b><small>已标注转写复核</small></div><div><b>{grading.correctedTranscript}</b><small>已修正转写</small></div><div><b>{grading.unreadable}</b><small>人工标注照片看不清</small></div><div><b>{grading.unreviewed}</b><small>转写复核未标注</small></div></div>
-        {grading.models.length ? <ul>{grading.models.map(row => <li key={row.model}>{row.model}：{row.confirmed} 条，调整评分 {row.adjusted} 条，转写含 [看不清] {row.unclear} 条。转写复核 {row.reviewed} 条，其中修正 {row.correctedTranscript} 条、照片看不清 {row.unreadable} 条。</li>)}</ul> : <p className="muted small">暂无已确认的辅助批改记录。</p>}
+        <div className="readiness-stats"><div><b>{grading.confirmed}</b><small>已确认的辅助批改记录</small></div><div><b>{grading.adjusted}</b><small>人工调整评分的记录</small></div><div><b>{grading.adjustedTags}</b><small>人工调整错因的记录</small></div><div><b>{grading.unclear}</b><small>转写含 [看不清] 的记录</small></div></div>
+        <div className="readiness-stats"><div><b>{grading.reviewed}</b><small>已标注转写复核</small></div><div><b>{grading.checkedTranscript}</b><small>人工确认转写正确</small></div><div><b>{grading.correctedTranscript}</b><small>已修正转写</small></div><div><b>{grading.unreadable}</b><small>人工标注照片看不清</small></div><div><b>{grading.unreviewed}</b><small>转写复核未标注</small></div></div>
+        {grading.models.length ? <ul>{grading.models.map(row => <li key={row.model}>{row.model}：{row.confirmed} 条，调整评分 {row.adjusted} 条，转写含 [看不清] {row.unclear} 条。转写复核 {row.reviewed} 条，其中修正 {row.correctedTranscript} 条、照片看不清 {row.unreadable} 条。人工确认转写正确 {row.checkedTranscript} 条，调整错因 {row.adjustedTags} 条。</li>)}</ul> : <p className="muted small">暂无已确认的辅助批改记录。</p>}
         <p className="muted small">这些数量反映你标注的复核情况，不能当作模型的识别准确率。旧记录的复核情况记为「未标注」，保留原进度。照片不保存；可修正转写后重新选择评分，或忽略 AI 建议后手动评分。</p>
       </section>
 

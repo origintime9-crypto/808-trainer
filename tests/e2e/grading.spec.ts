@@ -165,3 +165,81 @@ test('模拟卷重新评分清除上次批改，保留旧复核记录且新自�
   expect(attempts[1]).not.toHaveProperty('ai');
   expect(attempts[1]).not.toHaveProperty('recognition');
 });
+
+test('带图题批改附上题图及PNG化的SVG答案图，三张图各自标注用途', async ({ page, context }) => {
+  await context.route('**/api/health', route => route.fulfill({ json: { ok: true, ai: true, sync: false, model: 'gemini-3.8-flash' } }));
+  await page.addInitScript(key => localStorage.setItem(key, JSON.stringify({ aiEnabled: true, syncKey: 'test-sync-only' })), settingsKey);
+  let received: { model: string; messages: { content: { type: string; text?: string; image_url?: { url: string } }[] }[] } | undefined;
+  await context.route('**/api/grade', route => {
+    received = route.request().postDataJSON();
+    return route.fulfill({ json: { choices: [{ message: { content: JSON.stringify(result) } }] } });
+  });
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto(base + '/#/p/wmq6-6-20-2a');
+  const panel = page.locator('.ai-panel');
+  await expect(panel).toContainText('1 张题图、1 张参考解答图');
+  await panel.getByLabel('作答照片').setInputFiles(resolve('tests/fixtures/blank.png'));
+  await panel.getByRole('button', { name: '开始 AI 批改', exact: true }).click();
+  await expect(panel.getByText('AI 建议：部分对', { exact: true })).toBeVisible();
+  const content = received!.messages[1].content;
+  const images = content.filter(c => c.type === 'image_url').map(c => c.image_url!.url);
+  expect(received!.model).toBe('gemini-3.8-flash');
+  expect(images).toHaveLength(3);
+  expect(images[0]).toMatch(/^data:image\/png;base64,/); expect(images[1]).toMatch(/^data:image\/png;base64,/); expect(images[2]).toMatch(/^data:image\/jpeg;base64,/);
+  expect(content[1].text).toContain('题目给定的条件'); expect(content[3].text).toContain('标准答案的参考图'); expect(content[5].text).toContain('学生作答照片');
+  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey)).toHaveLength(0);
+  await expect(page.getByRole('button', { name: '记录', exact: true })).toBeDisabled();
+  await panel.screenshot({ path: 'work/screenshots/grading-figure-context-mobile.png' });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(376);
+});
+
+test('题图无法加载时停止模型调用，缺图不产生评分或学习记录', async ({ page, context }) => {
+  await context.route('**/api/health', route => route.fulfill({ json: { ok: true, ai: true, sync: false, model: 'gemini-3.8-flash' } }));
+  await page.addInitScript(key => localStorage.setItem(key, JSON.stringify({ aiEnabled: true, syncKey: 'test-sync-only' })), settingsKey);
+  await context.route('**/figures/zt2026/q10-zp.png', route => route.fulfill({ status: 404, body: '测试缺图' }));
+  let gradeCalls = 0;
+  await context.route('**/api/grade', route => { gradeCalls++; return route.fulfill({ status: 502, json: { error: '不应发送本次缺图请求' } }); });
+  await page.goto(base + '/#/p/zt2026-10');
+  const panel = page.locator('.ai-panel');
+  await panel.getByLabel('作答照片').setInputFiles(resolve('tests/fixtures/blank.png'));
+  await panel.getByRole('button', { name: '开始 AI 批改', exact: true }).click();
+  await expect(panel.getByRole('status')).toContainText('题图加载失败，本次未发送批改');
+  await expect(panel.locator('details.external-grade')).toHaveAttribute('open', '');
+  expect(gradeCalls).toBe(0);
+  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey)).toHaveLength(0);
+});
+
+test('每日额度故障展开备用入口，回填后复核确认才保存和计数', async ({ page, context }) => {
+  await context.route('**/api/health', route => route.fulfill({ json: { ok: true, ai: true, sync: false, model: 'gemini-3.8-flash' } }));
+  await page.addInitScript(key => localStorage.setItem(key, JSON.stringify({ aiEnabled: true, syncKey: 'test-sync-only' })), settingsKey);
+  let gradeCalls = 0;
+  await context.route('**/api/grade', route => { gradeCalls++; return route.fulfill({ status: 502, json: { error: '模型项目的每日调用额度受限（429）', diagnostic: { kind: 'daily-quota', upstreamStatus: 429, retryAfterSeconds: 33 } } }); });
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto(base + '/#/p/tk-key-1-2');
+  const panel = page.locator('.ai-panel');
+  await panel.getByLabel('作答照片').setInputFiles(resolve('tests/fixtures/blank.png'));
+  await panel.getByRole('button', { name: '开始 AI 批改', exact: true }).click();
+  await expect(panel.getByRole('status')).toContainText('每日调用额度受限');
+  await expect(panel.getByRole('link', { name: '查看 Gemini 调用用量' })).toHaveAttribute('href', 'https://aistudio.google.com/usage');
+  await expect(panel).toContainText('每日额度需以 AI Studio 显示的重置时间');
+  await expect(panel).not.toContainText('至少等待 33 秒');
+  await expect(panel.locator('details.external-grade')).toHaveAttribute('open', '');
+  expect(gradeCalls).toBe(1);
+  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey)).toHaveLength(0);
+  await panel.screenshot({ path: 'work/screenshots/grading-quota-fallback-mobile.png' });
+  await panel.getByLabel('批改结果 JSON').fill(JSON.stringify({ ...result, problemId: 'tk-key-1-2' }));
+  await panel.getByRole('button', { name: '读取批改结果' }).click();
+  await panel.getByLabel('转写复核').selectOption('checked');
+  await page.locator('label.tag').filter({ hasText: '计算失误' }).click();
+  await page.locator('label.tag').filter({ hasText: '公式记错' }).click();
+  await page.getByRole('button', { name: '记录', exact: true }).click();
+  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey);
+  expect(saved).toHaveLength(1); expect(saved[0]).toMatchObject({ grade: 1, tags: ['公式记错'], recognition: { status: 'checked' }, ai: { tags: ['计算失误'], model: 'Gemini（手动导入）' } });
+  expect(JSON.stringify(saved)).not.toContain('diagnostic'); expect(JSON.stringify(saved)).not.toContain('data:image');
+  await page.goto(base + '/#/settings');
+  const audit = page.locator('.grading-audit');
+  await expect(audit).toContainText('人工确认转写正确 1 条，调整错因 1 条');
+  await expect(audit).toContainText('调整评分 0 条');
+  await audit.screenshot({ path: 'work/screenshots/grading-confirmed-tags-mobile.png' });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(376);
+});
