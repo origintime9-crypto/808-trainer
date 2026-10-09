@@ -43,6 +43,7 @@ describe('内容完整性', () => {
     expected.wmq4 = 68;
     expected.wmq5 = 10;
     expected.wmq6 = 36;
+    expected.wmq7 = 43;
     for (const paper of papers) expect(all.filter(s => s.paper === paper.id).length, paper.id).toBe(expected[paper.id]);
     expect(cards.filter(c => !c.id.startsWith('pattern-'))).toHaveLength(100);
     expect(all.filter(s => s.paper === 'zt2026').reduce((sum, s) => sum + (s.score ?? 0), 0)).toBe(150);

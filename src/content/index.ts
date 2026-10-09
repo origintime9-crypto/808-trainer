@@ -26,6 +26,7 @@ import { wmq3 } from './problems/wmq3';
 import { wmq4 } from './problems/wmq4';
 import { wmq5 } from './problems/wmq5';
 import { wmq6 } from './problems/wmq6';
+import { wmq7 } from './problems/wmq7';
 import { tkKey } from './problems/tk-key';
 import { tkExam01 } from './problems/tk-exam-01';
 import { tkExam02 } from './problems/tk-exam-02';
@@ -61,9 +62,11 @@ import { xaut2024, sau2024, sxu2024 } from './problems/external';
 
 export { knowledge, CHAPTERS, papers, patterns };
 
-const allProblems: Problem[] = [...zt2026, ...zt2023, ...zt2024, ...zt2025, ...zt2018, ...zt2017, ...zt2016, ...choicesShared, ...zpShared, ...tkReview, ...tkTotal, ...hw1, ...hw2, ...hw3, ...hw4, ...hw5, ...hw6, ...hw7, ...tkKey, ...tkExam01, ...tkExam02, ...tkExam03, ...tkExam04, ...tkExam05, ...tkExam06, ...tkExam07, ...tkExam08, ...tkExam09, ...tkExam10, ...tkExam11, ...tkExam12, ...tkExam13, ...tkExam14, ...tkExam15, ...tkExam16, ...tkExam17, ...tkExam18, ...tkExam19, ...tkExam20, ...tkExam21, ...tkExam22, ...tkExam23, ...tkExam24, ...tkExam25, ...tkExam26, ...tkExam27, ...tkExam28, ...tkExam29, ...tkExam30, ...xaut2024, ...sau2024, ...sxu2024, ...wmq1, ...wmq2, ...wmq3, ...wmq4, ...wmq5, ...wmq6];
+const allProblems: Problem[] = [...zt2026, ...zt2023, ...zt2024, ...zt2025, ...zt2018, ...zt2017, ...zt2016, ...choicesShared, ...zpShared, ...tkReview, ...tkTotal, ...hw1, ...hw2, ...hw3, ...hw4, ...hw5, ...hw6, ...hw7, ...tkKey, ...tkExam01, ...tkExam02, ...tkExam03, ...tkExam04, ...tkExam05, ...tkExam06, ...tkExam07, ...tkExam08, ...tkExam09, ...tkExam10, ...tkExam11, ...tkExam12, ...tkExam13, ...tkExam14, ...tkExam15, ...tkExam16, ...tkExam17, ...tkExam18, ...tkExam19, ...tkExam20, ...tkExam21, ...tkExam22, ...tkExam23, ...tkExam24, ...tkExam25, ...tkExam26, ...tkExam27, ...tkExam28, ...tkExam29, ...tkExam30, ...xaut2024, ...sau2024, ...sxu2024, ...wmq1, ...wmq2, ...wmq3, ...wmq4, ...wmq5, ...wmq6, ...wmq7];
 // 完全同题合并来源，保留最早录入的编号；选项不同的变式仍保留。
 const duplicateOf: Record<string, string> = {
+  'wmq7-7-15-1': 'tk-key-19-1',
+  'wmq7-7-15-2': 'tk-key-19-2',
   'wmq6-6-16-1b': 'tk-key-17-2',
   'wmq5-5-3-1': 'tk-key-16-1',
   'wmq5-5-3-2': 'tk-key-16-2',

@@ -145,6 +145,41 @@ describe('掌握度与优先级', () => {
     expect(uncertain.kp('6.4').uniqueProblems).toBe(0);
     expect(uncertain.pattern('diff-eq-solve').uniqueProblems).toBe(0);
   });
+
+  it('DTFT作答与卡片提高本类证据，错题提高推荐优先级，不混入连续FT、ZT或系统题', () => {
+    const bad = attempt('wmq7-7-17-2', 0, T0, ['公式记错']);
+    const good = attempt('wmq7-7-17-2', 3, T0);
+    const wrong = computeMastery([bad], T0);
+    const correct = computeMastery([good], T0);
+    expect(wrong.kp('7.5').uniqueProblems).toBe(1);
+    expect(wrong.pattern('dtft-calc').uniqueProblems).toBe(1);
+    expect(wrong.kp('7.5').tags['公式记错']).toBe(1);
+    expect(correct.kp('7.5').m).toBeGreaterThan(wrong.kp('7.5').m);
+    for (const id of ['3.3', '7.1', '7.2', '7.6', '7.7']) expect(wrong.kp(id).attempts).toBe(0);
+    for (const id of ['ft-basic', 'z-calc', 'discrete-diagram', 'conv-sum']) expect(wrong.pattern(id).attempts).toBe(0);
+    const rankedWrong = rankPatterns(wrong).find(p => p.id === 'dtft-calc')!;
+    const rankedCorrect = rankPatterns(correct).find(p => p.id === 'dtft-calc')!;
+    expect(rankedWrong.stars).toBe(4);
+    expect(rankedWrong.priority).toBeGreaterThan(rankedCorrect.priority);
+    const refreshed = computeMastery([bad, review('pattern-dtft-calc', 3, T0)], T0);
+    expect(refreshed.kp('7.5').reviews).toBe(1);
+    expect(refreshed.pattern('dtft-calc').reviews).toBe(1);
+    expect(refreshed.pattern('z-calc').reviews).toBe(0);
+    // 完全相同的教材任务只追加来源，不改变旧事件或建立第二份学习状态。
+    const old = attempt('tk-key-19-2', 1, T0);
+    const restored = mergeEvents([old], parseImport(exportJson([old])));
+    expect(restored).toEqual([old]);
+    expect(problemById.get(old.problemId)!.sources.some(s => s.paper === 'wmq7' && s.no === '7.15(2)')).toBe(true);
+    expect(problemById.has('wmq7-7-15-2')).toBe(false);
+    const legacy = computeMastery(restored, T0);
+    expect(legacy.pattern('diff-eq-solve').uniqueProblems).toBe(1);
+    expect(legacy.kp('7.5').attempts).toBe(0);
+    const uncertain = computeMastery(['wmq7-7-9-1', 'wmq7-7-9-2', 'wmq7-7-9-3', 'wmq7-7-10-1', 'wmq7-7-10-2', 'tk-key-19-1'].map(id => attempt(id, 3, T0)), T0);
+    expect(uncertain.kp('7.7').attempts).toBe(6);
+    expect(uncertain.kp('7.7').uniqueProblems).toBe(0);
+    expect(uncertain.pattern('discrete-diagram').uniqueProblems).toBe(0);
+    expect(uncertain.pattern('hz-roc-all').uniqueProblems).toBe(0);
+  });
 });
 
 describe('导出导入', () => {
