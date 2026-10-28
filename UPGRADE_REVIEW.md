@@ -1,6 +1,6 @@
 # 808刷题网站改版验收
 
-本地分支 `codex/evidence-strict-exams`，尚未发布。算法见 [ALGORITHM.md](ALGORITHM.md)，补充指南检索见 [REVISION_GUIDE_REVIEW.md](REVISION_GUIDE_REVIEW.md)。
+实现分支 `codex/evidence-strict-exams`。算法见 [ALGORITHM.md](ALGORITHM.md)，补充指南检索见 [REVISION_GUIDE_REVIEW.md](REVISION_GUIDE_REVIEW.md)。正式入口为[808刷题网站](https://origintime9-crypto.github.io/808-trainer/)，部署状态可查看[自动发布流程](https://github.com/origintime9-crypto/808-trainer/actions/workflows/deploy.yml)。
 
 ## 行为变化
 
@@ -56,6 +56,8 @@
 - 旧sessionStorage整卷缺可靠结束时间，不能恢复可信考试成绩；日常记录保留，旧事件仍可导入。
 
 ## 发布与回退
+
+2026-10-29已按用户确认启动同步发布：功能与界面源提交为`48d1986`，Cloudflare部署为[28905e2e](https://28905e2e.808-trainer.pages.dev)，GitHub Pages由main分支自动构建。此前可回退源提交为`8974f63`，Cloudflare部署为`bdfb6c53`。本次不修改数据库表或服务端模型/密钥设置。
 
 新增字段、答卷、快照和交卷后评分由前后端共用校验器读取，需要同步更新前端与Cloudflare Pages API。仅发布静态页会被旧API剥离字段或拒绝新操作。不需要新增表或迁移数据。
 
