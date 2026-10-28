@@ -210,7 +210,7 @@ test('远端笔记刷新保留正在编辑的草稿，停顿和离开页面都�
   await expect(editor).toHaveValue('本机草稿' + '.'.repeat(20));
   await expect.poll(() => cloud.some(e => e.text === '本机草稿' + '.'.repeat(20))).toBe(true);
   await editor.fill('离开页面也保留');
-  await page.locator('.brand').click();
+  await page.locator('.brand:visible').click();
   await expect.poll(() => cloud.some(e => e.text === '离开页面也保留')).toBe(true);
   expect((await records(page)).some((e: { text?: string }) => e.text === '离开页面也保留')).toBe(true);
 });

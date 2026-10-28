@@ -8,6 +8,7 @@ import { connectSync, syncStatusLabel, useSyncStatus } from './engine/sync';
 import { eventStorageError } from './engine/store';
 import { useEvents } from './state';
 import { mockSessions, validMockSession } from './engine/mock';
+import { Icon } from './components/Icon';
 
 const ProblemPage = lazy(() => import('./pages/ProblemPage').then(m => ({ default: m.ProblemPage })));
 const ReviewPage = lazy(() => import('./pages/ReviewPage').then(m => ({ default: m.ReviewPage })));
@@ -20,13 +21,17 @@ const TrainingPage = lazy(() => import('./pages/TrainingPage').then(m => ({ defa
 const GuidePage = lazy(() => import('./pages/GuidePage').then(m => ({ default: m.GuidePage })));
 
 const TABS = [
-  { path: 'today', label: '今日', icon: '◎' },
-  { path: 'practice', label: '刷题', icon: '✎' },
-  { path: 'review', label: '卡片', icon: '❏' },
-  { path: 'mistakes', label: '错题', icon: '✗' },
-  { path: 'analysis', label: '薄弱点', icon: '▤' },
-  { path: 'settings', label: '设置', icon: '⚙' },
-];
+  { path: 'today', label: '今日', icon: 'today' },
+  { path: 'practice', label: '刷题', icon: 'practice' },
+  { path: 'review', label: '卡片', icon: 'review' },
+  { path: 'mistakes', label: '错题', icon: 'mistakes' },
+  { path: 'analysis', label: '薄弱点', icon: 'analysis' },
+  { path: 'settings', label: '设置', icon: 'settings' },
+] as const;
+
+function Brand({href}:{href:string}) {
+  return <a className="brand" href={href} aria-label="808 信号与系统"><span className="brand-mark">808</span><span className="brand-copy">信号与系统<small>中北大学 · 2027</small></span></a>;
+}
 
 function useRoute(): string {
   const read = () => window.location.hash.replace(/^#\/?/, '') || 'today';
@@ -53,6 +58,8 @@ export function App() {
   const [path] = route.split('?');
   const [section, arg] = path.split('/');
   const active = ['p', 'exam', 'knowledge', 'mock', 'readiness','train','guide'].includes(section) ? 'practice' : section;
+  const pageTitle:Record<string,string>={today:'今日学习',practice:'题库练习',review:'记忆卡片',mistakes:'错题巩固',analysis:'薄弱点分析',settings:'学习设置',knowledge:'知识分类',readiness:'808 适配水平',guide:'复习依据',train:'专项训练',mock:'整卷模考',exam:'原卷训练',p:'独立作答'};
+  const dateLabel=new Intl.DateTimeFormat('zh-CN',{month:'long',day:'numeric',weekday:'long',timeZone:'Asia/Shanghai'}).format(new Date());
 
   let page;
   if(locked) page=<MockExamPage key={locked.id} id={locked.id}/>;
@@ -72,21 +79,26 @@ export function App() {
   else page = <TodayPage />;
 
   return (
-    <div className="app">
+    <div className={`app ${locked?'exam-focus':''}`}>
+      {!locked&&<aside className="sidebar">
+        <Brand href="#/today"/>
+        <p className="nav-caption">学习空间</p>
+        <nav className="tabs-top" aria-label="主导航">
+          {TABS.map(t=><a key={t.path} href={`#/${t.path}`} className={active===t.path?'on':''} aria-current={active===t.path?'page':undefined}><Icon name={t.icon}/><span>{t.label}</span>{active===t.path&&<span className="nav-dot" aria-hidden="true"/>}</a>)}
+        </nav>
+        <div className="sidebar-footer"><div className="sidebar-exam"><Icon name="target"/><b>把练过，变成会做。</b><p>独立作答 · 跨日复测</p><a href="#/mock">开始整卷训练 <Icon name="arrow"/></a></div><a className="sidebar-guide" href="#/guide"><Icon name="book"/>复习依据与重点核对</a></div>
+      </aside>}
       <header className="top">
-        <a className="brand" href={locked?`#/mock/${locked.id}`:'#/today'}>808 信号与系统</a>
-        {!locked&&<nav className="tabs-top">
-          {TABS.map((t) => (
-            <a key={t.path} href={`#/${t.path}`} className={active === t.path ? 'on' : ''}>{t.label}</a>
-          ))}
-        </nav>}
+        <Brand href={locked?`#/mock/${locked.id}`:'#/today'}/>
+        <div className="workspace-heading"><span>学习工作台</span><b>{locked?'严格模考':pageTitle[section]??'今日学习'}</b></div>
+        <span className="workspace-date">{dateLabel}</span>
         {locked?<span className="badge">严格模考进行中</span>:<a className={`sync-pill ${sync.phase}`} href="#/settings" title={sync.message} aria-live="polite">{syncStatusLabel(sync)}</a>}
       </header>
       <main>{storageError && active !== 'settings' && <a className="banner" href="#/settings" role="alert">{storageError}</a>}<Suspense fallback={<section className="card">正在打开…</section>}>{page}</Suspense></main>
-      {!locked&&<nav className="tabs-bottom">
+      {!locked&&<nav className="tabs-bottom" aria-label="手机导航">
         {TABS.map((t) => (
-          <a key={t.path} href={`#/${t.path}`} className={active === t.path ? 'on' : ''}>
-            <span className="icon">{t.icon}</span>
+          <a key={t.path} href={`#/${t.path}`} className={active === t.path ? 'on' : ''} aria-current={active===t.path?'page':undefined}>
+            <Icon name={t.icon}/>
             {t.label}
           </a>
         ))}
