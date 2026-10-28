@@ -4,6 +4,7 @@ import type { AttemptEvent, ExamAnswer, ExamEvent, ExamItem, ExamSnapshotRow, Pr
 import { learningEvents } from './history';
 import { problemPriority, type MasteryIndex } from './mastery';
 import { compareDemand, problemDemand } from '../content/difficulty808';
+import { encounterIndex } from './encounters';
 
 export type MockPool = 'mixed' | 'selected' | 'local';
 export const templatePapers = papers.filter(p => p.kind === '真题' && !p.school && p.totalScore === 150 && paperProblems(p.id).every(q => q.sources.find(s => s.paper === p.id)?.score) && paperProblems(p.id).reduce((v,q)=>v+(q.sources.find(s=>s.paper===p.id)?.score??0),0) === 150);
@@ -98,6 +99,7 @@ export function mockSessions(events: TrainerEvent[]): MockSession[] {
   return [...sessions.values()].sort((a,b)=>b.start-a.start || b.id.localeCompare(a.id));
 }
 export function mockResult(session: MockSession, events: TrainerEvent[]) {
+  const encounters=encounterIndex(events,session.start-1);
   const attempts=new Map<string,AttemptEvent>();
   for (const e of session.mode==='strict'?learningEvents(events):events) {
     if (e.kind!=='attempt' || e.examId!==session.id || e.t<session.start || (session.finished!==undefined && e.t>session.finished)) continue;
@@ -109,14 +111,15 @@ export function mockResult(session: MockSession, events: TrainerEvent[]) {
     const answer=session.finished!==undefined && session.snapshot ? frozen?.answer : session.answers.get(item.problemId);
     const attempt=session.mode==='strict'?attempts.get(item.problemId):session.finished!==undefined&&session.snapshot?frozen?.attempt:attempts.get(item.problemId);
     const earned=attempt ? attempt.score && attempt.score.max===item.score ? attempt.score.earned : item.score*SCORE_COEF[attempt.grade] : 0;
-    return {item,problem:problemById.get(item.problemId),attempt,answer,earned,
-      seenBefore:item.seenBefore??events.some(e=>e.kind==='attempt'&&e.problemId===item.problemId&&e.t<session.start)};
+    const familiarity=item.familiarity??(item.seenBefore===true?'practiced':item.seenBefore===false?'new':encounters.get(item.problemId)??'new');
+    return {item,problem:problemById.get(item.problemId),attempt,answer,earned,familiarity,seenBefore:familiarity!=='new'};
   });
   const done=rows.filter(r=>session.mode==='strict'?r.answer?.status==='answered':r.attempt).length;
   return { rows, done, graded:rows.filter(r=>r.attempt).length, skipped:rows.filter(r=>r.answer?.status==='skipped').length,
     unanswered:rows.filter(r=>session.mode==='strict'?r.answer?.status!=='answered':!r.attempt).length,
     pending:session.mode==='strict'?rows.filter(r=>r.answer&&r.answer.status!=='skipped'&&(r.answer.text.trim()||r.answer.choice!==undefined)&&!r.attempt).length:0,
-    fresh:rows.filter(r=>!r.seenBefore).length, score:rows.reduce((v,r)=>v+r.earned,0), total:session.items.reduce((v,i)=>v+i.score,0) };
+    fresh:rows.filter(r=>r.familiarity==='new').length,seenOnly:rows.filter(r=>r.familiarity==='seen').length,practiced:rows.filter(r=>r.familiarity==='practiced').length,
+    score:rows.reduce((v,r)=>v+r.earned,0), total:session.items.reduce((v,i)=>v+i.score,0) };
 }
 export function validMockSession(s: MockSession): boolean {
   const anchor=paperProblems(s.template);

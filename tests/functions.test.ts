@@ -100,14 +100,15 @@ describe('云端接口', () => {
   it('严格提交快照与分步得分经两设备往返后保持辅助条件和固定成绩',async()=>{
     const env:Env={DB:new MemoryD1(),SYNC_KEY:'test-pass'},items=generateMock('zt2026','mixed','strict-cloud');
     const problemId=items[0].problemId,max=items[0].score;
-    const events:TrainerEvent[]=[{id:'strict-start',t:1000,kind:'exam',examId:'strict-cloud',action:'start',mode:'strict',origin:'mock',title:'严格云同步',template:'zt2026',minutes:180,items:items.map(i=>({...i,seenBefore:false}))},
+    const events:TrainerEvent[]=[{id:'strict-seen',t:900,kind:'exposure',problemId},
+      {id:'strict-start',t:1000,kind:'exam',examId:'strict-cloud',action:'start',mode:'strict',origin:'mock',title:'严格云同步',template:'zt2026',minutes:180,items:items.map(i=>({...i,seenBefore:i.problemId===problemId,familiarity:i.problemId===problemId?'seen':'new'}))},
       {id:'strict-answer',t:2000,kind:'exam',examId:'strict-cloud',action:'answer',answer:{problemId,status:'answered',text:'原始纸稿',sec:60}}];
     events.push({...finishExam(mockSessions(events)[0],events,3000),id:'strict-finish',t:3000});
     events.push({id:'strict-grade',t:4000,kind:'exam',examId:'strict-cloud',action:'grade',problemId,attempt:{id:'strict-assessed',t:3000,kind:'attempt',problemId,examId:'strict-cloud',grade:2,tags:[],sec:60,workMode:'independent',hintsUsed:false,score:{earned:max-0.5,max,basis:'reference',steps:[{id:'reviewed',earned:max-0.5,max}]},skillErrors:['roc-missing']}});
     expect((await sync({request:req({since:0,events}),env})).status).toBe(200);
     const restored=await(await sync({request:req({since:0,events:[]}),env})).json();
     expect(restored.events).toEqual(events);
-    expect(mockResult(mockSessions(restored.events)[0],restored.events)).toMatchObject({score:max-0.5,pending:0,done:1});
+    expect(mockResult(mockSessions(restored.events)[0],restored.events)).toMatchObject({score:max-0.5,pending:0,done:1,seenOnly:1,practiced:0});
   });
   it('错误评分、错因、游标和批量大小不会污染数据', async () => {
     const env: Env = { DB: new MemoryD1(), SYNC_KEY: 'test-pass' };

@@ -5,11 +5,12 @@ import { skillById, skillTrainings, type SkillTraining } from '../content/traini
 import { trainingCandidates } from '../engine/training';
 import { Md } from '../components/Markdown';
 import { StudyNav } from '../components/StudyNav';
-import { app, useEvents, useSettings } from '../state';
+import { app, useEvents, useSettings, useProblemExposure } from '../state';
 import { GRADE_LABELS, type Grade, type Problem } from '../types';
 import { go } from '../format';
 
 function Exercise({problem:p,skill,next,onNext}:{problem:Problem;skill:SkillTraining;next?:string;onNext:()=>void}) {
+  const exposureError=useProblemExposure(p.id);
   const [answers,setAnswers]=useState<Record<string,string>>({}),[hint,setHint]=useState(false),[solution,setSolution]=useState(false);
   const [grade,setGrade]=useState<Grade|null>(null),[errors,setErrors]=useState<string[]>([]),[saved,setSaved]=useState(false),[error,setError]=useState('');
   const start=useRef(Date.now()),complete=skill.checkpoints.every(c=>answers[c.id]?.trim());
@@ -19,6 +20,7 @@ function Exercise({problem:p,skill,next,onNext}:{problem:Problem;skill:SkillTrai
     catch{setError('未能保存训练，请检查浏览器存储空间。');}
   };
   return <>
+    {exposureError&&<p className="hint" role="alert">{exposureError}</p>}
     <section className="card"><h2>{skill.id==='method'?'先判断解法，再计算':'先填关键步骤，再看提示'}</h2><Md>{p.stem}</Md>{p.figures?.map(f=><img className="figure" alt="题图" key={f} src={`${import.meta.env.BASE_URL}${f}`}/>)}
       {p.options?.map((o,i)=><p key={i}>{String.fromCharCode(65+i)}. <Md inline>{o}</Md></p>)}
       {skill.checkpoints.map(c=><label className="answer-input" key={c.id}>{c.prompt}<textarea value={answers[c.id]??''} maxLength={4000} disabled={hint} onChange={e=>setAnswers({...answers,[c.id]:e.target.value})}/></label>)}
@@ -30,7 +32,7 @@ function Exercise({problem:p,skill,next,onNext}:{problem:Problem;skill:SkillTrai
         <div className="grade-buttons">{GRADE_LABELS.map((label,n)=><button key={n} className={`grade g${n} ${grade===n?'on':''}`} onClick={()=>setGrade(n as Grade)}>{label}</button>)}</div><button className="primary" disabled={grade===null} onClick={record}>记录本次训练</button></>}
       {saved&&<p className="hint">已记录为有提示训练，安排后续复习。本次不增加独立作答证据；请换一个家族闭卷作答，并在另一天复测。</p>}
       {error&&<p className="hint" role="alert">{error}</p>}
-      <div className="actions"><button onClick={onNext} disabled={!next}>再练一个不同模型</button>{next&&<button className="primary" onClick={()=>go(`#/p/${next}`)}>去另一家族独立验证</button>}</div>
+      <div className="actions"><button onClick={onNext} disabled={!next}>再练另一题目家族</button>{next&&<button className="primary" onClick={()=>go(`#/p/${next}`)}>去另一家族独立验证</button>}</div>
     </section>}
   </>;
 }

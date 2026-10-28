@@ -19,19 +19,19 @@ test('Gemini文字结果在手机导入，先核题号、预填、人工改分�
   await input.fill(JSON.stringify({ ...result, problemId: 'zt2026-10' }));
   await panel.getByRole('button', { name: '读取批改结果' }).click();
   await expect(panel.getByRole('status')).toContainText('未读取到本题');
-  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey)).toHaveLength(0);
+  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]').filter((e: {kind:string})=>e.kind==='attempt'), eventsKey)).toHaveLength(0);
   await input.fill('```json\n' + JSON.stringify({ ...result, problemId: 'tk-key-1-2', score: 100 }) + '\n```');
   await panel.getByRole('button', { name: '读取批改结果' }).click();
   await expect(panel.getByText('AI 建议：部分对', { exact: true })).toBeVisible();
   await expect(panel).not.toContainText('估分');
   await expect(page.locator('.grade.g1')).toHaveClass(/on/);
   await panel.screenshot({ path: 'work/screenshots/grading-fallback-mobile.png' });
-  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey)).toHaveLength(0);
+  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]').filter((e: {kind:string})=>e.kind==='attempt'), eventsKey)).toHaveLength(0);
   await expect(page.getByRole('button', { name: '记录', exact: true })).toBeDisabled();
   await panel.getByLabel('转写复核').selectOption('checked');
   await page.getByRole('button', { name: '大部分对', exact: true }).click();
   await page.getByRole('button', { name: '记录', exact: true }).click();
-  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey);
+  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]').filter((e: {kind:string})=>e.kind==='attempt'), eventsKey);
   expect(saved).toHaveLength(1);
   expect(saved[0]).toMatchObject({ grade: 2, ai: { grade: 1, model: 'Gemini（手动导入）' }, recognition: { status: 'checked' } });
   expect(saved[0].ai).not.toHaveProperty('score');
@@ -69,7 +69,7 @@ test('换照片后批改失败，不沿用上一张的AI建议或评分', async 
   await expect(page.getByRole('button', { name: '记录', exact: true })).toBeDisabled();
   await page.getByRole('button', { name: '不会', exact: true }).click();
   await page.getByRole('button', { name: '记录', exact: true }).click();
-  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey);
+  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]').filter((e: {kind:string})=>e.kind==='attempt'), eventsKey);
   expect(saved).toHaveLength(1); expect(saved[0].grade).toBe(0); expect(saved[0]).not.toHaveProperty('ai');
   expect(calls).toBe(2);
 });
@@ -86,7 +86,7 @@ test('忽略看不清的AI转写后，手动评分不携带原建议', async ({ 
   await expect(page.getByRole('button', { name: '记录', exact: true })).toBeDisabled();
   await page.getByRole('button', { name: '全对', exact: true }).click();
   await page.getByRole('button', { name: '记录', exact: true }).click();
-  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey);
+  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]').filter((e: {kind:string})=>e.kind==='attempt'), eventsKey);
   expect(saved[0].grade).toBe(3); expect(saved[0]).not.toHaveProperty('ai');
   await page.goto(base + '/#/settings');
   await expect(page.locator('.grading-audit')).toContainText('暂无已确认的辅助批改记录');
@@ -109,10 +109,10 @@ test('先修正手写公式，再按实际作答评分；原建议和修正记�
   await expect(page.getByRole('button', { name: '记录', exact: true })).toBeDisabled();
   await expect(page.locator('.grade.g3')).not.toHaveClass(/on/);
   await page.getByRole('button', { name: '全对', exact: true }).click();
-  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey)).toHaveLength(0);
+  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]').filter((e: {kind:string})=>e.kind==='attempt'), eventsKey)).toHaveLength(0);
   await panel.screenshot({ path: 'work/screenshots/grading-correction-mobile.png' });
   await page.getByRole('button', { name: '记录', exact: true }).click();
-  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey);
+  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]').filter((e: {kind:string})=>e.kind==='attempt'), eventsKey);
   expect(saved).toHaveLength(1);
   expect(saved[0]).toMatchObject({ grade: 3, tags: [], ai: { grade: 1, transcript: '$y(t)=-10u(t)$' }, recognition: { status: 'corrected', transcript: '$y(t)=10u(t)$' } });
   await expect(panel.getByLabel('修正后的转写')).toBeDisabled();
@@ -136,7 +136,7 @@ test('照片看不清时清除预填评分，按纸上实际作答自评后记�
   await page.getByRole('button', { name: '不会', exact: true }).click();
   await page.locator('label.tag').filter({ hasText: '方法不会' }).click();
   await page.getByRole('button', { name: '记录', exact: true }).click();
-  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey);
+  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]').filter((e: {kind:string})=>e.kind==='attempt'), eventsKey);
   expect(saved[0]).toMatchObject({ grade: 0, tags: ['方法不会'], recognition: { status: 'unreadable' } });
   await page.goto(base + '/#/settings');
   await expect(page.locator('.grading-audit')).toContainText('转写复核 1 条，其中修正 0 条、照片看不清 1 条');
@@ -188,7 +188,7 @@ test('带图题批改附上题图及PNG化的SVG答案图，三张图各自标�
   expect(images).toHaveLength(3);
   expect(images[0]).toMatch(/^data:image\/png;base64,/); expect(images[1]).toMatch(/^data:image\/png;base64,/); expect(images[2]).toMatch(/^data:image\/jpeg;base64,/);
   expect(content[1].text).toContain('题目给定的条件'); expect(content[3].text).toContain('标准答案的参考图'); expect(content[5].text).toContain('学生作答照片');
-  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey)).toHaveLength(0);
+  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]').filter((e: {kind:string})=>e.kind==='attempt'), eventsKey)).toHaveLength(0);
   await expect(page.getByRole('button', { name: '记录', exact: true })).toBeDisabled();
   await panel.screenshot({ path: 'work/screenshots/grading-figure-context-mobile.png' });
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(376);
@@ -207,7 +207,7 @@ test('题图无法加载时停止模型调用，缺图不产生评分或学习�
   await expect(panel.getByRole('status')).toContainText('题图加载失败，本次未发送批改');
   await expect(panel.locator('details.external-grade')).toHaveAttribute('open', '');
   expect(gradeCalls).toBe(0);
-  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey)).toHaveLength(0);
+  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]').filter((e: {kind:string})=>e.kind==='attempt'), eventsKey)).toHaveLength(0);
 });
 
 test('每日额度故障展开备用入口，回填后复核确认才保存和计数', async ({ page, context }) => {
@@ -226,7 +226,7 @@ test('每日额度故障展开备用入口，回填后复核确认才保存和�
   await expect(panel).not.toContainText('至少等待 33 秒');
   await expect(panel.locator('details.external-grade')).toHaveAttribute('open', '');
   expect(gradeCalls).toBe(1);
-  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey)).toHaveLength(0);
+  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]').filter((e: {kind:string})=>e.kind==='attempt'), eventsKey)).toHaveLength(0);
   await panel.screenshot({ path: 'work/screenshots/grading-quota-fallback-mobile.png' });
   await panel.getByLabel('批改结果 JSON').fill(JSON.stringify({ ...result, problemId: 'tk-key-1-2' }));
   await panel.getByRole('button', { name: '读取批改结果' }).click();
@@ -234,7 +234,7 @@ test('每日额度故障展开备用入口，回填后复核确认才保存和�
   await page.locator('label.tag').filter({ hasText: '计算失误' }).click();
   await page.locator('label.tag').filter({ hasText: '公式记错' }).click();
   await page.getByRole('button', { name: '记录', exact: true }).click();
-  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]'), eventsKey);
+  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]').filter((e: {kind:string})=>e.kind==='attempt'), eventsKey);
   expect(saved).toHaveLength(1); expect(saved[0]).toMatchObject({ grade: 1, tags: ['公式记错'], recognition: { status: 'checked' }, ai: { tags: ['计算失误'], model: 'Gemini（手动导入）' } });
   expect(JSON.stringify(saved)).not.toContain('diagnostic'); expect(JSON.stringify(saved)).not.toContain('data:image');
   await page.goto(base + '/#/settings');

@@ -8,6 +8,7 @@ import { StudyNav } from '../components/StudyNav';
 import { MockPrint } from '../components/MockPrint';
 import { useDerived } from '../state';
 import { problemDemand } from '../content/difficulty808';
+import { encounterIndex } from '../engine/encounters';
 import { learningEvents } from '../engine/history';
 
 export function MockPage() {
@@ -17,7 +18,7 @@ export function MockPage() {
   const [mode,setMode]=useState<'standard'|'adaptive'>(()=>new URLSearchParams(window.location.hash.split('?')[1]??'').get('mode')==='adaptive'?'adaptive':'standard');
   const [template,setTemplate]=useState('zt2026'), [pool,setPool]=useState<MockPool>('mixed'), [seed,setSeed]=useState('selected-a'), [name,setName]=useState('精选模拟卷 A'), [error,setError]=useState('');
   const preview=useMemo(()=> {
-    try {return {items:generateMock(template,pool,seed,new Set(events.filter(e=>e.kind==='attempt').map(e=>e.problemId)),mode==='adaptive'?mi:undefined),error:''};}
+    try {return {items:generateMock(template,pool,seed,new Set(learningEvents(events).filter(e=>e.kind==='attempt').filter(e=>e.t<=Date.now()).map(e=>e.problemId)),mode==='adaptive'?mi:undefined),error:''};}
     catch(e) {return {items:[],error:(e as Error).message};}
   },[template,pool,seed,events,mode,mi]);
   const sessions=mockSessions(events).filter(s=>s.origin==='mock'&&validMockSession(s)), original=preview.items.filter(i=>i.match==='original').length;
@@ -31,8 +32,8 @@ export function MockPage() {
     if (!preview.items.length) return;
     try {
       const examId=newId();
-      const seen=new Set(learningEvents(events).filter(e=>e.kind==='attempt').map(e=>e.problemId));
-      app.record({kind:'exam',examId,action:'start',title:mode==='adaptive'?'808补强测评 · '+name:name,template,minutes,mode:examMode,origin:'mock',items:preview.items.map(i=>({...i,seenBefore:seen.has(i.problemId)}))});
+      const seen=encounterIndex(events,Date.now());
+      app.record({kind:'exam',examId,action:'start',title:mode==='adaptive'?'808补强测评 · '+name:name,template,minutes,mode:examMode,origin:'mock',items:preview.items.map(i=>({...i,seenBefore:seen.has(i.problemId),familiarity:seen.get(i.problemId)??'new'}))});
       go(`#/mock/${examId}`);
     } catch {setError('未能保存模拟卷，请检查本机存储或先导出备份。');}
   }

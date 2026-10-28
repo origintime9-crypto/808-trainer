@@ -10,6 +10,7 @@ import { StudyNav } from '../components/StudyNav';
 import { MockPrint } from '../components/MockPrint';
 import { StrictQuestion } from '../components/StrictQuestion';
 import { ProblemPage } from './ProblemPage';
+import { FAMILIARITY_LABELS } from '../engine/encounters';
 
 const mmss=(sec:number)=>`${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`;
 
@@ -79,11 +80,11 @@ export function ExamSessionPage({id}:{id:string}) {
       <section className="card exam-report" data-exam-report><h2>{session.origin==='paper'?'本次整卷结果':'本次模拟卷结果'}</h2>
         <p>完成 {result.done} / {session.items.length} 个作答单元 · 跳题 {result.skipped} · 未完成 {result.unanswered}（含跳题） · {session.finishReason==='timeout'?'已超时自动交卷':'已主动交卷'}</p>
         <p>{result.pending?'已评分小计':'自评估分'} <b>{Math.round(result.score*10)/10} / {result.total}</b> 分{result.pending>0&&`，还有 ${result.pending} 题待评分。`}</p>
-        <p>首次作答 {result.fresh} 题 · 以前练过 {session.items.length-result.fresh} 题</p>
-        <p className="muted small">首次作答按开始前的本机学习记录判断，无法知道纸上或站外接触情况。{strict?'提交内容已固定，每题确认评分后保存参考得分。':'结束时已保存成绩快照。'}日常重练及后来同步的学习记录不改写本次提交；未作答计0分，缺少分值的题只记进度。</p>
+        <p>首次记录见题 {result.fresh} 题 · 见过未作答 {result.seenOnly} 题 · 以前练过 {result.practiced} 题</p>
+        <p className="muted small">见题情况在开始时固定，按站内可用记录判断；旧版未记录纯浏览，纸上、站外及尚未同步的接触情况无法判断。{strict?'提交内容已固定，每题确认评分后保存参考得分。':'结束时已保存成绩快照。'}日常重练及后来同步的学习记录不改写本次提交；未作答计0分，缺少分值的题只记进度。</p>
         <ol className="mock-preview">{result.rows.map(r=><li key={r.item.no}>
           <div className="card-head"><b>{r.item.no} · {r.item.score||'未标'}分</b><span className="badge">{r.attempt?`${GRADE_LABELS[r.attempt.grade]} · ${Math.round(r.earned*10)/10}分`:r.answer?.status==='answered'?'待评分':r.answer?.status==='skipped'?'跳过':r.answer?'未完成草稿':'未作答'}</span></div>
-          <p className="small muted">{r.problem?.kps.map(kpLabel).join(' · ')} · {r.seenBefore?'以前练过':'首次作答'}</p>
+          <p className="small muted">{r.problem?.kps.map(kpLabel).join(' · ')} · {FAMILIARITY_LABELS[r.familiarity]}</p>
           {r.answer&&<details><summary>查看本次提交</summary><pre className="submitted-answer">{r.answer.text||'未填写文字'}{r.answer.choice!==undefined&&`\n选项：${String.fromCharCode(65+r.answer.choice)}`}</pre></details>}
           {strict&&r.answer&&r.answer.status!=='skipped'&&(r.answer.text.trim()||r.answer.choice!==undefined)&&!r.attempt&&<button className="small" onClick={()=>setGrading(r.item.problemId)}>对照原作答评分</button>}
           {r.problem&&<a className="small" href={`#/p/${r.problem.id}`}>{sourceLabel(r.problem)} · 日常重练 →</a>}

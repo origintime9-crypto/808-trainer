@@ -4,6 +4,7 @@ import { replay } from './engine/scheduler';
 import { loadEvents, loadSettings, mergeEvents, newId, saveEvents, saveSettings } from './engine/store';
 import type { Settings, TrainerEvent } from './types';
 import { readEvent } from './engine/events';
+import { problemById } from './content';
 
 type DistOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
 export type NewEvent = DistOmit<TrainerEvent, 'id' | 't'>;
@@ -58,6 +59,23 @@ if (typeof window !== 'undefined') window.addEventListener('storage', e => {
 
 export const useEvents = () => useSyncExternalStore(app.subscribe, app.events);
 export const useSettings = () => useSyncExternalStore(app.subscribe, app.settings);
+
+/** 每题只记一次站内展示，不增加已做题数、FSRS或掌握证据。 */
+export function recordProblemExposure(problemId:string):void {
+  if(problemById.has(problemId)&&!app.events().some(e=>(e.kind==='exposure'||e.kind==='attempt')&&e.problemId===problemId))
+    app.record({kind:'exposure',problemId});
+}
+
+export function useProblemExposure(problemId:string):string {
+  const [error,setError]=useState('');
+  useEffect(()=>{
+    try {
+      recordProblemExposure(problemId);
+      setError('');
+    } catch {setError('未能保存见题记录，请检查本机存储空间。');}
+  },[problemId]);
+  return error;
+}
 
 function useMinute(): number {
   const [now, setNow] = useState(() => Math.floor(Date.now() / 60_000));

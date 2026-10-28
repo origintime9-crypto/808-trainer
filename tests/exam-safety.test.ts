@@ -5,12 +5,39 @@ import { paperProblems } from '../src/engine/paper';
 import { exportJson, parseImport } from '../src/engine/store';
 import { learningEvents } from '../src/engine/history';
 import { readEvent } from '../src/engine/events';
+import { encounterIndex } from '../src/engine/encounters';
+import { computeMastery } from '../src/engine/mastery';
+import { replay } from '../src/engine/scheduler';
 
 const start=(mode:'strict'|'practice'):ExamEvent=>({id:'start',kind:'exam',examId:'paper-test',t:1000,action:'start',origin:'paper',mode,title:'整卷回归',template:'zt2026',minutes:1,
   items:paperProblems('zt2026').map(p=>{const s=p.sources.find(s=>s.paper==='zt2026')!;return {problemId:p.id,referenceId:p.id,no:s.no,score:s.score!,match:'original',seenBefore:p.id==='zt2026-10'};})});
 const attempt=(id:string,t:number,grade:AttemptEvent['grade'],examId='paper-test'):AttemptEvent=>({id,t,kind:'attempt',examId,problemId:'zt2026-1-1',grade,tags:[],sec:20,workMode:'independent',hintsUsed:false});
 
 describe('整卷快照与严格模考',()=>{
+  it('纯浏览、旧作答与未批改模考分别判断，不能把未展示的整卷题都算见过',()=>{
+    const events:TrainerEvent[]=[{id:'seen',kind:'exposure',problemId:'zt2026-1-2',t:500},attempt('old',600,1,'daily'),start('strict'),
+      {id:'nav',kind:'exam',examId:'paper-test',t:1100,action:'navigate',current:2},
+      {id:'ungraded',kind:'exam',examId:'paper-test',t:1150,action:'answer',answer:{problemId:'zt2026-2-2',status:'answered',text:'未评分纸稿',sec:10}}];
+    const known=encounterIndex(events,1200),items=mockSessions(events)[0].items;
+    expect(known.get('zt2026-1-2')).toBe('seen');expect(known.get('zt2026-1-1')).toBe('practiced');
+    expect(known.get(items[2].problemId)).toBe('seen');expect(known.get(items[3].problemId)).toBe('practiced');expect(known.has(items[4].problemId)).toBe(false);
+    expect(encounterIndex(events,400).size).toBe(0);
+    const browsing=[events[0]];
+    expect(readEvent({...events[0],photos:['data:image/png;base64,AA'],syncKey:'local-secret'})).toEqual(events[0]);
+    expect(computeMastery(browsing,1200).kp('1.4').uniqueProblems).toBe(0);
+    expect(replay(browsing,'2026-12-20').problems.size).toBe(0);
+    expect(parseImport(exportJson(events))).toEqual(events);
+  });
+  it('开考固定三类见题情况，后来补到的浏览记录不改报告',()=>{
+    const event=start('strict');if(event.action!=='start')throw new Error('开始事件');
+    const events:TrainerEvent[]=[{...event,items:event.items.map((i,n)=>({...i,seenBefore:n<2,familiarity:n===0?'practiced':n===1?'seen':'new'}))}];
+    const first=mockResult(mockSessions(events)[0],events);
+    expect(first).toMatchObject({fresh:15,seenOnly:1,practiced:1});
+    events.push({id:'late-seen',kind:'exposure',t:500,problemId:event.items[2].problemId});
+    expect(mockResult(mockSessions(events)[0],events)).toMatchObject({fresh:15,seenOnly:1,practiced:1});
+    expect(readEvent({...events[0],items:[{...event.items[0],familiarity:'invalid'}]})).toBeNull();
+    expect(parseImport(exportJson(events))).toEqual([events[1],events[0]]);
+  });
   it('原卷使用独立编号，结束后重练和后补的同卷旧时间记录都不能改分',()=>{
     const events:TrainerEvent[]=[start('practice'),attempt('wrong',2000,0)];
     const session=mockSessions(events)[0];expect(validMockSession(session)).toBe(true);

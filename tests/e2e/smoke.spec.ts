@@ -8,6 +8,7 @@ const SET = 'trainer808.settings.v1';
 const base = (process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:18080').replace(/\/$/, '');
 const health = { ok: true, ai: false, sync: false, model: '' };
 const records = (page: Page) => page.evaluate(k => JSON.parse(localStorage.getItem(k) ?? '[]'), KEY);
+const attempts = async (page: Page) => (await records(page)).filter((e: {kind:string})=>e.kind==='attempt');
 const mockHealth = (context: BrowserContext, data = health) => context.route('**/api/health', route => route.fulfill({ json: data }));
 const chooseGrade = async (page: Page, label: string) => {
   await page.getByRole('button', { name: '我做完了，看答案', exact: true }).click();
@@ -35,6 +36,7 @@ test('2026 十题 → 错题与薄弱点 → 三张卡片 → 导出清空导入
     await page.getByRole('button', { name: '记得', exact: true }).click();
   }
   expect((await records(page)).filter((e: { kind: string }) => e.kind === 'review')).toHaveLength(3);
+  const beforeExport=await records(page);
   await page.goto('/#/settings');
   const download = page.waitForEvent('download');
   await page.getByRole('button', { name: '导出进度', exact: true }).click();
@@ -44,8 +46,8 @@ test('2026 十题 → 错题与薄弱点 → 三张卡片 → 导出清空导入
   await page.getByRole('button', { name: '清空本机记录', exact: true }).click();
   expect(await records(page)).toHaveLength(0);
   await page.locator('input[type=file]').setInputFiles(file!);
-  await expect(page.getByText('导入完成，新增 4 条记录（重复的已自动跳过）。')).toBeVisible();
-  expect(await records(page)).toHaveLength(4);
+  await expect(page.getByText(`导入完成，新增 ${beforeExport.length} 条记录（重复的已自动跳过）。`)).toBeVisible();
+  expect(await records(page)).toEqual(beforeExport);
   await page.locator('input[type=file]').setInputFiles(file!);
   await expect(page.getByText('导入完成，新增 0 条记录（重复的已自动跳过）。')).toBeVisible();
   await page.goto('/#/mistakes');
@@ -117,11 +119,11 @@ test('照片压缩与 AI 预填，确认前不记分，保存不含照片或口�
   await expect(page.getByText('AI 建议：部分对')).toBeVisible();
   await expect(page.locator('.grade.g1')).toHaveClass(/on/);
   await expect(page.locator('label.tag').filter({ hasText: '计算失误' })).toHaveClass(/on/);
-  expect(await records(page)).toHaveLength(0);
+  expect(await attempts(page)).toHaveLength(0);
   await expect(page.locator('.photo-previews img')).toHaveCount(0);
   await page.getByLabel('转写复核').selectOption('checked');
   await page.getByRole('button', { name: '记录', exact: true }).click();
-  const saved = await records(page);
+  const saved = await attempts(page);
   expect(saved).toHaveLength(1);
   expect(saved[0].ai.model).toBe('vision-mock');
   const text = JSON.stringify(saved);
@@ -137,9 +139,9 @@ test('AI 非 JSON 返回可读原文并支持手动作答', async ({ page, conte
   await page.getByLabel('作答照片').setInputFiles(resolve('tests/fixtures/blank.png'));
   await page.getByRole('button', { name: '开始 AI 批改' }).click();
   await expect(page.locator('.ai-raw')).toContainText('字迹看不清');
-  expect(await records(page)).toHaveLength(0);
+  expect(await attempts(page)).toHaveLength(0);
   await chooseGrade(page, '不会');
-  expect(await records(page)).toHaveLength(1);
+  expect(await attempts(page)).toHaveLength(1);
 });
 
 test('持续打开的两台设备自动双向同步，服务失败自动补传且不重复', async ({ browser }) => {
@@ -166,21 +168,22 @@ test('持续打开的两台设备自动双向同步，服务失败自动补传�
     fail = true;
     await chooseGrade(pa, '部分对');
     await expect(pa.locator('.sync-pill')).toContainText('同步待重试');
-    expect(await records(pa)).toHaveLength(1);
-    expect(cloud).toHaveLength(0);
+    expect(await records(pa)).toHaveLength(2);
+    expect(cloud.filter(e=>e.kind==='exposure')).toHaveLength(1);
+    expect(cloud.filter(e=>e.kind==='attempt')).toHaveLength(0);
     fail = false;
     await expect(pb.locator('.rows')).toContainText('十', { timeout: 15000 });
-    expect(await records(pb)).toHaveLength(1);
+    expect(await records(pb)).toHaveLength(2);
     await expect(pa.locator('.sync-pill')).toContainText('云端已保存');
     await pb.goto(base + '/#/p/zt2026-10');
     await pb.getByRole('button',{name:'查看提示与笔记',exact:true}).click();
     await pb.getByRole('textbox', { name: '我的笔记', exact: true }).fill('手机补充：检查初值');
     // 保持输入框焦点，验证停顿自动保存及另一设备主动获取。
-    await expect.poll(async () => (await records(pa)).length, { timeout: 12000 }).toBe(2);
+    await expect.poll(async () => (await records(pa)).length, { timeout: 12000 }).toBe(3);
     await expect(pa.locator('textarea.note')).toHaveValue('手机补充：检查初值');
     await expect(pb.locator('.sync-pill')).toContainText('云端已保存');
-    expect(cloud).toHaveLength(2);
-    expect(new Set(cloud.map(e => e.id)).size).toBe(2);
+    expect(cloud).toHaveLength(3);
+    expect(new Set(cloud.map(e => e.id)).size).toBe(3);
   } finally { await a.close(); await b.close(); }
 });
 

@@ -1,10 +1,12 @@
 import { useRef, useState } from 'react';
 import type { ExamAnswer, Problem } from '../types';
 import { Md } from './Markdown';
+import { useProblemExposure } from '../state';
 
 export function StrictQuestion({ problem:p, initial, onDraft, onSave, onSkip }:{
   problem:Problem; initial?:ExamAnswer; onDraft:(answer:ExamAnswer)=>void; onSave:()=>void; onSkip:(answer:ExamAnswer)=>void;
 }) {
+  const exposureError=useProblemExposure(p.id);
   const [text,setText]=useState(initial?.text??'');
   const [choice,setChoice]=useState<number|undefined>(initial?.choice);
   const entered=useRef(Date.now()), base=useRef(initial?.sec??0);
@@ -13,6 +15,7 @@ export function StrictQuestion({ problem:p, initial, onDraft, onSave, onSkip }:{
     sec:Math.min(31536000,base.current+Math.max(0,Math.floor((Date.now()-entered.current)/1000))),
   });
   return <section className="card strict-question" data-strict-question>
+    {exposureError&&<p className="hint" role="alert">{exposureError}</p>}
     <Md>{p.stem}</Md>
     {p.figures?.map(f=><img className="figure" key={f} src={`${import.meta.env.BASE_URL}${f.replace(/^\//,'')}`} alt="题图"/>)}
     {p.options&&<div className="options">{p.options.map((o,i)=><button key={i} className={`option ${choice===i?'selected':''}`} aria-pressed={choice===i} onClick={()=>{setChoice(i);onDraft(answer(text,i));}}><b>{String.fromCharCode(65+i)}.</b><Md inline>{o}</Md></button>)}</div>}

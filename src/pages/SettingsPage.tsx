@@ -66,7 +66,7 @@ export function SettingsPage() {
 
       <section className="card form">
         <h2>进度自动同步</h2>
-        <p className="muted small">电脑和手机填写同一口令后，作答、卡片复习和笔记会自动上传。网页打开时，每 5 秒获取另一台设备的新进度；离线先保存本机，恢复网络后自动补传。</p>
+        <p className="muted small">电脑和手机填写同一口令后，作答、见题记录、卡片复习和笔记会自动上传。网页打开时，每 5 秒获取另一台设备的新进度；离线先保存本机，恢复网络后自动补传。</p>
         <p className="muted small">每台设备只需填写一次口令。页顶会显示待上传、离线或云端已保存；照片不进入进度，导出文件不包含口令。</p>
         <label>同步口令<input key={settings.syncKey} type="password" autoComplete="off" defaultValue={settings.syncKey} placeholder="填写你设置的同步口令" onBlur={e => app.updateSettings({ syncKey: e.target.value.trim() })} /></label>
         <div className="actions"><button className="primary" disabled={sync.phase === 'syncing' || !settings.syncKey || !sync.health?.sync} onClick={() => void syncNow()}>立即同步</button><button onClick={() => void refreshHealth()}>检测服务状态</button></div>

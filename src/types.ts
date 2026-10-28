@@ -116,6 +116,7 @@ export interface ExamItem {
   referenceId: string;
   match: 'pattern' | 'knowledge' | 'original';
   seenBefore?: boolean;
+  familiarity?: 'new' | 'seen' | 'practiced';
 }
 
 export interface ExamAnswer {
@@ -152,7 +153,13 @@ export interface NoteEvent extends EventBase {
   text: string;
 }
 
-export type TrainerEvent = AttemptEvent | ReviewEvent | NoteEvent | ExamEvent;
+/** 仅说明站内展示过题面，不是作答或掌握证据。 */
+export interface ExposureEvent extends EventBase {
+  kind: 'exposure';
+  problemId: string;
+}
+
+export type TrainerEvent = AttemptEvent | ReviewEvent | NoteEvent | ExamEvent | ExposureEvent;
 
 export interface Settings {
   examDate: string;

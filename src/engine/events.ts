@@ -32,6 +32,8 @@ export function readAiResult(x: unknown): AiResult | null {
 export function readEvent(x: unknown): TrainerEvent | null {
   if (!record(x) || !str(x.id, 200) || !x.id || !int(x.t, 0, 8640000000000000)) return null;
   const base = { id: x.id as string, t: x.t as number };
+  if (x.kind === 'exposure' && str(x.problemId, 200) && x.problemId)
+    return { ...base, kind: 'exposure', problemId: x.problemId as string };
   if (x.kind === 'attempt' && str(x.problemId, 200) && x.problemId && int(x.grade, 0, 3) && tags(x.tags) && int(x.sec, 0, 31536000)) {
     if (x.examId !== undefined && (!str(x.examId, 200) || !x.examId)) return null;
     if (x.workMode !== undefined && !['independent', 'reference', 'correction'].includes(x.workMode as string)) return null;
@@ -100,7 +102,8 @@ export function readEvent(x: unknown): TrainerEvent | null {
       const items: ExamItem[] = [];
       for (const i of x.items) {
         if (!record(i) || !str(i.problemId, 200) || !i.problemId || !str(i.referenceId, 200) || !i.referenceId || !str(i.no, 40) || !i.no || !finite(i.score,x.origin==='paper'?0:0.01,150) || !['pattern', 'knowledge', 'original'].includes(i.match as string) || i.seenBefore!==undefined&&typeof i.seenBefore!=='boolean') return null;
-        items.push({ problemId: i.problemId as string, referenceId: i.referenceId as string, no: i.no as string, score: i.score, match: i.match as ExamItem['match'],...(i.seenBefore!==undefined?{seenBefore:i.seenBefore as boolean}:{}) });
+        if(i.familiarity!==undefined&&!['new','seen','practiced'].includes(i.familiarity as string))return null;
+        items.push({ problemId: i.problemId as string, referenceId: i.referenceId as string, no: i.no as string, score: i.score, match: i.match as ExamItem['match'],...(i.seenBefore!==undefined?{seenBefore:i.seenBefore as boolean}:{}),...(i.familiarity!==undefined?{familiarity:i.familiarity as ExamItem['familiarity']}:{}) });
       }
       if (new Set(items.map(i => i.problemId)).size !== items.length || new Set(items.map(i => i.no)).size !== items.length || items.reduce((v,i)=>v+i.score,0) > 150) return null;
       return { ...exam, action: 'start', title: x.title as string, template: x.template as string, minutes: x.minutes as number, items,

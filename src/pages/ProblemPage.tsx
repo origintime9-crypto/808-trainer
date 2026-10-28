@@ -11,7 +11,7 @@ import { problemById, problems } from '../content';
 import { suggestedMinutes } from '../engine/queue';
 import { dateLabel, go, kpLabel, patternLabel, relDay, sourceLabel, stars } from '../format';
 import { kpById } from '../content';
-import { app, getProblemList, useDerived, useEvents } from '../state';
+import { app, getProblemList, useDerived, useEvents, useProblemExposure } from '../state';
 import { GRADE_LABELS, MISTAKE_TAGS, type AiResult, type AttemptEvent, type Grade, type MistakeTag, type RecognitionReview } from '../types';
 
 function mmss(sec: number): string {
@@ -22,6 +22,7 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
   const p = problemById.get(id);
   const { sched, now } = useDerived();
   const events=useEvents();
+  const exposureError=useProblemExposure(id);
   const [shown, setShown] = useState(!!exam?.attempt || !!exam?.onRecord);
   const [chosen, setChosen] = useState<number | null>(exam?.choice??null);
   const [grade, setGrade] = useState<Grade | null>(exam?.attempt?.grade ?? (exam?.choice!==undefined?(exam.choice===p?.answerKey?3:0):null));
@@ -92,6 +93,7 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
 
   return (
     <div className="problem">
+      {exposureError&&<p className="hint" role="alert">{exposureError}</p>}
       <div className="toolbar">
         <button className="ghost" onClick={() => history.back()}>← 返回</button>
         <span className="spacer" />

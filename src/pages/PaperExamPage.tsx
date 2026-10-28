@@ -5,7 +5,7 @@ import { mockResult, mockSessions, validMockSession } from '../engine/mock';
 import { newId } from '../engine/store';
 import { app, useEvents } from '../state';
 import { go } from '../format';
-import { learningEvents } from '../engine/history';
+import { encounterIndex } from '../engine/encounters';
 
 export function PaperExamPage({paper}:{paper:string}) {
   const events=useEvents(),info=paperById.get(paper),list=paperProblems(paper);
@@ -17,9 +17,9 @@ export function PaperExamPage({paper}:{paper:string}) {
   const start=()=>{
     if(!list.length)return;
     try {
-      const seen=new Set(learningEvents(events).filter(e=>e.kind==='attempt').map(e=>e.problemId)),examId=newId();
+      const seen=encounterIndex(events,Date.now()),examId=newId();
       app.record({kind:'exam',examId,action:'start',title:info!.title+' · 整卷',template:paper,origin:'paper',mode,minutes,
-        items:list.map(p=>{const s=p.sources.find(s=>s.paper===paper)!;return {problemId:p.id,referenceId:p.id,no:s.no,score:s.score??0,match:'original',seenBefore:seen.has(p.id)};})});
+        items:list.map(p=>{const s=p.sources.find(s=>s.paper===paper)!;return {problemId:p.id,referenceId:p.id,no:s.no,score:s.score??0,match:'original',seenBefore:seen.has(p.id),familiarity:seen.get(p.id)??'new'};})});
       go(`#/mock/${examId}`);
     }catch{setError('未能保存这次整卷，请检查本机存储空间。');}
   };
