@@ -3,6 +3,7 @@ import { compareDemand, reference808 } from '../content/difficulty808';
 import { fits808, TARGET_808_PAPER, target808Total, target808Units } from '../content/target808';
 import type { AttemptEvent, TrainerEvent } from '../types';
 import { startOfToday } from './scheduler';
+import { dailyEvidence, isFullCredit, isIndependent } from './evidence';
 
 /**
  * 用最近练习日的首次评分验证题位；同日看答案后的改分不能冒充新的难度证据。
@@ -10,7 +11,7 @@ import { startOfToday } from './scheduler';
  */
 export function referenceEvidence808(events: TrainerEvent[], now: number) {
   const samples = new Map<string, AttemptEvent>();
-  for (const e of [...events].sort((a,b) => a.t-b.t || a.id.localeCompare(b.id))) {
+  for (const e of dailyEvidence(events, now)) {
     if (e.kind !== 'attempt' || e.t > now || !fits808(e.problemId)) continue;
     const old = samples.get(e.problemId);
     if (!old || startOfToday(e.t) > startOfToday(old.t)) samples.set(e.problemId,e);
@@ -48,7 +49,8 @@ export function referenceEvidence808(events: TrainerEvent[], now: number) {
     // 页面计时可能受中途离开影响，作为参考用时记录，不用于拟合能力参数。
     const timed = !!attempt && attempt.sec >= 15 && attempt.sec <= score*1.2*60;
     return { referenceId:anchor.id, no:anchor.sources.find(s=>s.paper===TARGET_808_PAPER)!.no,
-      score, attempt, measured:!!attempt, full:attempt?.grade===3, timedFull:attempt?.grade===3 && timed };
+      independent: !!attempt && isIndependent(attempt),
+      score, attempt, measured:!!attempt, full:!!attempt&&isFullCredit(attempt), timedFull:!!attempt&&isFullCredit(attempt) && timed };
   });
   const coveredPoints=slots.filter(s=>s.measured).reduce((n,s)=>n+s.score,0);
   return { slots, total:slots.length, measured:slots.filter(s=>s.measured).length,

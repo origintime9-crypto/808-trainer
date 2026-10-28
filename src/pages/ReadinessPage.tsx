@@ -1,5 +1,8 @@
 import { StudyNav } from '../components/StudyNav';
-import { target808Paper } from '../content/target808';
+import { target808Basis, target808Paper } from '../content/target808';
+import { sourceEvidenceLabel } from '../content/sourceEvidence';
+import { skillErrorLabel, skillTrainings } from '../content/training';
+import { weakSkills } from '../engine/training';
 import { mockResult, mockSessions, validMockSession } from '../engine/mock';
 import { readiness808 } from '../engine/readiness';
 import { learningPlan } from '../engine/learning';
@@ -17,16 +20,20 @@ export function ReadinessPage() {
   const latest = finished[0], result = latest ? mockResult(latest, events) : undefined;
   const planPoints = [...profile.points.filter(k => k.measured), ...profile.points.filter(k => !k.measured)].slice(0,3);
   const plans = planPoints.map(k => ({ point: k, plan: learningPlan(k.id, mi, events, now) }));
+  const skills=weakSkills(events,now);
   return <div><StudyNav active="readiness"/>
     <section className="card">
       <div className="card-head readiness-head"><h1>我的 808 适配水平</h1><span className="badge">{profile.level}</span></div>
       <p className="muted">围绕中北信号与系统的重点考点、真题频次和原卷分值，检查你能做什么、哪些地方还没验证。</p>
       <div className="readiness-stats">
         <div><b>{percent(profile.coverage)}</b><span>重点已测覆盖</span><small>至少做过一道相关题</small></div>
-        <div><b>{percent(profile.validatedCoverage)}</b><span>换题验证覆盖</span><small>至少三道不同题的证据</small></div>
+        <div><b>{percent(profile.validatedCoverage)}</b><span>换题验证覆盖</span><small>三个家族独立全对，且跨日验证</small></div>
         <div><b>{profile.measuredMastery === null ? '待测' : percent(profile.measuredMastery)}</b><span>已测掌握估计</span><small>计入当前记忆保持情况</small></div>
       </div>
       <p className="muted small">覆盖按重要程度加权，水平估计只采用题面明确、符合808范围的作答证据。未做题的考点单列待测；只复习卡片还不能验证解题能力。这些是根据自评与批改记录的估计，不能当作预测考试分数。</p>
+      <p className="hint">{target808Basis.label}目前仅有一份中北初试卷，无法据此判断多年初试高频；复试卷（含回忆版）作为补充训练，分别展示。</p>
+      <a className="small" href="#/guide">查看资料核对、重点分歧与补充练习 →</a>
+      <p className="muted small">旧记录仅使用每天首次评分，辅助条件未标注的记录不会计入独立验证。订正和查资料完成可保留练习历史，不提高能力证据。</p>
       <div className="actions"><a className="button primary" href="#/mock?mode=adaptive">做一套 808 补强测评卷</a><a href="#/mock">标准模拟卷 →</a></div>
     </section>
     <section className="card" data-reference-808>
@@ -37,7 +44,7 @@ export function ReadinessPage() {
         <ul className="rows">{profile.reference.slots.filter(s=>!s.measured).map(s=><li key={s.referenceId}><a href={'#/p/'+s.referenceId}><b>{s.no} · {sourceLabel(problemById.get(s.referenceId)!)}</b><span className="muted small">用原卷题检验这一题位 →</span></a></li>)}</ul>
         {profile.reference.measured===profile.reference.total&&<p>所有题位都有相近题记录，继续用换题和整卷验证。</p>}
       </details>
-      <p className="muted small">参照现有2026中北808题面，按解题方法、综合程度、题型与预计用时筛选。难度为初始参考估计；采用每题最近练习日的第一次评分，日内改分不增加验证。记录未区分看提示与闭卷，用时也可能受暂停影响，这里不能当作考试分数预测。</p>
+      <p className="muted small">参照现有2026中北808题面，按解题方法、综合程度、题型与预计用时筛选。难度为初始参考估计；采用每题最近练习日的首次有效评分，日内订正不增加验证。旧记录未标注辅助条件，用时也可能受暂停影响，不能当作考试分数预测。</p>
       <a href="#/practice?reference=near">练贴近808的题 →</a>
     </section>
     <section className="card">
@@ -46,7 +53,8 @@ export function ReadinessPage() {
       <ul className="rows readiness-gaps">{profile.points.slice(0,10).map(k => <li key={k.id} data-kp={k.id}>
         <a href={'#/practice?kp=' + k.id}>
           <span><b>{k.id} {k.title}</b> <span className="stars">{stars(k.stars)}</span> <span className={'badge ' + (k.status==='需补强'?'bad':k.status==='较稳固'?'good':'')}>{k.status}</span></span>
-          <span className="small muted">{k.measured ? '掌握估计 ' + percent(k.mastery.m) + ' · ' + k.mastery.uniqueProblems + ' 道不同题' : '尚未做题验证'} · 中北真题 {k.years} 套</span>
+          <span className="small muted">{k.measured ? '掌握估计 ' + percent(k.mastery.m) + ' · ' + k.mastery.uniqueFamilies + ' 个大题家族' : '尚未做题验证'} · {sourceEvidenceLabel(k.id)}</span>
+          {k.measured && <span className="small muted">独立全对 {k.mastery.verifiedFamilies} 个家族 / {k.mastery.independentDays} 日{k.mastery.legacyProblems>0&&' · 含辅助条件未标注旧记录'}</span>}
           <span className="small muted">{k.mastery.uniqueProblems+k.mastery.reviews ? '记忆保持估计 ' + percent(k.mastery.retention) + ' · ' : ''}{k.examPoints>0 ? '最近原卷约 ' + k.examPoints.toFixed(1) + ' 分权重' : '重点表考点，仍需覆盖'}</span>
         </a>
       </li>)}</ul>
@@ -60,20 +68,24 @@ export function ReadinessPage() {
         <h3>{k.id} {k.title} · {plan.title}</h3>
         <p className="muted small">{plan.reason}</p>
         <details><summary>怎么练</summary><ol>{plan.steps.map(step => <li key={step}>{step}</li>)}</ol></details>
-        <a href={'#/practice?kp='+k.id}>练这个考点 →</a>
+        <a href={plan.trainingId?'#/train/'+plan.trainingId:'#/practice?kp='+k.id}>{plan.trainingId?'开始对应专项 →':'练这个考点 →'}</a>
       </article>)}
       <a className="small" href="https://github.com/origintime9-crypto/808-trainer/blob/main/LEARNING_RESEARCH.md" target="_blank" rel="noreferrer">查看研究与算法方案 ↗</a>
     </section>
+    <section className="card"><h2>按失分步骤补弱</h2><p className="muted small">先填写关键条件，再展开分步提示；用另一原始大题闭卷验证。保留卷不会被专项训练提前抽取。</p>
+      {!!skills.length&&<ul>{skills.slice(0,5).map(s=><li key={s.id}><a href={`#/train/${s.training!.id}`}>{skillErrorLabel(s.id)} · 近期作答/训练标记{s.count}次 →</a></li>)}</ul>}
+      <div className="actions">{skillTrainings.map(s=><a className="button" key={s.id} href={`#/train/${s.id}`}>{s.title}</a>)}</div>
+    </section>
     <section className="card">
       <h2>原卷题型适配</h2>
-      <p className="muted small">按最近完整原卷的作答单元和分值核对；“全对”采用每道题最近一次自评或确认后的批改记录。</p>
+      <p className="muted small">按最近完整原卷的作答单元和分值核对；“全对”采用每日首次有效作答。旧记录未标注辅助条件，不能证明独立完成。</p>
       <ul className="rows">{profile.types.map(t => <li key={t.type}><a href={'#/practice?type='+encodeURIComponent(t.type)}>
         <b>{t.type} · 原卷 {t.count} 个单元 / {t.score} 分</b>
         <span className="muted small">已练 {t.practiced} 道不同题 · 最近全对 {t.full} 道</span>
       </a></li>)}</ul>
     </section>
     <section className="card"><h2>整卷验证</h2>
-      {latest && result ? <p>最近完成：<a href={'#/mock/'+latest.id}>{latest.title}</a>，自评 {Math.round(result.score*10)/10} / {result.total} 分，完成 {result.done}/{latest.items.length} 单元。</p> : <p className="muted">还没有完成模拟卷。单题会做之外，还需要用 150 分、180 分钟整卷检验题型和作答量。</p>}
+      {latest && result ? <p>最近完成：<a href={'#/mock/'+latest.id}>{latest.title}</a>，{result.pending?`${result.pending}题待评分，已评分小计`:'自评'} {Math.round(result.score*10)/10} / {result.total} 分，完成 {result.done}/{latest.items.length} 单元。</p> : <p className="muted">还没有完成模拟卷。单题会做之外，还需要用 150 分、180 分钟整卷检验题型和作答量。</p>}
       <p className="muted small">补强卷保持中北原卷题型、题位和分值，优先换入适合你薄弱考点的题；标准卷用于完整结构验证。</p>
     </section>
   </div>;

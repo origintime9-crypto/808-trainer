@@ -3,6 +3,8 @@ import { fits808 } from '../content/target808';
 import type { AttemptEvent, TrainerEvent } from '../types';
 import type { MasteryIndex } from './mastery';
 import { DAY, startOfToday } from './scheduler';
+import { dailyEvidence } from './evidence';
+import { skillTrainings } from '../content/training';
 
 export type LearningMethod = 'diagnostic' | 'explanation' | 'fading' | 'retrieval' | 'checking' | 'verification' | 'interleaving';
 export interface LearningPlan {
@@ -12,6 +14,7 @@ export interface LearningPlan {
   steps: string[];
   recentProblems: number;
   spacedDays: number;
+  trainingId?: string;
 }
 
 const methods: Record<LearningMethod, { title: string; steps: string[] }> = {
@@ -59,7 +62,7 @@ const methods: Record<LearningMethod, { title: string; steps: string[] }> = {
  */
 export function learningPlan(kpId: string, mi: MasteryIndex, events: TrainerEvent[], now: number): LearningPlan {
   const daily = new Map<string, AttemptEvent>();
-  for (const event of [...events].sort((a,b) => a.t-b.t || a.id.localeCompare(b.id))) {
+  for (const event of dailyEvidence(events,now)) {
     if (event.kind !== 'attempt' || event.t > now || !fits808(event.problemId)) continue;
     if (!problemById.get(event.problemId)?.kps.includes(kpId)) continue;
     daily.set(event.problemId+':'+startOfToday(event.t), event);
@@ -74,6 +77,8 @@ export function learningPlan(kpId: string, mi: MasteryIndex, events: TrainerEven
     ({ method, ...methods[method], reason, recentProblems, spacedDays });
 
   if (!mastery.uniqueProblems) return result('diagnostic', '还没有有效做题证据，先测清卡点。');
+  const specific=skillTrainings.find(s=>s.errors.some(e=>latest?.skillErrors?.includes(e.id)));
+  if(specific)return {...result('checking','近期首次作答有具体失分步骤，先做对应专项，再换模型独立验证。'),trainingId:specific.id,steps:specific.checkpoints.map(c=>c.prompt)};
   if (latest && latest.grade < 3) {
     if (latest.tags.includes('概念不清')) return result('explanation', '最近一次作答标记了概念不清，先核对定义与条件。');
     if (latest.tags.includes('方法不会')) return result('fading', '最近一次作答标记了方法不会，先练选方法和关键步骤。');
@@ -87,8 +92,8 @@ export function learningPlan(kpId: string, mi: MasteryIndex, events: TrainerEven
   const latestPerProblem = new Map<string, AttemptEvent>();
   for (const event of recent) if (!latestPerProblem.has(event.problemId)) latestPerProblem.set(event.problemId, event);
   const full = [...latestPerProblem.values()].filter(e => e.grade === 3);
-  if (mastery.ability >= 0.8 && full.length >= 3 && new Set(full.map(e => startOfToday(e.t))).size >= 2) {
-    return result('interleaving', '已有至少三道不同题的近期全对记录，并分布在不同日；继续混合验证。');
+  if (mastery.ability >= 0.8 && mastery.verifiedFamilies >= 3 && mastery.independentDays>=2 && full.length >= 3) {
+    return result('interleaving', '已有至少三个不同家族的近期独立全对记录，并跨日验证；继续混合验证。');
   }
   return result('verification', '已有做题记录，继续换题、跨日验证能否保持；评分来自自评或确认后的批改。');
 }

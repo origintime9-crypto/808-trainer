@@ -14,7 +14,7 @@ let seq=0;
 const attempt=(problemId:string,grade:0|1|2|3,t=NOW):AttemptEvent=>({kind:'attempt',id:'adaptive-'+seq++,problemId,grade,t,tags:[],sec:300});
 const review=(cardId:string,t=NOW):ReviewEvent=>({kind:'review',id:'adaptive-card-'+seq++,cardId,rating:4,t});
 const single=problems.filter(p=>p.kps.length===1&&p.kps[0]==='1.8'&&fits808(p.id)).slice(0,4);
-const measured=(m:number):Mastery=>({m,ability:m,retention:1,forgetting:0,confidence:0.85,uniqueProblems:4,attempts:4,reviews:0,dueCount:0,tags:computeMastery([],NOW).kp('1.8').tags});
+const measured=(m:number):Mastery=>({...computeMastery([],NOW).kp('1.8'),m,ability:m,retention:1,forgetting:0,confidence:0.85,uniqueProblems:4,attempts:4});
 const profile=(weak:string):MasteryIndex=>({kp:id=>measured(id===weak?0.15:0.9),pattern:()=>measured(0.9)});
 
 describe('808依据与水平画像',()=>{
@@ -36,8 +36,8 @@ describe('808依据与水平画像',()=>{
     expect(single).toHaveLength(4);
     const events=single.map(p=>attempt(p.id,3));
     const current=readiness808(computeMastery(events,NOW),events,NOW);
-    expect(current.coverage).toBeGreaterThan(0);expect(current.validatedCoverage).toBeGreaterThan(0);
-    expect(current.points.find(p=>p.id==='1.8')?.validated).toBe(true);
+    expect(current.coverage).toBeGreaterThan(0);expect(current.validatedCoverage).toBe(0);
+    expect(current.points.find(p=>p.id==='1.8')?.validated).toBe(false);
     const outside=problems.find(p=>p.kps.every(k=>k.startsWith('8.')))!;
     const extra=[...events,attempt(outside.id,3)];
     expect(readiness808(computeMastery(extra,NOW),extra,NOW).coverage).toBe(current.coverage);
@@ -68,7 +68,7 @@ describe('不同题证据与个人记忆',()=>{
     expect(b.uniqueProblems).toBe(1);expect(b.m).toBeCloseTo(a.m);expect(masteryStatus(b)).not.toBe('较稳固');
     expect(replay(repeated,EXAM).problems.get(p.id)!.card.stability).toBeCloseTo(replay([first],EXAM).problems.get(p.id)!.card.stability);
     const diverse=computeMastery(single.map(p=>attempt(p.id,3)),NOW).kp('1.8');
-    expect(diverse.m).toBeGreaterThan(b.m);expect(masteryStatus(diverse)).toBe('较稳固');
+    expect(diverse.m).toBeGreaterThan(b.m);expect(masteryStatus(diverse)).not.toBe('较稳固');
   });
   it('旧错题不会随时间变熟；旧会题会显出遗忘风险',()=>{
     const events=single.map(p=>attempt(p.id,3));

@@ -9,7 +9,7 @@ import type { AttemptEvent, MistakeTag, TrainerEvent } from '../src/types';
 const now = new Date('2026-10-08T12:00:00+08:00').getTime();
 const eligible = problems.filter(p => fits808(p.id) && p.kps.length === 1 && p.kps[0] === '1.8').slice(0,5);
 function event(index: number, grade: AttemptEvent['grade'], tags: MistakeTag[] = [], t = now): AttemptEvent {
-  return { kind:'attempt', id:'learning-'+index+'-'+grade+'-'+t, t, problemId:eligible[index].id, grade, tags, sec:240 };
+  return { kind:'attempt', id:'learning-'+index+'-'+grade+'-'+t, t, problemId:eligible[index].id, grade, tags, sec:240,workMode:'independent',hintsUsed:false };
 }
 function plan(events: TrainerEvent[]) {
   return learningPlan('1.8', computeMastery(events, now), events, now);
@@ -33,7 +33,7 @@ describe('808复习方法按有效表现调整', () => {
     const fail = event(0,0,['概念不清'],now-60_000);
     expect(plan([fail]).method).toBe('explanation');
     const correct = event(0,3,[],now);
-    expect(plan([fail,correct]).method).toBe('verification');
+    expect(plan([fail,correct]).method).toBe('explanation');
     const same = Array.from({length:8},(_,i) => ({...correct,id:'repeat-'+i,t:now-10_000+i}));
     const outcome = plan(same);
     expect(outcome.method).toBe('verification');

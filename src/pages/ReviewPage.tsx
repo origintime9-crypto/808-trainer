@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Md } from '../components/Markdown';
 import { cardById } from '../content';
-import { cardQueue } from '../engine/queue';
+import { dailyPlan } from '../engine/dailyPlan';
 import { kpLabel } from '../format';
 import { app, useDerived, useEvents, useSettings } from '../state';
 import { RATING_LABELS, type CardRating } from '../types';
@@ -14,7 +14,7 @@ export function ReviewPage() {
   const [done, setDone] = useState(0);
   const [error, setError] = useState('');
 
-  const q = cardQueue(sched, events, settings, mi, now);
+  const q = dailyPlan(sched, events, settings, mi, now).cards;
   const realDue = q.due.filter((id) => sched.cards.get(id)!.card.due.getTime() <= now);
   const ahead = q.due.filter((id) => !realDue.includes(id));
   const order = [...realDue, ...q.fresh, ...ahead];

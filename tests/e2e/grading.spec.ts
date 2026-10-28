@@ -145,6 +145,7 @@ test('照片看不清时清除预填评分，按纸上实际作答自评后记�
 test('模拟卷重新评分清除上次批改，保留旧复核记录且新自评能保存', async ({ page, context }) => {
   await context.route('**/api/health', route => route.fulfill({ json: { ok: true, ai: false, sync: false, model: '' } }));
   await page.goto(base + '/#/mock');
+  await page.getByLabel('训练模式').selectOption('practice');
   await page.getByRole('button', { name: '保存并开始模拟卷', exact: true }).click();
   const start = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? '[]').find((e: { kind: string; action?: string }) => e.kind === 'exam' && e.action === 'start'), eventsKey);
   const panel = page.locator('.ai-panel');

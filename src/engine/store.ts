@@ -10,6 +10,10 @@ export const DEFAULT_SETTINGS: Settings = {
   newProblemsPerDay: 3,
   syncKey: '',
   aiEnabled: false,
+  studyStage: 'strengthening',
+  dailyMinutes: 90,
+  reservedPapers: ['zt2026'],
+  planConfigured: false,
 };
 
 export function newId(): string {
@@ -60,6 +64,10 @@ export function loadSettings(): Settings {
       newProblemsPerDay: Number.isInteger(value.newProblemsPerDay) && value.newProblemsPerDay! >= 0 && value.newProblemsPerDay! <= 30 ? value.newProblemsPerDay! : 3,
       syncKey: typeof value.syncKey === 'string' ? value.syncKey : '',
       aiEnabled: value.aiEnabled === true,
+      studyStage: ['foundation','strengthening','sprint'].includes(value.studyStage??'') ? value.studyStage! : 'strengthening',
+      dailyMinutes: Number.isInteger(value.dailyMinutes)&&value.dailyMinutes!>=10&&value.dailyMinutes!<=600?value.dailyMinutes!:90,
+      reservedPapers: Array.isArray(value.reservedPapers)&&value.reservedPapers.length<=100&&value.reservedPapers.every(id=>typeof id==='string'&&id.length<=200)?[...new Set(value.reservedPapers)]:['zt2026'],
+      planConfigured: value.planConfigured===true,
       ...(typeof value.lastExport === 'number' ? { lastExport: value.lastExport } : {}),
     };
   } catch {

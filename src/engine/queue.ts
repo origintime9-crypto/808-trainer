@@ -1,9 +1,11 @@
-import { cardById, cards, kpById, kpPapers, paperById, problemById, problems } from '../content';
+import { cardById, cards, kpById, kpInitialPapers as kpPapers, paperById, problemById, problems } from '../content';
 import { examEmphasis, fits808 } from '../content/target808';
 import { problemDemand } from '../content/difficulty808';
 import type { Settings, TrainerEvent } from '../types';
 import { priority, problemPriority, type MasteryIndex } from './mastery';
 import { DAY, endOfToday, isNewCard, startOfToday, type Schedule } from './scheduler';
+import { learningEvents } from './history';
+import { timeEstimate } from './timing';
 
 const LEARN_AHEAD_MS = 20 * 60 * 1000;
 
@@ -69,12 +71,15 @@ export function recommendNew(sched: Schedule, events: TrainerEvent[], settings: 
   const today = startOfToday(now);
   const doneToday = new Set<string>();
   const firstAttempt = new Map<string, number>();
-  for (const e of events) if (e.kind === 'attempt' && e.t <= now && fits808(e.problemId)) firstAttempt.set(e.problemId, Math.min(firstAttempt.get(e.problemId) ?? Infinity, e.t));
+  for (const e of learningEvents(events)) if (e.kind === 'attempt' && e.t <= now && fits808(e.problemId)) firstAttempt.set(e.problemId, Math.min(firstAttempt.get(e.problemId) ?? Infinity, e.t));
   for (const [id, t] of firstAttempt) if (t >= today) doneToday.add(id);
   const quota = Math.max(0, settings.newProblemsPerDay - doneToday.size);
 
   const candidates = problems
-    .filter((p) => !sched.problems.has(p.id) && fits808(p.id))
+    .filter((p) => !sched.problems.has(p.id) && fits808(p.id) &&
+      !p.sources.some(s=>(settings.reservedPapers??['zt2026']).includes(s.paper)) &&
+      (settings.studyStage!=='foundation'||problemDemand(p).level<=2&&timeEstimate(p.id,events,now).minutes<=12) &&
+      timeEstimate(p.id,events,now).minutes<=(settings.dailyMinutes??90))
     .map((p) => ({
       p,
       score: problemPriority(p.id, mi) * (p.sources.some((s) => paperById.get(s.paper)?.kind === '真题') ? 1.2 : 1),
@@ -107,7 +112,6 @@ export function recommendNew(sched: Schedule, events: TrainerEvent[], settings: 
   return picked;
 }
 
-export function suggestedMinutes(problemId: string): number {
-  const p = problemById.get(problemId);
-  return p ? problemDemand(p).minutes : 6;
+export function suggestedMinutes(problemId: string, events:TrainerEvent[]=[],now=Date.now()): number {
+  return timeEstimate(problemId,events,now).minutes;
 }

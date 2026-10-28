@@ -41,8 +41,8 @@ input, select, textarea { max-width: 100%; }
 .md p, .md li, .history { overflow-wrap: anywhere; }
 .exam-progress { display: flex; flex-wrap: wrap; gap: 6px; }
 .exam-progress button { min-width: 38px; font-size: .85rem; padding: 4px; }
-.study-nav { display:flex; gap:6px; margin-bottom:12px; }
-.study-nav a { flex:1; text-align:center; padding:9px 4px; border:1px solid var(--line); border-radius:8px; background:#fff; font-size:.9rem; }
+.study-nav { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+.study-nav a { flex:1 1 84px; text-align:center; padding:9px 4px; border:1px solid var(--line); border-radius:8px; background:#fff; font-size:.9rem; }
 .study-nav a.on { background:var(--brand); color:white; border-color:var(--brand); }
 .readiness-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px; margin:16px 0; }
 .readiness-head { flex-direction:column; align-items:flex-start; gap:6px; }
@@ -255,3 +255,30 @@ table.rank tbody tr:hover { background: #fafbfc; }
 .learning-plan ol { padding-left: 1.5em; margin: 8px 0; font-size: .9rem; }
 .learning-plan li { margin-bottom: 6px; line-height: 1.6; }
 .learning-plan > a { display: inline-block; margin-top: 8px; font-size: .88rem; }
+
+.work-mode { margin: 12px 0; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.work-mode label { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.answer-input { display: block; margin: 18px 0 8px; font-weight: 600; }
+.answer-input textarea { display: block; width: 100%; min-height: 180px; margin-top: 8px; padding: 12px; font: inherit; font-weight: 400; line-height: 1.6; border: 1px solid var(--line); border-radius: 8px; resize: vertical; }
+.option.selected { border-color: var(--brand); background: var(--brand-soft); }
+.submitted-answer { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; font-size: .9rem; padding: 10px; background: #f5f7f9; border-radius: 8px; }
+.exam-report details { margin-bottom: 8px; }
+.exam-report .small { margin-right: 12px; }
+.reference-score { margin: 12px 0 20px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.rubric-step { display: grid; grid-template-columns: minmax(0,1fr) 80px; gap: 6px 12px; margin: 12px 0; }
+.rubric-step > small { grid-column: 1 / -1; }
+.score-input { display: flex; flex-direction: column; gap: 6px; }
+.score-input input { max-width: 180px; }
+.skill-errors .tag input { display: inline-block; margin-right: 5px; }
+.revision-guide h1 { font-size: clamp(1.3rem,5vw,1.7rem); line-height: 1.45; }
+.guide-route { padding-left: 1.4em; }
+.guide-route li { margin: 12px 0; }
+.guide-comparison { border-top: 1px solid var(--line); padding: 16px 0; }
+.guide-comparison h3 { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; margin: 0; }
+.guide-comparison h3 .badge { margin-left: 0; }
+.guide-comparison p { font-size: .9rem; }
+.guide-comparison .chip { overflow-wrap: anywhere; }
+.guide-source { border-top: 1px solid var(--line); padding: 12px 0; }
+.guide-source summary { cursor: pointer; font-size: .9rem; }
+.guide-source .badge { white-space: normal; }
+.guide-local { background: var(--brand-soft); border-radius: 8px; padding: 12px; margin: 16px 0; }

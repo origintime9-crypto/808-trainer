@@ -1,4 +1,4 @@
-import type { Card, Problem } from '../types';
+import type { Card, Paper, Problem } from '../types';
 import { coreCards } from './cards/core';
 import { extraCards } from './cards/extra';
 import { knowledge, CHAPTERS } from './knowledge';
@@ -325,10 +325,10 @@ export const problemById = new Map(problems.map((p) => [p.id, p]));
 export const cardById = new Map(cards.map((c) => [c.id, c]));
 
 // 每个知识点、题型在多少套真题里出现过
-function countPapers(key: (p: Problem) => string[]): Map<string, Set<string>> {
+function countPapers(key: (p: Problem) => string[], include: (paper: Paper) => boolean = p => p.kind === '真题' && !p.school): Map<string, Set<string>> {
   const m = new Map<string, Set<string>>();
   for (const p of problems) {
-    const realPapers = p.sources.filter((s) => { const paper = paperById.get(s.paper); return paper?.kind === '真题' && !paper.school; }).map((s) => s.paper);
+    const realPapers = p.sources.filter((s) => { const paper = paperById.get(s.paper); return paper && include(paper); }).map((s) => s.paper);
     for (const k of key(p)) {
       const set = m.get(k) ?? new Set<string>();
       realPapers.forEach((x) => set.add(x));
@@ -341,6 +341,16 @@ function countPapers(key: (p: Problem) => string[]): Map<string, Set<string>> {
 export const kpPapers = countPapers((p) => p.kps);
 export const patternPapers = countPapers((p) => (p.pattern ? [p.pattern] : []));
 export const realPaperCount = papers.filter((p) => p.kind === '真题' && !p.school).length;
+const initial = (p: Paper) => p.kind === '真题' && !p.school && p.examType === '初试';
+const interview = (p: Paper) => p.kind === '真题' && !p.school && p.examType === '复试';
+const course = (p: Paper) => p.kind !== '真题' && !p.school;
+export const initialPaperCount = papers.filter(initial).length;
+export const kpInitialPapers = countPapers(p => p.kps, initial);
+export const patternInitialPapers = countPapers(p => p.pattern ? [p.pattern] : [], initial);
+export const kpInterviewPapers = countPapers(p => p.kps, interview);
+export const patternInterviewPapers = countPapers(p => p.pattern ? [p.pattern] : [], interview);
+export const kpCoursePapers = countPapers(p => p.kps, course);
+export const patternCoursePapers = countPapers(p => p.pattern ? [p.pattern] : [], course);
 
 export function paperYears(set: Set<string> | undefined): number[] {
   if (!set) return [];

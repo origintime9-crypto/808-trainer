@@ -43,6 +43,9 @@ export function SettingsPage() {
     <div>
       <section className="card form">
         <h2>学习设置</h2>
+        <label>复习阶段<select value={settings.studyStage??'strengthening'} onChange={e=>app.updateSettings({studyStage:e.target.value as 'foundation'|'strengthening'|'sprint',planConfigured:true})}><option value="foundation">基础阶段：先练短题和条件</option><option value="strengthening">强化阶段：补弱与综合推导</option><option value="sprint">冲刺阶段：混合练习与整卷</option></select></label>
+        <label>每日可用分钟数<input type="number" min={10} max={600} value={settings.dailyMinutes??90} onChange={e=>app.updateSettings({dailyMinutes:num(e.target.value,10,600),planConfigured:true})}/></label>
+        {!settings.planConfigured&&<button onClick={()=>app.updateSettings({planConfigured:true})}>确认当前计划设置</button>}
         <label>
           初试日期
           <input type="date" value={settings.examDate} onChange={(e) => e.target.value && app.updateSettings({ examDate: e.target.value })} />
@@ -56,6 +59,9 @@ export function SettingsPage() {
           <input type="number" min={0} max={30} value={settings.newProblemsPerDay} onChange={(e) => app.updateSettings({ newProblemsPerDay: num(e.target.value, 0, 30) })} />
         </label>
         <p className="muted small">复习间隔最长 21 天，且不会排到考试日之后。</p>
+        <p className="muted small">复习截止按所选日期14:00（北京时间）。<a href="#/guide">查看官方时间与复习依据 →</a></p>
+        <h3>保留首次整卷机会</h3><p className="muted small">保留卷中的所有同题来源都从日常新题推荐和专项训练中排除。仍可主动开始该卷的正式模考。</p>
+        {papers.filter(p=>p.kind==='真题'&&!p.school).map(p=><label className="check-label" key={p.id}><input type="checkbox" checked={(settings.reservedPapers??['zt2026']).includes(p.id)} onChange={e=>app.updateSettings({reservedPapers:e.target.checked?[...new Set([...(settings.reservedPapers??['zt2026']),p.id])]:(settings.reservedPapers??['zt2026']).filter(id=>id!==p.id)})}/>{p.title}</label>)}
       </section>
 
       <section className="card form">

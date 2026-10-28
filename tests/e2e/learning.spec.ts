@@ -38,9 +38,9 @@ test('复习建议跟随真实评分即时更新，展开步骤与重新进入�
   await page.getByRole('button',{name:'全对',exact:true}).click();
   await page.getByRole('button',{name:'记录',exact:true}).click();
   await page.goto('./#/readiness');
-  await expect(entry(page)).toHaveAttribute('data-method','verification');
-  await expect(entry(page)).toContainText('换题');
-  await page.reload(); await expect(entry(page)).toHaveAttribute('data-method','verification');
+  await expect(entry(page)).toHaveAttribute('data-method','explanation');
+  await expect(entry(page)).toContainText('概念');
+  await page.reload(); await expect(entry(page)).toHaveAttribute('data-method','explanation');
   await mobile(page); expect(proof.errors).toEqual([]); expect(proof.writes).toEqual([]);
 });
 test('单日多题继续延迟验证，跨日换题转混合，长期未练转回忆',async({browser}) => {
@@ -48,7 +48,7 @@ test('单日多题继续延迟验证，跨日换题转混合，长期未练转�
     const ctx=await browser.newContext({viewport:{width:375,height:812},timezoneId:'Asia/Shanghai'});
     try {
       const ev:AttemptEvent[]=single.slice(0,mode==='old'?4:3).map((p,i) => ({
-        kind:'attempt',id:'learning-browser-'+mode+'-'+i,problemId:p.id,grade:3,tags:[],sec:300,
+        kind:'attempt',id:'learning-browser-'+mode+'-'+i,problemId:p.id,grade:3,tags:[],sec:300,workMode:'independent',hintsUsed:false,
         t:mode==='old'?NOW-90*86_400_000:mode==='spaced'?NOW-(2-i)*86_400_000:NOW-60_000,
       }));
       await prepare(ctx,ev);const page=await ctx.newPage(),proof=observe(page);

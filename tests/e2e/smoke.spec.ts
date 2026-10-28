@@ -77,6 +77,7 @@ test('整卷按题序，本次成绩不包含历史作答', async ({ page, conte
   await mockHealth(context);
   await page.addInitScript(({ key }) => localStorage.setItem(key, JSON.stringify([{ kind: 'attempt', problemId: 'zt2026-10', id: 'history-before-exam', t: 1760000000000, grade: 3, tags: [], sec: 40 }])), { key: KEY });
   await page.goto('/#/exam/zt2026');
+  await page.getByLabel('训练模式').selectOption('practice');
   await page.getByRole('button', { name: '开始整卷练习' }).click();
   await expect(page.getByText('已做 0 / 17 个单元 · 本次估分 0')).toBeVisible();
   await expect(page.locator('.meta .source')).toContainText('一(1)');
@@ -172,6 +173,7 @@ test('持续打开的两台设备自动双向同步，服务失败自动补传�
     expect(await records(pb)).toHaveLength(1);
     await expect(pa.locator('.sync-pill')).toContainText('云端已保存');
     await pb.goto(base + '/#/p/zt2026-10');
+    await pb.getByRole('button',{name:'查看提示与笔记',exact:true}).click();
     await pb.getByRole('textbox', { name: '我的笔记', exact: true }).fill('手机补充：检查初值');
     // 保持输入框焦点，验证停顿自动保存及另一设备主动获取。
     await expect.poll(async () => (await records(pa)).length, { timeout: 12000 }).toBe(2);
@@ -193,6 +195,7 @@ test('远端笔记刷新保留正在编辑的草稿，停顿和离开页面都�
   });
   await page.goto('/#/p/zt2026-10');
   await expect(page.locator('.sync-pill')).toContainText('云端已保存');
+  await page.getByRole('button',{name:'查看提示与笔记',exact:true}).click();
   const editor = page.getByRole('textbox', { name: '我的笔记', exact: true });
   await editor.fill('本机草稿');
   cloud.push({ id: 'remote-note-during-edit', kind: 'note', problemId: 'zt2026-10', t: Date.now(), text: '另一设备的笔记' });

@@ -1,5 +1,6 @@
 import { problemById } from '../content';
 import type { TrainerEvent } from '../types';
+import { learningEvents } from './history';
 
 /** 只统计已保存作答；人工调整数量不是识别准确率。 */
 export function gradingAudit(events: TrainerEvent[], now: number) {
@@ -7,7 +8,7 @@ export function gradingAudit(events: TrainerEvent[], now: number) {
   const models = new Map<string, Counts & { model: string }>();
   const seen = new Set<string>();
   const counts: Counts = { confirmed: 0, adjusted: 0, adjustedTags: 0, unclear: 0, reviewed: 0, checkedTranscript: 0, correctedTranscript: 0, unreadable: 0, unreviewed: 0 };
-  for (const e of events) {
+  for (const e of learningEvents(events.filter(e=>e.t<=now))) {
     if (e.kind !== 'attempt' || !e.ai || e.t > now || !problemById.has(e.problemId) || seen.has(e.id)) continue;
     seen.add(e.id);
     const row = models.get(e.ai.model) ?? { model: e.ai.model || '模型未标注', confirmed: 0, adjusted: 0, adjustedTags: 0, unclear: 0, reviewed: 0, checkedTranscript: 0, correctedTranscript: 0, unreadable: 0, unreviewed: 0 };

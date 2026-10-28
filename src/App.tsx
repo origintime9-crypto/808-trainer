@@ -7,6 +7,7 @@ import { TodayPage } from './pages/TodayPage';
 import { connectSync, syncStatusLabel, useSyncStatus } from './engine/sync';
 import { eventStorageError } from './engine/store';
 import { useEvents } from './state';
+import { mockSessions, validMockSession } from './engine/mock';
 
 const ProblemPage = lazy(() => import('./pages/ProblemPage').then(m => ({ default: m.ProblemPage })));
 const ReviewPage = lazy(() => import('./pages/ReviewPage').then(m => ({ default: m.ReviewPage })));
@@ -15,6 +16,8 @@ const KnowledgePage = lazy(() => import('./pages/KnowledgePage').then(m => ({ de
 const MockPage = lazy(() => import('./pages/MockPage').then(m => ({ default: m.MockPage })));
 const MockExamPage = lazy(() => import('./pages/MockExamPage').then(m => ({ default: m.MockExamPage })));
 const ReadinessPage = lazy(() => import('./pages/ReadinessPage').then(m => ({ default: m.ReadinessPage })));
+const TrainingPage = lazy(() => import('./pages/TrainingPage').then(m => ({ default: m.TrainingPage })));
+const GuidePage = lazy(() => import('./pages/GuidePage').then(m => ({ default: m.GuidePage })));
 
 const TABS = [
   { path: 'today', label: '今日', icon: '◎' },
@@ -42,19 +45,24 @@ function useRoute(): string {
 export function App() {
   useEffect(connectSync, []);
   const sync = useSyncStatus();
-  useEvents();
+  const events = useEvents();
   const storageError = eventStorageError();
   const route = useRoute();
+  const locked = mockSessions(events).find(s=>s.mode==='strict'&&s.finished===undefined&&validMockSession(s));
+  useEffect(()=>{if(locked&&route!==`mock/${locked.id}`)window.location.hash=`#/mock/${locked.id}`;},[locked?.id,route]);
   const [path] = route.split('?');
   const [section, arg] = path.split('/');
-  const active = ['p', 'exam', 'knowledge', 'mock', 'readiness'].includes(section) ? 'practice' : section;
+  const active = ['p', 'exam', 'knowledge', 'mock', 'readiness','train','guide'].includes(section) ? 'practice' : section;
 
   let page;
-  if (section === 'p' && arg) page = <ProblemPage key={arg} id={decodeURIComponent(arg)} />;
+  if(locked) page=<MockExamPage key={locked.id} id={locked.id}/>;
+  else if (section === 'p' && arg) page = <ProblemPage key={arg} id={decodeURIComponent(arg)} />;
   else if (section === 'exam' && arg) page = <ExamPage key={arg} paper={decodeURIComponent(arg)} />;
   else if (section === 'practice') page = <PracticePage />;
   else if (section === 'knowledge') page = <KnowledgePage />;
   else if (section === 'readiness') page = <ReadinessPage />;
+  else if (section === 'guide') page = <GuidePage />;
+  else if(section==='train'&&arg)page=<TrainingPage key={route} id={decodeURIComponent(arg)}/>;
   else if (section === 'mock' && arg) page = <MockExamPage key={arg} id={decodeURIComponent(arg)}/>;
   else if (section === 'mock') page = <MockPage/>;
   else if (section === 'review') page = <ReviewPage />;
@@ -66,23 +74,23 @@ export function App() {
   return (
     <div className="app">
       <header className="top">
-        <a className="brand" href="#/today">808 信号与系统</a>
-        <nav className="tabs-top">
+        <a className="brand" href={locked?`#/mock/${locked.id}`:'#/today'}>808 信号与系统</a>
+        {!locked&&<nav className="tabs-top">
           {TABS.map((t) => (
             <a key={t.path} href={`#/${t.path}`} className={active === t.path ? 'on' : ''}>{t.label}</a>
           ))}
-        </nav>
-        <a className={`sync-pill ${sync.phase}`} href="#/settings" title={sync.message} aria-live="polite">{syncStatusLabel(sync)}</a>
+        </nav>}
+        {locked?<span className="badge">严格模考进行中</span>:<a className={`sync-pill ${sync.phase}`} href="#/settings" title={sync.message} aria-live="polite">{syncStatusLabel(sync)}</a>}
       </header>
       <main>{storageError && active !== 'settings' && <a className="banner" href="#/settings" role="alert">{storageError}</a>}<Suspense fallback={<section className="card">正在打开…</section>}>{page}</Suspense></main>
-      <nav className="tabs-bottom">
+      {!locked&&<nav className="tabs-bottom">
         {TABS.map((t) => (
           <a key={t.path} href={`#/${t.path}`} className={active === t.path ? 'on' : ''}>
             <span className="icon">{t.icon}</span>
             {t.label}
           </a>
         ))}
-      </nav>
+      </nav>}
     </div>
   );
 }

@@ -1,4 +1,5 @@
-import { kpPapers, problemById } from '../content';
+import { kpInitialPapers as kpPapers, problemById } from '../content';
+import { latestEvidence } from './evidence';
 import { fits808, importance808, target808Points, target808Scope, target808Units, TARGET_808_PAPER } from '../content/target808';
 import type { TrainerEvent } from '../types';
 import { masteryStatus, priority, type MasteryIndex } from './mastery';
@@ -10,7 +11,7 @@ export function readiness808(mi: MasteryIndex, events: TrainerEvent[], now: numb
   const totalWeight = target808Scope.reduce((sum, k) => sum + importance808(k.id), 0);
   const points = target808Scope.map(k => {
     const mastery = mi.kp(k.id), weight = importance808(k.id) / totalWeight;
-    const measured = mastery.uniqueProblems > 0, validated = mastery.uniqueProblems >= 3;
+    const measured = mastery.uniqueProblems > 0, validated = mastery.verifiedFamilies >= 3 && mastery.independentDays >= 2;
     return { ...k, mastery, weight, measured, validated, status: masteryStatus(mastery),
       examPoints: target808Points.get(k.id) ?? 0, years: kpPapers.get(k.id)?.size ?? 0,
       priority: priority(k.stars, mastery.m, kpPapers.get(k.id)?.size ?? 0, mastery, examEmphasis(k.id)).value };
@@ -23,7 +24,7 @@ export function readiness808(mi: MasteryIndex, events: TrainerEvent[], now: numb
     : measuredMastery !== null && measuredMastery >= 0.75 ? '重点掌握较稳'
       : measuredMastery !== null && measuredMastery >= 0.55 ? '正在巩固' : '重点仍需补强';
   const latest = new Map<string, Extract<TrainerEvent, {kind:'attempt'}>>();
-  for (const e of [...events].sort((a, b) => a.t - b.t || a.id.localeCompare(b.id))) {
+  for (const e of latestEvidence(events, now)) {
     if (e.kind === 'attempt' && e.t <= now && fits808(e.problemId)) latest.set(e.problemId, e);
   }
   const types = [...new Set(target808Units.map(p => p.type))].map(type => {

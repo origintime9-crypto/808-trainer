@@ -56,11 +56,11 @@ describe('回放调度', () => {
     let ev: TrainerEvent[] = [];
     for (let i = 0; i < 4; i++) ev = [...ev, review('c', 4, T0 + i * 60_000)];
     const due = replay(ev, exam).cards.get('c')!.card.due.getTime();
-    expect(due).toBeLessThanOrEqual(new Date('2026-10-11T09:00:00').getTime());
+    expect(due).toBeLessThanOrEqual(new Date('2026-10-11T14:00:00+08:00').getTime());
   });
   it('考前最后一小时的错题不会排到考试之后', () => {
-    const t = new Date('2026-12-20T08:00:00').getTime();
-    expect(replay([attempt('p', 1, t)], EXAM).problems.get('p')!.card.due.getTime()).toBeLessThanOrEqual(new Date('2026-12-20T09:00:00').getTime());
+    const t = new Date('2026-12-20T13:00:00+08:00').getTime();
+    expect(replay([attempt('p', 1, t)], EXAM).problems.get('p')!.card.due.getTime()).toBe(new Date('2026-12-20T14:00:00+08:00').getTime());
   });
 });
 

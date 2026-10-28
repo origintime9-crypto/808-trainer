@@ -1,4 +1,7 @@
-import { cardById, kpById, kpPapers, knowledge, patternById, patternPapers, patterns, problemById, realPaperCount } from '../content';
+import { cardById, kpById, kpInitialPapers as kpPapers, knowledge, patternById, patternInitialPapers as patternPapers, patterns, problemById, initialPaperCount as realPaperCount } from '../content';
+import { problemFamily } from '../content/families';
+import { dailyEvidence, isFullCredit, isIndependent } from './evidence';
+import { learningEvents } from './history';
 import type { MistakeTag, TrainerEvent } from '../types';
 import { MISTAKE_TAGS } from '../types';
 import { replay, retrievability, startOfToday, type Schedule } from './scheduler';
@@ -13,6 +16,10 @@ export interface Mastery {
   forgetting: number;
   confidence: number;
   uniqueProblems: number;
+  uniqueFamilies: number;
+  verifiedFamilies: number;
+  independentDays: number;
+  legacyProblems: number;
   dueCount: number;
   lastPractice?: number;
   /** 做题次数 */
@@ -34,20 +41,19 @@ export interface Ranked {
 
 const CARD_WEIGHT = 0.3;
 const MAX_CARD_EVIDENCE = 1.2;
-const CARD_SCORE = [0, 0, 0.5, 1, 1];
 
 function emptyTags(): Record<MistakeTag, number> {
   return Object.fromEntries(MISTAKE_TAGS.map((t) => [t, 0])) as Record<MistakeTag, number>;
 }
 
 interface Acc {
-  ws: number;
-  w: number;
-  retentionSum: number;
   cardWeight: number;
-  cardScore: number;
   cardRetention: number;
   uniqueProblems: number;
+  families: Map<string, { w: number; ws: number; retention: number }>;
+  verifiedFamilies: Set<string>;
+  independentDays: Set<number>;
+  legacyProblems: number;
   dueCount: number;
   lastPractice?: number;
   attempts: number;
@@ -56,21 +62,25 @@ interface Acc {
 }
 
 /**
- * 能力证据与记忆分开估计：按题目/卡片及日去重，最近一次日成绩占65%；
- * 同一题的总证据封顶，卡片证据每个知识点最多1.2，综合题分摊归因。
- * 记忆来自每道题自己的FSRS稳定度，不把忘却的错题恢复成平均掌握。
- * 仅由原事件派生，既有进度及跨设备同步不需要迁移。
+ * 能力取每日首次独立作答，旧记录仅作未确认辅助条件的暂定证据。
+ * 同一原始大题的能力权重封顶1；订正与背卡只更新学习和复习记录。
+ * 较稳固另需三个家族的近期无提示全对证据，并分布在至少两个自然日。
  */
 export function computeMastery(events: TrainerEvent[], now: number, schedule?: Schedule) {
-  const valid = events.filter(e => e.t <= now);
-  const sched = schedule && valid.length === events.length ? schedule : replay(valid, '9999-12-31');
+  const valid = learningEvents(events.filter(e => e.t <= now));
+  const selected = dailyEvidence(valid, now);
+  const eligibleIds = new Set(selected.map(e => e.id));
+  // 能力保持也只回放同口径证据，避免订正后的Easy间隔抬高能力保持。
+  const sched = replay(valid.filter(e => e.kind !== 'attempt' || eligibleIds.has(e.id)), '9999-12-31');
+  void schedule;
   const kp = new Map<string, Acc>();
   const pat = new Map<string, Acc>();
   const get = (m: Map<string, Acc>, id: string) => {
     let a = m.get(id);
     if (!a) {
-      a = { ws: 0, w: 0, retentionSum: 0, cardWeight: 0, cardScore: 0, cardRetention: 0,
-        uniqueProblems: 0, dueCount: 0, attempts: 0, reviews: 0, tags: emptyTags() };
+      a = { cardWeight: 0, cardRetention: 0,
+        uniqueProblems: 0, families: new Map(), verifiedFamilies: new Set(), independentDays: new Set(), legacyProblems: 0,
+        dueCount: 0, attempts: 0, reviews: 0, tags: emptyTags() };
       m.set(id, a);
     }
     return a;
@@ -86,7 +96,7 @@ export function computeMastery(events: TrainerEvent[], now: number, schedule?: S
         if (e.grade < 3) for (const t of e.tags) a.tags[t] = (a.tags[t] ?? 0) + 1;
       }
       // 保留原练习次数与错因；存疑及状态变量拓展作答不作为808能力证据。
-      if (!fits808(p.id)) continue;
+      if (!fits808(p.id) || !eligibleIds.has(e.id)) continue;
     } else if (e.kind === 'review') {
       const c = cardById.get(e.cardId);
       if (!c) continue;
@@ -96,7 +106,7 @@ export function computeMastery(events: TrainerEvent[], now: number, schedule?: S
     } else continue;
     const id = e.kind === 'attempt' ? 'p:' + e.problemId : 'c:' + e.cardId;
     const rows = evidence.get(id) ?? [];
-    const row = { score: e.kind === 'attempt' ? e.grade / 3 : CARD_SCORE[e.rating], t: e.t, event: e };
+    const row = { score: e.kind === 'attempt' ? e.score?e.score.earned/e.score.max:e.grade / 3 : 0, t: e.t, event: e };
     if (rows.length && startOfToday(rows[rows.length - 1].t) === startOfToday(e.t)) rows[rows.length - 1] = row;
     else rows.push(row);
     evidence.set(id, rows);
@@ -117,23 +127,40 @@ export function computeMastery(events: TrainerEvent[], now: number, schedule?: S
       a.lastPractice = Math.max(a.lastPractice ?? 0, last.t);
       if (state && state.card.due.getTime() <= now) a.dueCount++;
       if (problem) {
-        a.w += fraction; a.ws += quality * fraction; a.retentionSum += retention * fraction;
+        const family = problemFamily(problem.id);
+        const group = a.families.get(family) ?? { w: 0, ws: 0, retention: 0 };
+        group.w += fraction; group.ws += quality * fraction; group.retention += retention * fraction;
+        a.families.set(family, group);
         a.uniqueProblems++;
+        if (e.kind === 'attempt' && e.workMode === undefined) a.legacyProblems++;
+        if (e.kind === 'attempt' && isIndependent(e) && isFullCredit(e) && now - e.t <= 45 * 86_400_000) {
+          a.verifiedFamilies.add(family);
+          for (const row of rows) if (row.event.kind === 'attempt' && isIndependent(row.event) && isFullCredit(row.event) && now - row.t <= 45 * 86_400_000)
+            a.independentDays.add(startOfToday(row.t));
+        }
       } else {
         const weight = CARD_WEIGHT * fraction;
-        a.cardWeight += weight; a.cardScore += quality * weight; a.cardRetention += retention * weight;
+        a.cardWeight += weight; a.cardRetention += retention * weight;
       }
     }
   }
   const finish = (a: Acc | undefined): Mastery => {
     if (!a) return { m: 0.5, ability: 0.5, retention: 1, forgetting: 0, confidence: 0,
-      uniqueProblems: 0, dueCount: 0, attempts: 0, reviews: 0, tags: emptyTags() };
+      uniqueProblems: 0, uniqueFamilies: 0, verifiedFamilies: 0, independentDays: 0, legacyProblems: 0,
+      dueCount: 0, attempts: 0, reviews: 0, tags: emptyTags() };
+    let problemWeight = 0, problemScore = 0, problemRetention = 0;
+    for (const group of a.families.values()) {
+      const cap = Math.min(1, 1 / group.w);
+      problemWeight += group.w * cap; problemScore += group.ws * cap; problemRetention += group.retention * cap;
+    }
     const scale = a.cardWeight ? Math.min(1, MAX_CARD_EVIDENCE / a.cardWeight) : 1;
-    const weight = a.w + a.cardWeight * scale;
-    const ability = (a.ws + a.cardScore * scale + 0.5) / (weight + 1);
-    const retention = weight ? (a.retentionSum + a.cardRetention * scale) / weight : 1;
+    const weight = problemWeight + a.cardWeight * scale;
+    const ability = (problemScore + 0.5) / (problemWeight + 1);
+    const retention = weight ? (problemRetention + a.cardRetention * scale) / weight : 1;
     return { m: ability * (0.25 + 0.75 * retention), ability, retention, forgetting: 1 - retention,
-      confidence: weight / (weight + 2), uniqueProblems: a.uniqueProblems, dueCount: a.dueCount,
+      confidence: problemWeight / (problemWeight + 2), uniqueProblems: a.uniqueProblems, dueCount: a.dueCount,
+      uniqueFamilies: a.families.size, verifiedFamilies: a.verifiedFamilies.size,
+      independentDays: a.independentDays.size, legacyProblems: a.legacyProblems,
       lastPractice: a.lastPractice, attempts: a.attempts, reviews: a.reviews, tags: a.tags };
   };
   return { kp: (id: string) => finish(kp.get(id)), pattern: (id: string) => finish(pat.get(id)) };
@@ -151,10 +178,10 @@ export function priority(stars: number, m: number, paperCount: number, evidence?
 }
 
 export function masteryStatus(m: Mastery): '待测' | '需补强' | '巩固中' | '较稳固' | '需复习' {
-  if (!m.uniqueProblems && !m.reviews) return '待测';
+  if (!m.uniqueProblems) return '待测';
   if (m.ability >= 0.7 && m.forgetting >= 0.2) return '需复习';
   if (m.ability < 0.55 || m.m < 0.5) return '需补强';
-  if (m.uniqueProblems >= 3 && m.ability >= 0.8 && m.m >= 0.72 && m.retention >= 0.85) return '较稳固';
+  if (m.verifiedFamilies >= 3 && m.independentDays >= 2 && m.ability >= 0.8 && m.m >= 0.72 && m.retention >= 0.85) return '较稳固';
   return '巩固中';
 }
 

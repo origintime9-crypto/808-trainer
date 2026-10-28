@@ -7,6 +7,7 @@ import { StudyNav } from '../components/StudyNav';
 import { domains, topics, matchesCategory } from '../content/taxonomy';
 import { problemPriority } from '../engine/mastery';
 import { REFERENCE_LABELS, reference808, type ReferenceClass } from '../content/difficulty808';
+import { problemFamily } from '../content/families';
 
 const STATUS = { all: '全部', todo: '未做', wrong: '错题本', done: '已过关' } as const;
 type Status = keyof typeof STATUS;
@@ -30,6 +31,7 @@ export function PracticePage() {
   const { sched, mi, now } = useDerived();
   const q = readQuery();
   const paper = q.get('paper') ?? '';
+  const family=q.get('family')??'';
   const chapter = q.get('ch') ?? '';
   const kp = q.get('kp') ?? '';
   const pattern = q.get('pattern') ?? '';
@@ -41,6 +43,7 @@ export function PracticePage() {
   const sort = q.get('sort') ?? 'adaptive';
 
   const list = (paper ? paperProblems(paper) : problems).filter((p) => {
+    if(family&&problemFamily(p.id)!==family)return false;
     if (paper && !p.sources.some((s) => s.paper === paper)) return false;
     if (chapter && !p.kps.some((k) => String(kpById.get(k)?.chapter) === chapter)) return false;
     if (kp && !p.kps.includes(kp)) return false;
@@ -71,7 +74,7 @@ export function PracticePage() {
       const score = p.sources.find((s) => s.paper === paper)?.score ?? 0;
       const last = sched.problems.get(p.id)?.attempts.at(-1);
       if (last) {
-        estimate.got += score * SCORE_COEF[last.grade];
+        estimate.got += score * (last.score?last.score.earned/last.score.max:SCORE_COEF[last.grade]);
         estimate.done += score;
       }
     }
@@ -134,7 +137,7 @@ export function PracticePage() {
           {paperById.get(paper)?.school&&<p className="muted small">{paperById.get(paper)?.selection} 所选原题未标分值，可按单元练习或前往「模拟组卷」计分。</p>}
           {paperById.get(paper)?.school?<p>已练习 {paperProblems(paper).filter(p=>sched.problems.has(p.id)).length} / {paperProblems(paper).length} 个精选单元</p>:<>最近练习估分：<b>{Math.round(estimate.got)}</b> / 已做部分满分 {estimate.done}
           {estimate.total ? `（全卷 ${estimate.total} 分）` : ''}
-          <span className="muted small">　按最近一次自评：不会 0、部分对 30%、大部分对 70%、全对 100%</span></>}
+          <span className="muted small">　日常练习汇总会随重练变化；优先使用参考得分，否则按四档粗估。固定历史成绩请查看整卷考试记录。</span></>}
           <div className="actions"><button className="primary" onClick={() => go(`#/exam/${paper}`)}>{paperById.get(paper)?.school?'精选题顺序练习':'整卷练习'}</button>{paperById.get(paper)?.school&&<a className="button" href="#/mock">按中北模板组卷</a>}</div>
         </section>
       )}

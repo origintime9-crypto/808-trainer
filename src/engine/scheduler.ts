@@ -1,12 +1,14 @@
 import { createEmptyCard, fsrs, Rating, State, type Card as FsrsCard, type Grade as FsrsGrade } from 'ts-fsrs';
 import type { AttemptEvent, Grade, TrainerEvent } from '../types';
-import { cardById, kpById, kpPapers, problemById, realPaperCount } from '../content';
+import { cardById, kpById, kpInitialPapers as kpPapers, problemById, initialPaperCount as realPaperCount } from '../content';
 import { examEmphasis } from '../content/target808';
+import { learningEvents } from './history';
+import { examStartTimestamp } from '../content/revisionGuide';
 
 export const DAY = 86_400_000;
 
 export function daysUntil(examDate: string, now: number): number {
-  const exam = new Date(`${examDate}T09:00:00`).getTime();
+  const exam = examStartTimestamp(examDate);
   return Math.max(0, Math.ceil((exam - now) / DAY));
 }
 
@@ -53,7 +55,7 @@ export function retrievability(card: FsrsCard, now: number): number {
 
 // ts-fsrs 会强制"很熟"的间隔大于"记得"，可能越过 maximum_interval，这里再截断一次
 function clampDue(card: FsrsCard, t: number, maxDays: number, examDate: string): FsrsCard {
-  const exam = new Date(`${examDate}T09:00:00`).getTime();
+  const exam = examStartTimestamp(examDate);
   const limit = Math.min(t + maxDays * DAY, Math.max(t, exam));
   return card.due.getTime() > limit ? { ...card, due: new Date(limit), scheduled_days: Math.max(0, (limit - t) / DAY) } : card;
 }
@@ -81,14 +83,18 @@ export interface Schedule {
 }
 
 export function replay(events: TrainerEvent[], examDate: string): Schedule {
-  const sorted = [...events].sort((a, b) => a.t - b.t || (a.id < b.id ? -1 : 1));
+  const sorted = learningEvents(events);
   const cards = new Map<string, CardState>();
   const problems = new Map<string, ProblemState>();
   const notes = new Map<string, string>();
 
   // 日内重评分保留全部历史，但只以该题当天最后一次成绩更新记忆。
   const lastDailyAttempt = new Map<string, string>();
-  for (const e of sorted) if (e.kind === 'attempt') lastDailyAttempt.set(e.problemId + ':' + startOfToday(e.t), e.id);
+  const firstDailyAttempt = new Map<string, AttemptEvent>();
+  for (const e of sorted) if (e.kind === 'attempt') {
+    const key=e.problemId+':'+startOfToday(e.t);lastDailyAttempt.set(key,e.id);
+    if(!firstDailyAttempt.has(key))firstDailyAttempt.set(key,e);
+  }
 
   for (const e of sorted) {
     const cap = maxInterval(examDate, e.t);
@@ -108,12 +114,16 @@ export function replay(events: TrainerEvent[], examDate: string): Schedule {
       const attempts = prev?.attempts ?? [];
       attempts.push(e);
       const wasInMistakes = prev?.inMistakes ?? false;
-      const streak = e.grade === 3 ? (prev?.streak ?? 0) + (finalDaily ? 1 : 0) : 0;
+      const independent = e.workMode === undefined || e.workMode === 'independent' && e.hintsUsed === false;
+      const full=e.grade===3&&(!e.score||e.score.earned===e.score.max);
+      const first=firstDailyAttempt.get(e.problemId+':'+startOfToday(e.t))!;
+      const validDay=e.workMode===undefined||first.workMode==='independent'&&first.hintsUsed===false&&first.grade===3&&(!first.score||first.score.earned===first.score.max);
+      const streak = full ? (prev?.streak ?? 0) + (finalDaily && independent && validDay ? 1 : 0) : 0;
       let inMistakes = wasInMistakes;
-      if (e.grade < 3) inMistakes = true;
+      if (!full || !independent) inMistakes = true;
       else if (wasInMistakes && streak >= 2) inMistakes = false;
       // 首次纠正还需隔日确认；不能用Easy长间隔把未过关错题推迟数天。
-      const retryDays = e.grade <= 1 || (e.grade === 3 && inMistakes) ? 1 : cap;
+      const retryDays = !independent || e.grade <= 1 || (e.grade === 3 && inMistakes) ? 1 : cap;
       const next = finalDaily ? clampDue(f.next(base, new Date(e.t), GRADE_TO_RATING[e.grade]).card, e.t, retryDays, examDate) : base;
       problems.set(e.problemId, { card: next, attempts, inMistakes, mastered: !inMistakes, streak });
     } else if (e.kind === 'note') {

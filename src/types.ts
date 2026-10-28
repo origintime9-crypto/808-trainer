@@ -35,6 +35,8 @@ export interface Source {
   paper: string;
   no: string;
   score?: number;
+  /** 原始大题／共享模型，可覆盖由题号推导的保守分组。 */
+  family?: string;
 }
 
 export interface Problem {
@@ -53,6 +55,7 @@ export interface Problem {
   note?: string;
   /** 人工评估的完整作答用时，用于模拟卷匹配计算量。 */
   minutes?: number;
+  family?: string;
 }
 
 export interface Card {
@@ -99,6 +102,11 @@ export interface AttemptEvent extends EventBase {
   ai?: AiResult;
   recognition?: RecognitionReview;
   examId?: string;
+  /** 缺省表示旧记录，不能补认为闭卷独立作答。 */
+  workMode?: 'independent' | 'reference' | 'correction';
+  hintsUsed?: boolean;
+  score?: { earned: number; max: number; basis: 'reference'; steps?: { id: string; earned: number; max: number }[] };
+  skillErrors?: string[];
 }
 
 export interface ExamItem {
@@ -107,12 +115,29 @@ export interface ExamItem {
   score: number;
   referenceId: string;
   match: 'pattern' | 'knowledge' | 'original';
+  seenBefore?: boolean;
+}
+
+export interface ExamAnswer {
+  problemId: string;
+  status: 'draft' | 'answered' | 'skipped';
+  text: string;
+  choice?: number;
+  sec: number;
+}
+
+export interface ExamSnapshotRow {
+  problemId: string;
+  attempt?: AttemptEvent;
+  answer?: ExamAnswer;
 }
 
 export type ExamEvent = EventBase & { kind: 'exam'; examId: string } & (
-  { action: 'start'; title: string; template: string; minutes: number; items: ExamItem[] }
+  { action: 'start'; title: string; template: string; minutes: number; items: ExamItem[]; mode?: 'strict' | 'practice'; origin?: 'mock' | 'paper' }
   | { action: 'navigate'; current: number }
-  | { action: 'finish' }
+  | { action: 'answer'; answer: ExamAnswer }
+  | { action: 'finish'; reason?: 'submitted' | 'timeout'; endedAt?: number; snapshot?: ExamSnapshotRow[] }
+  | { action: 'grade'; problemId: string; attempt: AttemptEvent }
 );
 
 export interface ReviewEvent extends EventBase {
@@ -136,4 +161,8 @@ export interface Settings {
   syncKey: string;
   aiEnabled: boolean;
   lastExport?: number;
+  studyStage?: 'foundation' | 'strengthening' | 'sprint';
+  dailyMinutes?: number;
+  reservedPapers?: string[];
+  planConfigured?: boolean;
 }

@@ -34,6 +34,7 @@ test('808难度筛选和模拟预览约束实际题目，375px不撑宽',async({
  expect(links.every(id=>reference808(id).category==='near')).toBe(true);
  await mobile(page);
  await page.goto('./#/mock');
+ await page.getByLabel('训练模式').selectOption('practice');
  for(const name of ['A','B','C']){
   await page.getByRole('button',{name:'选择精选模拟卷 '+name,exact:true}).click();
   await expect(page.locator('.mock-preview>li')).toHaveCount(17);
@@ -81,6 +82,6 @@ test('原卷17题正确归属自己的题位，难度验证守恒并显示参考
  await evidence.getByText('查看尚未验证的题位',{exact:true}).click();
  await expect(evidence).toContainText('所有题位都有相近题记录');
  await expect(evidence.locator('.rows a')).toHaveCount(0);
- await expect(evidence).toContainText('日内改分不增加验证');
+ await expect(evidence).toContainText('日内订正不增加验证');
  await mobile(page);expect(proof.errors).toEqual([]);expect(proof.writes).toEqual([]);
 });

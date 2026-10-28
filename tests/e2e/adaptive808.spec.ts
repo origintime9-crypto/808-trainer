@@ -45,6 +45,7 @@ test('808水平未测不冒充50%，补强测评保留17题150分并保存固定
   await page.screenshot({path:'work/screenshots/adaptive808-readiness-mobile.png'});
   await page.getByRole('link',{name:'做一套 808 补强测评卷',exact:true}).click();
   await expect(page.getByLabel('组卷目标')).toHaveValue('adaptive');
+  await page.getByLabel('训练模式').selectOption('practice');
   await expect(page.locator('.mock-preview>li')).toHaveCount(17);
   await expect(page.locator('main')).toContainText('150分');
   await page.getByLabel('真题模板').selectOption('zt2017');
@@ -75,8 +76,8 @@ test('真实弱项比熟练项多推题，重新作答即时改变知识点掌�
     await w.clock.install({time:new Date(NOW)});await s.clock.install({time:new Date(NOW)});
     await w.goto('./#/knowledge');await s.goto('./#/knowledge');
     await expect(point(w)).toContainText('掌握度 10%');await expect(point(w)).toContainText('需补强');
-    await expect(point(s)).toContainText('掌握度 90%');await expect(point(s)).toContainText('较稳固');
-    await expect(point(s)).toContainText('4 道不同题验证');
+    await expect(point(s)).toContainText('掌握度 90%');await expect(point(s)).toContainText('巩固中');
+    await expect(point(s)).toContainText('4 个原始大题');
     const weakIds=await recommendations(w),strongIds=await recommendations(s);
     const count=(ids:string[])=>ids.filter(id=>problems.find(p=>p.id===id)?.kps.includes('1.8')).length;
     expect(count(weakIds)).toBeGreaterThanOrEqual(2);expect(count(weakIds)).toBeGreaterThan(count(strongIds));
@@ -86,8 +87,8 @@ test('真实弱项比熟练项多推题，重新作答即时改变知识点掌�
     await w.getByRole('button',{name:'全对',exact:true}).click();
     await w.getByRole('button',{name:'记录',exact:true}).click();
     await expect(w.locator('.result')).toContainText('明天');
-    await w.goto('./#/knowledge');await expect(point(w)).toContainText('掌握度 30%');
-    await expect(point(w)).toContainText('4 道不同题验证');
+    await w.goto('./#/knowledge');await expect(point(w)).toContainText('掌握度 10%');
+    await expect(point(w)).toContainText('4 个原始大题');
     await point(w).screenshot({path:'work/screenshots/adaptive808-updated-point-mobile.png'});
     await w.goto('./#/readiness');await expect(w.locator('.readiness-stats>div>b').nth(2)).not.toHaveText('待测');
     await expect(w.locator('.card-head .badge').first()).toHaveText('仍需补测');

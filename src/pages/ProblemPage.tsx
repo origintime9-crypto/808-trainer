@@ -3,23 +3,28 @@ import { buildExternalGradePrompt, copyText } from '../ai/prompt';
 import { Md } from '../components/Markdown';
 import { AiGradePanel } from '../components/AiGradePanel';
 import { NoteEditor } from '../components/NoteEditor';
+import { ReferenceScoreEditor } from '../components/ReferenceScoreEditor';
+import { skillErrorLabel, trainingForProblem } from '../content/training';
+import { familyMembers, problemFamily } from '../content/families';
+import { timeEstimate } from '../engine/timing';
 import { problemById, problems } from '../content';
 import { suggestedMinutes } from '../engine/queue';
 import { dateLabel, go, kpLabel, patternLabel, relDay, sourceLabel, stars } from '../format';
 import { kpById } from '../content';
-import { app, getProblemList, useDerived } from '../state';
+import { app, getProblemList, useDerived, useEvents } from '../state';
 import { GRADE_LABELS, MISTAKE_TAGS, type AiResult, type AttemptEvent, type Grade, type MistakeTag, type RecognitionReview } from '../types';
 
 function mmss(sec: number): string {
   return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
 }
 
-export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; onNavigate?: (id: string) => void; onComplete?: () => void; exam?: { id: string; score: number; attempt?: AttemptEvent } }) {
+export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; onNavigate?: (id: string) => void; onComplete?: () => void; exam?: { id: string; score: number; attempt?: AttemptEvent; locked?: boolean; assessmentSec?: number; choice?:number; onRecord?: (attempt: Omit<AttemptEvent,'id'|'t'>) => void } }) {
   const p = problemById.get(id);
   const { sched, now } = useDerived();
-  const [shown, setShown] = useState(!!exam?.attempt);
-  const [chosen, setChosen] = useState<number | null>(null);
-  const [grade, setGrade] = useState<Grade | null>(exam?.attempt?.grade ?? null);
+  const events=useEvents();
+  const [shown, setShown] = useState(!!exam?.attempt || !!exam?.onRecord);
+  const [chosen, setChosen] = useState<number | null>(exam?.choice??null);
+  const [grade, setGrade] = useState<Grade | null>(exam?.attempt?.grade ?? (exam?.choice!==undefined?(exam.choice===p?.answerKey?3:0):null));
   const [tags, setTags] = useState<MistakeTag[]>(exam?.attempt?.tags ?? []);
   const [submitted, setSubmitted] = useState(!!exam?.attempt);
   const [copied, setCopied] = useState('');
@@ -27,6 +32,10 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
   const [recognition, setRecognition] = useState<RecognitionReview | undefined>(exam?.attempt?.recognition);
   const [aiRevision, setAiRevision] = useState(0);
   const [saveError, setSaveError] = useState('');
+  const [workMode, setWorkMode] = useState<NonNullable<AttemptEvent['workMode']>>(exam?.attempt?.workMode ?? 'independent');
+  const [hintsUsed, setHintsUsed] = useState(exam?.attempt?.hintsUsed ?? false);
+  const [score,setScore]=useState<AttemptEvent['score']>(exam?.attempt?.score),[scoreValid,setScoreValid]=useState(true);
+  const [skillErrors,setSkillErrors]=useState<string[]>(exam?.attempt?.skillErrors??[]),[stepErrors,setStepErrors]=useState<string[]>([]);
   const startRef = useRef(Date.now()-(exam?.attempt?.sec??0)*1000);
   const [elapsed, setElapsed] = useState(exam?.attempt?.sec??0);
   const stopRef = useRef<number | null>(exam?.attempt ? Date.now() : null);
@@ -47,7 +56,10 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
   const prevId = idx > 0 ? list[idx - 1] : undefined;
   const nextId = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : undefined;
   const similar = p.pattern ? problems.filter((x) => x.pattern === p.pattern && x.id !== p.id) : [];
-  const limit = exam ? Math.round(exam.score*1.2) : suggestedMinutes(id);
+  const estimate=timeEstimate(id,events,now);
+  const limit = exam&&exam.score>0 ? Math.round(exam.score*1.2) : suggestedMinutes(id,events,now);
+  const fullScore=exam?exam.score:p.sources.find(s=>s.score!==undefined)?.score;
+  const trainings=trainingForProblem(p),family=familyMembers(id);
 
   const reveal = () => {
     if (stopRef.current === null) stopRef.current = Date.now();
@@ -62,14 +74,18 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
   };
 
   const submit = () => {
-    if (grade === null || (ai && !recognition)) return;
-    const sec = Math.max(0, Math.round(((stopRef.current ?? Date.now()) - startRef.current) / 1000));
-    try { app.record({ kind: 'attempt', problemId: id, grade, tags: grade < 3 ? tags : [], sec, ...(ai ? { ai } : {}), ...(recognition ? { recognition } : {}), ...(exam ? {examId:exam.id} : {}) }); setSubmitted(true); }
+    if (grade === null || !scoreValid || (ai && !recognition)) return;
+    const sec = exam?.assessmentSec ?? Math.max(0, Math.round(((stopRef.current ?? Date.now()) - startRef.current) / 1000));
+    const attempt:Omit<AttemptEvent,'id'|'t'>={ kind: 'attempt', problemId: id, grade, tags: grade < 3 ? tags : [], sec, workMode, hintsUsed,
+      ...(score?{score}:{}),skillErrors:[...new Set([...skillErrors,...stepErrors])],
+      ...(ai ? { ai } : {}), ...(recognition ? { recognition } : {}), ...(exam ? {examId:exam.id} : {}) };
+    try { if(exam?.onRecord)exam.onRecord(attempt);else app.record(attempt);setSubmitted(true); }
     catch { setSaveError('浏览器未能保存记录，请先导出备份并检查存储空间。'); }
   };
   const navigate = (target: string) => onNavigate ? onNavigate(target) : go(`#/p/${target}`);
 
   const copyPrompt = async () => {
+    if (!shown) { setHintsUsed(true); setWorkMode('reference'); }
     const ok = await copyText(buildExternalGradePrompt(p, exam?.score));
     setCopied(ok ? '已复制。粘贴到 Gemini 或 ChatGPT 并附上作答照片，再把返回的 JSON 粘贴到本页批改区。' : '复制失败，请检查浏览器权限。');
   };
@@ -86,21 +102,29 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
       <section className="card">
         <div className="meta">
           <span className="source">{sourceLabel(p)}</span>
-          <span className="badge">{p.type}</span>
+          {(shown || workMode !== 'independent' || hintsUsed) && <span className="badge">{p.type}</span>}
           {exam && <span className="badge">本卷 {exam.score} 分</span>}
           {p.verified === 'corrected' && <span className="badge warn">资料答案有误，已修正</span>}
           {p.verified === 'uncertain' && <span className="badge warn">题干/答案存疑</span>}
           {st?.inMistakes && <span className="badge bad">错题本中</span>}
           {st?.mastered && <span className="badge good">已过关</span>}
         </div>
-        <div className="chips">
+        {(shown || workMode !== 'independent' || hintsUsed) && <div className="chips">
           {p.kps.map((k) => (
             <a key={k} className="chip" href={`#/practice?kp=${k}`} title={kpById.get(k)?.scope}>
               {kpLabel(k)} <span className="stars">{stars(kpById.get(k)?.stars ?? 1)}</span>
             </a>
           ))}
           {p.pattern && <a className="chip pattern" href={`#/practice?pattern=${p.pattern}`}>题型：{patternLabel(p.pattern)}</a>}
-        </div>
+        </div>}
+
+        {!shown && <div className="work-mode"><label>本次作答方式<select aria-label="本次作答方式" value={workMode} onChange={e => {
+          const mode = e.target.value as NonNullable<AttemptEvent['workMode']>;
+          setWorkMode(mode); if (mode !== 'independent') setHintsUsed(true);
+        }}><option value="independent">独立作答</option><option value="reference">查资料完成</option><option value="correction">看解析后订正</option></select></label>
+          <p className="muted small">独立作答时隐藏考点、方法与历史笔记。当天首次作答用于能力判断；订正只安排复习。{hintsUsed && '本次已使用提示。'}</p>
+          {!hintsUsed && workMode === 'independent' && <button className="ghost small" onClick={() => { setHintsUsed(true); setWorkMode('reference'); }}>查看提示与笔记</button>}
+        </div>}
 
         <Md>{p.stem}</Md>
         {p.figures?.map((f) => {
@@ -125,19 +149,20 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
 
         <div className="timer">
           <span className={elapsed > limit * 60 ? 'over' : ''}>用时 {mmss(elapsed)}</span>
-          <span className="muted">建议 {limit} 分钟</span>
+          <span className="muted">建议 {limit} 分钟 · {exam?'卷面配时':estimate.basis}{estimate.calibrated&&`（${estimate.samples}次）`}</span>
         </div>
 
         {!shown && (
           <div className="actions">
-            <button className="primary" onClick={reveal}>{p.options ? '不确定，直接看答案' : '我做完了，看答案'}</button>
+            <button className="primary" onClick={()=>{if(p.options){setWorkMode('correction');setHintsUsed(true);}reveal();}}>{p.options ? '不确定，直接看答案' : '我做完了，看答案'}</button>
+            {!p.options && <button onClick={() => { setWorkMode('correction'); setHintsUsed(true); reveal(); }}>还不会，先看解析</button>}
             <button onClick={copyPrompt}>复制批改提示词</button>
           </div>
         )}
         {copied && <p className="hint">{copied}</p>}
       </section>
 
-      {!p.options && <AiGradePanel key={`${id}-${aiRevision}`} problem={p} maxScore={exam?.score} disabled={submitted} onResult={r => { setAi(r ?? undefined); setRecognition(undefined); setGrade(r?.grade ?? null); setTags(r?.tags ?? []); if (r) reveal(); }} onRecognition={r => { setRecognition(r ?? undefined); if (!r || r.status !== 'checked') { setGrade(null); setTags([]); } }} />}
+      {!p.options && <AiGradePanel key={`${id}-${aiRevision}`} problem={p} maxScore={exam?.score} disabled={submitted} onResult={r => { setAi(r ?? undefined); setRecognition(undefined); setGrade(r?.grade ?? null); setTags(r?.tags ?? []); if (r) { if (!shown) { setWorkMode('reference'); setHintsUsed(true); } reveal(); } }} onRecognition={r => { setRecognition(r ?? undefined); if (!r || r.status !== 'checked') { setGrade(null); setTags([]); } }} />}
 
       {shown && (
         <section className="card answer">
@@ -155,6 +180,8 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
       {shown && !submitted && (
         <section className="card grade">
           <h3>{p.options ? '确认结果' : '对照答案，给自己打分'}</h3>
+          {!p.options&&fullScore!==undefined&&fullScore>0&&<ReferenceScoreEditor problemId={id} max={fullScore} onChange={(value,valid,lost)=>{setScore(value);setScoreValid(valid);setStepErrors(lost);}}/>}
+          <p className="muted small">记忆/复习评级</p>
           <div className="grade-buttons">
             {GRADE_LABELS.map((label, g) => (
               <button key={label} className={`grade g${g} ${grade === g ? 'on' : ''}`} onClick={() => setGrade(g as Grade)}>
@@ -180,7 +207,9 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
             </>
           )}
           {ai && !recognition && <p className="muted small">请先在批改区选择转写复核情况。</p>}
-          <button className="primary" disabled={grade === null || !!(ai && !recognition)} onClick={submit}>记录</button>
+          {(grade!==null&&grade<3||score&&score.earned<score.max)&&<div className="skill-errors"><p className="muted">具体失分步骤（可多选）</p><div className="tag-buttons">{trainings.flatMap(t=>t.errors).map(s=><label className="tag" key={s.id}><input type="checkbox" checked={skillErrors.includes(s.id)||stepErrors.includes(s.id)} onChange={e=>setSkillErrors(e.target.checked?[...new Set([...skillErrors,s.id])]:skillErrors.filter(id=>id!==s.id))}/>{s.label}</label>)}</div></div>}
+          {!scoreValid&&<p className="hint">请核对参考得分，分步评分需逐项填写且不能超过各项满分。</p>}
+          <button className="primary" disabled={grade === null || !scoreValid || !!(ai && !recognition)} onClick={submit}>记录</button>
           {saveError && <p className="hint" role="alert">{saveError}</p>}
         </section>
       )}
@@ -199,13 +228,13 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
             </p>
           )}
           <div className="actions">
-            {exam && <button onClick={()=>{setSubmitted(false);setAi(undefined);setRecognition(undefined);setAiRevision(n=>n+1);}}>重新评分</button>}
+            {exam && !exam.locked && <button onClick={()=>{setSubmitted(false);setAi(undefined);setRecognition(undefined);setScore(undefined);setScoreValid(true);setSkillErrors([]);setStepErrors([]);setAiRevision(n=>n+1);}}>重新评分</button>}
             {nextId ? <button className="primary" onClick={() => navigate(nextId)}>下一题</button> : onComplete ? <button className="primary" onClick={onComplete}>查看整卷结果</button> : <button className="primary" onClick={() => go('#/today')}>回到今日</button>}
           </div>
         </section>
       )}
 
-      <section className="card">
+      {(shown||workMode!=='independent'||hintsUsed)&&<section className="card">
         <h3>我的笔记</h3>
         <NoteEditor key={id} problemId={id} note={note} onError={setSaveError} />
         {saveError && <p className="hint" role="alert">{saveError}</p>}
@@ -216,6 +245,9 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
               {[...st.attempts].reverse().map((a) => (
                 <li key={a.id}>
                   {dateLabel(a.t)} · <span className={`g${a.grade}`}>{GRADE_LABELS[a.grade]}</span> · {mmss(a.sec)}
+                  {' · '}{a.workMode === 'independent' && !a.hintsUsed ? '独立作答' : a.workMode === 'correction' ? '订正' : a.workMode === 'reference' || a.hintsUsed ? '使用资料/提示' : '旧记录：辅助条件未标注'}
+                  {a.score&&` · 参考得分 ${a.score.earned}/${a.score.max}`}
+                  {!!a.skillErrors?.length&&` · ${a.skillErrors.map(skillErrorLabel).join('、')}`}
                   {a.tags.length > 0 && ` · ${a.tags.join('、')}`}
                   {a.ai && <details><summary>AI 点评 · {a.ai.model}</summary><Md>{a.ai.transcript}</Md><Md>{a.ai.feedback}</Md><p className="muted small">转写复核：{a.recognition?.status === 'checked' ? '转写正确' : a.recognition?.status === 'corrected' ? '已修正' : a.recognition?.status === 'unreadable' ? '照片看不清' : '未标注'}</p>{a.recognition?.status === 'corrected' && <><h3>修正后的转写</h3><Md preserveBadMath>{a.recognition.transcript}</Md></>}</details>}
                 </li>
@@ -235,7 +267,9 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
             </ul>
           </>
         )}
-      </section>
+        {family.length>1&&<p><a href={`#/practice?family=${encodeURIComponent(problemFamily(id))}`}>连练同一原始大题/共享来源的 {family.length} 个单元 →</a></p>}
+        {shown&&<div className="actions">{trainings.map(t=><a className="button small" key={t.id} href={`#/train/${t.id}?from=${id}`}>{t.title}专项训练 →</a>)}</div>}
+      </section>}
     </div>
   );
 }

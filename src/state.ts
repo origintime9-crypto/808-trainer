@@ -3,6 +3,7 @@ import { computeMastery } from './engine/mastery';
 import { replay } from './engine/scheduler';
 import { loadEvents, loadSettings, mergeEvents, newId, saveEvents, saveSettings } from './engine/store';
 import type { Settings, TrainerEvent } from './types';
+import { readEvent } from './engine/events';
 
 type DistOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
 export type NewEvent = DistOmit<TrainerEvent, 'id' | 't'>;
@@ -19,8 +20,9 @@ export const app = {
   },
   events: () => events,
   settings: () => settings,
-  record(e: NewEvent): TrainerEvent {
-    const full = { ...e, id: newId(), t: Date.now() } as TrainerEvent;
+  record(e: NewEvent, occurredAt = Date.now()): TrainerEvent {
+    const full = readEvent({ ...e, id: newId(), t: Math.min(occurredAt, Date.now()) });
+    if (!full) throw new Error('记录字段无效，未写入本机进度。');
     events = saveEvents([...events, full]);
     emit();
     return full;

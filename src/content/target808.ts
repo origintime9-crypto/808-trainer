@@ -1,4 +1,7 @@
-import { knowledge, kpPapers, paperById, problemById, problems, realPaperCount } from './index';
+import { knowledge, kpInitialPapers as kpPapers, paperById, problemById, problems, initialPaperCount as realPaperCount } from './index';
+
+export const target808Basis = { year: 2027, officialSyllabusVerified: false,
+  label: '2027复习依据：经验重点圈画 + 2026初试原卷。已找到2027官方目录页，科目附件及详细范围尚未完成核验。' };
 
 /** 取已有完整中北原卷为结构基准，不能把外校808代号当作中北大纲。 */
 export const TARGET_808_PAPER = 'zt2026';
@@ -26,7 +29,7 @@ export function importance808(id: string): number {
   return (point.stars / 5) ** 1.4 * (1 + (kpPapers.get(id)?.size ?? 0) / Math.max(1, realPaperCount)) * examEmphasis(id);
 }
 
-/** 正式808推荐排除状态变量拓展；仍可从题库手动练习。 */
+/** 当前估计范围默认排除状态变量拓展；2027官方范围待核验，仍可手动练习。 */
 export function fits808(problemId: string): boolean {
   const p = problemById.get(problemId);
   return !!p && p.verified !== 'uncertain' && p.kps.length > 0 && p.kps.every(k => !k.startsWith('8.'));

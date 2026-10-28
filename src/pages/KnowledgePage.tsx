@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { knowledge, kpPapers, problems } from '../content';
+import { knowledge, problems } from '../content';
+import { sourceEvidenceLabel } from '../content/sourceEvidence';
 import { domains, topics, matchesCategory } from '../content/taxonomy';
 import { StudyNav } from '../components/StudyNav';
 import { stars } from '../format';
 import { useDerived } from '../state';
 import { masteryStatus } from '../engine/mastery';
+import { supplementalKnowledge } from '../content/revisionGuide';
 
 export function KnowledgePage() {
   const {sched,mi}=useDerived();
@@ -16,7 +18,7 @@ export function KnowledgePage() {
     return {all:list.length,wrong:list.filter(p=>sched.problems.get(p.id)?.inMistakes).length,todo:list.filter(p=>!sched.problems.has(p.id)).length};
   };
   return <div><StudyNav active="knowledge"/>
-    <section className="card"><h2>知识点分类</h2><p className="muted small">领域 → 专题 → 知识点。综合题可属于多个知识点，每个专题的题数按题目去重。星级沿用中北重点表，真题频次只统计中北卷。</p>
+    <section className="card"><h2>知识点分类</h2><p className="muted small">领域 → 专题 → 知识点。综合题可属于多个知识点，每个专题的题数按题目去重。星级沿用经验重点圈画，初试、复试与课程覆盖分别统计。</p><p className="small"><a href="#/guide">查看复习依据、重点分歧与补查入口 →</a></p>
       <div className="knowledge-tools"><label>搜索考点<input type="search" value={search} placeholder="例如：零极点、帕塞瓦尔、初值" onChange={e=>setSearch(e.target.value)}/></label><label className="check-label"><input type="checkbox" checked={focus} onChange={e=>setFocus(e.target.checked)}/>只看 3–5 星重点</label></div>
       <div className="chips category-chips"><button className={!domain?'primary':''} onClick={()=>setDomain('')}>全部领域</button>{domains.map(d=><button key={d.id} className={domain===d.id?'primary':''} onClick={()=>setDomain(d.id)}>{d.title}</button>)}</div>
     </section>
@@ -27,8 +29,8 @@ export function KnowledgePage() {
           const total=stats(t.kps);
           return <div className="knowledge-topic" key={t.id}><div className="card-head"><h3>{t.title}</h3><a className="small" href={`#/practice?domain=${d.id}&topic=${t.id}`}>专题 {total.all} 题 →</a></div>
             <div className="knowledge-grid">{t.knowledge.map(k=> {
-              const s=stats([k.id]),m=mi.kp(k.id),tested=m.attempts+m.reviews>0;
-              return <article className="knowledge-node" key={k.id}><a className="knowledge-title" href={`#/practice?kp=${k.id}`}>{k.id} {k.title}</a><span className="stars" aria-label={`${k.stars}星`}>{stars(k.stars)}</span><p className="muted small">{k.scope}</p><div className="small">{s.all} 题 · {s.todo} 未做 · 中北真题 {kpPapers.get(k.id)?.size??0} 套</div><div className="knowledge-actions"><span className="small muted">{tested?'掌握度 '+Math.round(m.m*100)+'% · '+masteryStatus(m):'尚未测评'}</span>{s.wrong>0&&<a className="badge bad" href={`#/practice?kp=${k.id}&status=wrong`}>错题 {s.wrong}</a>}<a className="small" href={`#/practice?kp=${k.id}&status=todo`}>练新题 →</a></div>{tested&&<p className="small muted">记忆保持估计 {Math.round(m.retention*100)}% · {m.uniqueProblems} 道不同题验证</p>}</article>;
+              const s=stats([k.id]),m=mi.kp(k.id),tested=m.uniqueProblems>0;
+              return <article className="knowledge-node" key={k.id}><a className="knowledge-title" href={`#/practice?kp=${k.id}`}>{k.id} {k.title}</a><span className="stars" aria-label={`${k.stars}星`}>{stars(k.stars)}</span><p className="muted small">{k.scope}</p>{supplementalKnowledge.has(k.id)&&<p className="small"><a href="#/guide">{supplementalKnowledge.get(k.id)} →</a></p>}<div className="small">{s.all} 题 · {s.todo} 未做</div><p className="muted small">{sourceEvidenceLabel(k.id)}</p><div className="knowledge-actions"><span className="small muted">{tested?'掌握度 '+Math.round(m.m*100)+'% · '+masteryStatus(m):'尚未测评'}</span>{s.wrong>0&&<a className="badge bad" href={`#/practice?kp=${k.id}&status=wrong`}>错题 {s.wrong}</a>}<a className="small" href={`#/practice?kp=${k.id}&status=todo`}>练新题 →</a></div>{tested&&<p className="small muted">记忆保持估计 {Math.round(m.retention*100)}% · {m.uniqueFamilies} 个原始大题 · 独立全对 {m.verifiedFamilies} 个家族/{m.independentDays} 日{m.legacyProblems>0&&' · 含辅助条件未标注旧记录'}</p>}</article>;
             })}</div>
           </div>;
         })}</section>;
