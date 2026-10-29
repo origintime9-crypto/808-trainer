@@ -1,15 +1,17 @@
-import { useRef, useState } from 'react';
-import { problemById } from '../content';
+import { useProblemDetail } from '../content/details';
+import { Suspense, useRef, useState } from 'react';
+import { problemById } from '../content/catalog';
 import { problemFamily } from '../content/families';
 import { skillById, skillTrainings, type SkillTraining } from '../content/training';
 import { trainingCandidates } from '../engine/training';
 import { Md } from '../components/Markdown';
 import { StudyNav } from '../components/StudyNav';
 import { app, useEvents, useSettings, useProblemExposure } from '../state';
-import { GRADE_LABELS, type Grade, type Problem } from '../types';
+import { GRADE_LABELS, type Grade, type ProblemInfo } from '../types';
 import { go } from '../format';
 
-function Exercise({problem:p,skill,next,onNext}:{problem:Problem;skill:SkillTraining;next?:string;onNext:()=>void}) {
+function Exercise({problem:info,skill,next,onNext}:{problem:ProblemInfo;skill:SkillTraining;next?:string;onNext:()=>void}) {
+  const p=useProblemDetail(info.id)!;
   const exposureError=useProblemExposure(p.id);
   const [answers,setAnswers]=useState<Record<string,string>>({}),[hint,setHint]=useState(false),[solution,setSolution]=useState(false);
   const [grade,setGrade]=useState<Grade|null>(null),[errors,setErrors]=useState<string[]>([]),[saved,setSaved]=useState(false),[error,setError]=useState('');
@@ -46,6 +48,6 @@ export function TrainingPage({id}:{id:string}) {
   const next=current?candidates.find(p=>problemFamily(p.id)!==problemFamily(current.id)):undefined;
   if(!skill)return <section className="card">专项训练不存在。<a href="#/readiness">返回水平页</a></section>;
   return <div><StudyNav active="readiness"/><section className="card"><h1>{skill.title}专项训练</h1><p className="muted">先写关键条件，再逐步查看提示。训练记录用于补弱与安排复习；独立能力需用另一题验证。</p><div className="chips">{skillTrainings.map(s=><a className="chip" href={`#/train/${s.id}`} key={s.id}>{s.title}</a>)}</div></section>
-    {current?<Exercise key={current.id} problem={current} skill={skill} next={next?.id} onNext={()=>next&&setSelected(next.id)}/>:<section className="card">当前保留卷及家族筛选下没有合适题目。可在设置中调整保留卷，或选择其他专项。</section>}
+    {current?<Suspense fallback={<section className="card">正在载入题目…</section>}><Exercise key={current.id} problem={current} skill={skill} next={next?.id} onNext={()=>next&&setSelected(next.id)}/></Suspense>:<section className="card">当前保留卷及家族筛选下没有合适题目。可在设置中调整保留卷，或选择其他专项。</section>}
   </div>;
 }

@@ -1,6 +1,7 @@
-import { problemById } from './index';
+import { problemById } from './catalog';
 import { fits808, TARGET_808_PAPER, target808Units } from './target808';
-import type { Problem } from '../types';
+import { estimateDemand } from './demand';
+import type { Problem, ProblemInfo } from '../types';
 
 export type DemandLevel = 1 | 2 | 3 | 4;
 export type ReferenceClass = 'near' | 'foundation' | 'stretch' | 'supplement' | 'uncertain' | 'outside';
@@ -13,16 +14,9 @@ export interface Demand {
   minutes: number;
   basis: '原卷参照' | '人工用时' | '规则估计';
 }
-/** 按2026实际题面区分单步、常规和综合；分值只用于原卷的时间预算。 */
-const referenceLevels: Record<string, DemandLevel> = {
-  'zt2026-1-1': 1, 'zt2026-1-2': 1, 'zt2026-2-1': 2, 'zt2026-2-2': 2,
-  'zt2026-3-1': 2, 'zt2026-3-2': 2, 'zt2026-3-3': 2,
-  'zt2026-4-1': 1, 'zt2026-4-2': 1, 'zt2026-4-3': 1,
-  'zt2026-5-1': 1, 'zt2026-5-2': 2,
-  'zt2026-6': 3, 'zt2026-7': 3, 'zt2026-8': 2, 'zt2026-9': 3, 'zt2026-10': 3,
-};
-const basic = new Set(['delta-sift', 'ft-basic', 'ft-property', 'fourier-series', 'concept']);
-const integrated = new Set(['full-response-decomp', 'hz-roc-all', 'zp-h0']);
+export function problemDemand(p: Problem | ProblemInfo): Demand {
+  return (p as ProblemInfo).demand ?? estimateDemand(p as Problem);
+}
 const methods: Record<string, string> = {
   'delta-sift': 'delta', 'sys-prop': 'properties', waveform: 'waveform', period: 'period',
   'conv-integral': 'continuous-convolution', 'conv-sum': 'discrete-convolution',
@@ -36,27 +30,11 @@ const methods: Record<string, string> = {
   'diff-eq-solve': 'initial-response', routh: 'extension', 'state-space': 'extension',
   concept: 'concept', 'inverse-system': 'inverse', correlation: 'correlation',
 };
-export function problemDemand(p: Problem): Demand {
-  const anchorLevel = referenceLevels[p.id];
-  const originalScore = p.sources.find(s => s.paper === TARGET_808_PAPER)?.score;
-  if (anchorLevel && originalScore) return { level: anchorLevel, minutes: originalScore * 1.2, basis: '原卷参照' };
-  let level: DemandLevel = p.kps.some(k => k.startsWith('8.')) || p.pattern === 'routh' ? 4
-    : integrated.has(p.pattern ?? '') ? 3 : basic.has(p.pattern ?? '') ? 1 : 2;
-  const parts = (p.stem.match(/(?:^|\n)\s*[（(][1-9][)）]/g) ?? []).length;
-  // 级数成对相位、复合性质以及高阶求导不能按一条基础变换对估算。
-  if (parts >= 3 || /三次|二阶分布导数|二阶导数|三阶|四阶|三次谐波/.test(p.stem)) level = Math.max(level, 3) as DemandLevel;
-  else if (parts >= 2 || p.kps.length >= 3 || /双边.*(?:谱|系数)|级数系数|f\^2|平方.*sin/.test(p.stem)) level = Math.max(level, 2) as DemandLevel;
-  if (p.minutes && p.minutes > 30) level = 4;
-  else if (p.minutes && p.minutes > 14) level = Math.max(level, 3) as DemandLevel;
-  const estimated = p.type === '填空' || p.type === '选择' ? 4
-    : level === 1 ? 6 : level === 2 ? Math.max(8, parts * 5) : level === 3 ? Math.max(15, parts * 6) : 30;
-  return { level, minutes: p.minutes ?? estimated, basis: p.minutes ? '人工用时' : '规则估计' };
-}
-const discrete = (p: Problem) => p.kps.some(k => /^[67]\./.test(k));
-const compatibleType = (a: Problem, p: Problem, shortAnswer: boolean) => a.type === p.type ||
+const discrete = (p: ProblemInfo) => p.kps.some(k => /^[67]\./.test(k));
+const compatibleType = (a: ProblemInfo, p: ProblemInfo, shortAnswer: boolean) => a.type === p.type ||
   shortAnswer && a.type === '计算' && (p.type === '填空' || p.type === '选择');
 /** 同知识点还不够：必须方法相关、连续/离散一致，且综合程度和作答量接近。 */
-export function compareDemand(anchor: Problem, p: Problem, shortAnswer = false) {
+export function compareDemand(anchor: ProblemInfo, p: ProblemInfo, shortAnswer = false) {
   const a = problemDemand(anchor), b = problemDemand(p);
   const sameMethod = !!anchor.pattern && methods[anchor.pattern] === methods[p.pattern ?? ''] && !!methods[anchor.pattern];
   const overlap = p.kps.filter(k => anchor.kps.includes(k)).length;

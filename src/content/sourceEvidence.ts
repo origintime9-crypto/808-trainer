@@ -1,4 +1,4 @@
-import { initialPaperCount, kpCoursePapers, kpInitialPapers, kpInterviewPapers, paperById, patternCoursePapers, patternInitialPapers, patternInterviewPapers } from './index';
+import { initialPaperCount, kpCoursePapers, kpInitialPapers, kpInterviewPapers, paperById, patternCoursePapers, patternInitialPapers, patternInterviewPapers } from './catalog';
 
 export function sourceEvidence(id: string, kind: 'kp' | 'pattern' = 'kp') {
   const initial = (kind === 'kp' ? kpInitialPapers : patternInitialPapers).get(id) ?? new Set<string>();

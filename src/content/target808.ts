@@ -1,4 +1,4 @@
-import { knowledge, kpInitialPapers as kpPapers, paperById, problemById, problems, initialPaperCount as realPaperCount } from './index';
+import { knowledge, kpInitialPapers as kpPapers, paperById, problemById, problems, initialPaperCount as realPaperCount } from './catalog';
 
 export const target808Basis = { year: 2027, officialSyllabusVerified: false,
   label: '2027复习依据：经验重点圈画 + 2026初试原卷。已找到2027官方目录页，科目附件及详细范围尚未完成核验。' };

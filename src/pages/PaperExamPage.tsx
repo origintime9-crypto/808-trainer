@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { paperById } from '../content';
+import { paperById } from '../content/catalog';
 import { paperProblems } from '../engine/paper';
 import { mockResult, mockSessions, validMockSession } from '../engine/mock';
 import { newId } from '../engine/store';

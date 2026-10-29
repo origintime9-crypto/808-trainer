@@ -1,4 +1,4 @@
-import { problemById } from '../content';
+import { problemById } from '../content/catalog';
 import { problemDemand } from '../content/difficulty808';
 import type { AttemptEvent, TrainerEvent } from '../types';
 import { dailyEvidence, isIndependent } from './evidence';

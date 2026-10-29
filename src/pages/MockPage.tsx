@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { paperById, problemById } from '../content';
+import { paperById, problemById } from '../content/catalog';
 import { kpLabel, sourceLabel, go } from '../format';
 import { generateMock, mockResult, mockSessions, selectedPapers, templatePapers, validMockSession, type MockPool } from '../engine/mock';
 import { newId } from '../engine/store';

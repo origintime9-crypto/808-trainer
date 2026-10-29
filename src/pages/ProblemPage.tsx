@@ -7,10 +7,17 @@ import { ReferenceScoreEditor } from '../components/ReferenceScoreEditor';
 import { skillErrorLabel, trainingForProblem } from '../content/training';
 import { familyMembers, problemFamily } from '../content/families';
 import { timeEstimate } from '../engine/timing';
-import { problemById, problems } from '../content';
+import { problems } from '../content/catalog';
+import { useProblemDetail } from '../content/details';
 import { suggestedMinutes } from '../engine/queue';
 import { dateLabel, go, kpLabel, patternLabel, relDay, sourceLabel, stars } from '../format';
-import { kpById } from '../content';
+import { kpById } from '../content/catalog';
+import { Scratchpad } from '../components/Scratchpad';
+import { LearningDrawer } from '../components/LearningDrawer';
+import { ProgressiveHints } from '../components/ProgressiveHints';
+import { useStudyShortcuts } from '../components/useStudyShortcuts';
+import { bookmarkedProblems } from '../engine/bookmarks';
+import { errorRoutes } from '../content/learningSupport';
 import { app, getProblemList, useDerived, useEvents, useProblemExposure } from '../state';
 import { GRADE_LABELS, MISTAKE_TAGS, type AiResult, type AttemptEvent, type Grade, type MistakeTag, type RecognitionReview } from '../types';
 
@@ -19,7 +26,7 @@ function mmss(sec: number): string {
 }
 
 export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; onNavigate?: (id: string) => void; onComplete?: () => void; exam?: { id: string; score: number; attempt?: AttemptEvent; locked?: boolean; assessmentSec?: number; choice?:number; onRecord?: (attempt: Omit<AttemptEvent,'id'|'t'>) => void } }) {
-  const p = problemById.get(id);
+  const p = useProblemDetail(id);
   const { sched, now } = useDerived();
   const events=useEvents();
   const exposureError=useProblemExposure(id);
@@ -39,6 +46,9 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
   const [skillErrors,setSkillErrors]=useState<string[]>(exam?.attempt?.skillErrors??[]),[stepErrors,setStepErrors]=useState<string[]>([]);
   const startRef = useRef(Date.now()-(exam?.attempt?.sec??0)*1000);
   const [elapsed, setElapsed] = useState(exam?.attempt?.sec??0);
+  const [hintLevel,setHintLevel]=useState(0),[scratchOpen,setScratchOpen]=useState(false);
+  const [drawer,setDrawer]=useState<'transforms'|'lab'|null>(null);
+  const bookmarked=bookmarkedProblems(events,now).has(id);
   const stopRef = useRef<number | null>(exam?.attempt ? Date.now() : null);
 
   useEffect(() => {
@@ -47,6 +57,12 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
     }, 1000);
     return () => window.clearInterval(t);
   }, []);
+
+  useStudyShortcuts({reveal:()=>{if(p&&!shown)advanceHint();},rate:n=>{if(shown&&!submitted)setGrade((n-1) as Grade);},
+    save:()=>toggleBookmark(),confirm:()=>{if(shown&&!submitted)submit();},next:()=>{
+      if(shown&&!submitted){setSaveError('请先记录本题评分，再切换下一题。');return;}
+      if(nextId)navigate(nextId);
+    }});
 
   if (!p) return <div className="card">题目不存在：{id}</div>;
 
@@ -61,6 +77,14 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
   const limit = exam&&exam.score>0 ? Math.round(exam.score*1.2) : suggestedMinutes(id,events,now);
   const fullScore=exam?exam.score:p.sources.find(s=>s.score!==undefined)?.score;
   const trainings=trainingForProblem(p),family=familyMembers(id);
+  const calculationRisk=st?.attempts.some(a=>errorRoutes(a).calculation);
+
+  const assist=()=>{if(!shown){setHintsUsed(true);setWorkMode('reference');}};
+  const advanceHint=()=>{assist();if(hintLevel>=2)reveal();else setHintLevel(n=>n+1);};
+  const toggleBookmark=()=>{
+    try{app.record({kind:'bookmark',problemId:id,active:!bookmarkedProblems(app.events()).has(id)});setSaveError('');}
+    catch{setSaveError('收藏未能保存，请检查浏览器存储空间。');}
+  };
 
   const reveal = () => {
     if (stopRef.current === null) stopRef.current = Date.now();
@@ -92,7 +116,7 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
   };
 
   return (
-    <div className="problem">
+    <div className={`problem ${scratchOpen?'with-scratch':''}`}>
       {exposureError&&<p className="hint" role="alert">{exposureError}</p>}
       <div className="toolbar">
         <button className="ghost" onClick={() => history.back()}>← 返回</button>
@@ -100,6 +124,19 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
         {prevId && <button className="ghost" onClick={() => navigate(prevId)}>上一题</button>}
         {nextId && <button className="ghost" onClick={() => navigate(nextId)}>下一题</button>}
       </div>
+
+      <div className="solve-tools">
+        <div className="actions">
+          {!shown&&<button onClick={advanceHint}>分步提示</button>}
+          <button onClick={()=>{assist();setDrawer('transforms');}}>变换对照</button>
+          <button onClick={()=>{assist();setDrawer('lab');}}>交互实验</button>
+          <button aria-expanded={scratchOpen} onClick={()=>setScratchOpen(v=>!v)}>{scratchOpen?'收起草稿板':'打开草稿板'}</button>
+          <button aria-pressed={bookmarked} onClick={toggleBookmark}>{bookmarked?'已收藏':'收藏本题'} <kbd>S</kbd></button>
+        </div>
+        <p className="shortcut-legend small muted"><kbd>Space</kbd> 逐级提示 · <kbd>1–4</kbd> 选择评级 · <kbd>Enter</kbd> 记录 · <kbd>→</kbd> 下一题</p>
+      </div>
+      {scratchOpen&&<aside className="scratch-host"><Scratchpad key={id} storageKey={exam?`exam:${exam.id}:${id}`:`problem:${id}`}/></aside>}
+      {drawer&&<LearningDrawer type={drawer} onClose={()=>setDrawer(null)}/>}
 
       <section className="card">
         <div className="meta">
@@ -110,6 +147,7 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
           {p.verified === 'uncertain' && <span className="badge warn">题干/答案存疑</span>}
           {st?.inMistakes && <span className="badge bad">错题本中</span>}
           {st?.mastered && <span className="badge good">已过关</span>}
+          {calculationRisk&&<span className="badge warn">易算错</span>}
         </div>
         {(shown || workMode !== 'independent' || hintsUsed) && <div className="chips">
           {p.kps.map((k) => (
@@ -125,8 +163,9 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
           setWorkMode(mode); if (mode !== 'independent') setHintsUsed(true);
         }}><option value="independent">独立作答</option><option value="reference">查资料完成</option><option value="correction">看解析后订正</option></select></label>
           <p className="muted small">独立作答时隐藏考点、方法与历史笔记。当天首次作答用于能力判断；订正只安排复习。{hintsUsed && '本次已使用提示。'}</p>
-          {!hintsUsed && workMode === 'independent' && <button className="ghost small" onClick={() => { setHintsUsed(true); setWorkMode('reference'); }}>查看提示与笔记</button>}
+          {!hintsUsed && workMode === 'independent' && <button className="ghost small" onClick={() => { assist();setHintLevel(1); }}>查看提示与笔记</button>}
         </div>}
+        {calculationRisk&&!shown&&<p className="calculation-alert">请动笔验算到最后一步，再用代回、单位或边界值检查计算。</p>}
 
         <Md>{p.stem}</Md>
         {p.figures?.map((f) => {
@@ -157,12 +196,14 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
         {!shown && (
           <div className="actions">
             <button className="primary" onClick={()=>{if(p.options){setWorkMode('correction');setHintsUsed(true);}reveal();}}>{p.options ? '不确定，直接看答案' : '我做完了，看答案'}</button>
-            {!p.options && <button onClick={() => { setWorkMode('correction'); setHintsUsed(true); reveal(); }}>还不会，先看解析</button>}
+            {!p.options && <button onClick={advanceHint}>还不会，分步提示</button>}
             <button onClick={copyPrompt}>复制批改提示词</button>
           </div>
         )}
         {copied && <p className="hint">{copied}</p>}
       </section>
+
+      {!shown&&hintLevel>0&&<ProgressiveHints problem={p} level={hintLevel} advance={advanceHint}/>}
 
       {!p.options && <AiGradePanel key={`${id}-${aiRevision}`} problem={p} maxScore={exam?.score} disabled={submitted} onResult={r => { setAi(r ?? undefined); setRecognition(undefined); setGrade(r?.grade ?? null); setTags(r?.tags ?? []); if (r) { if (!shown) { setWorkMode('reference'); setHintsUsed(true); } reveal(); } }} onRecognition={r => { setRecognition(r ?? undefined); if (!r || r.status !== 'checked') { setGrade(null); setTags([]); } }} />}
 
@@ -172,6 +213,7 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
           <Md>{p.answer}</Md>
           <h3>详细解答</h3>
           <Md>{p.solution}</Md>
+          {!!p.pitfalls?.length&&<aside className="pitfall-alert" aria-label="易错红线"><h3>易错红线</h3><ul>{p.pitfalls.map(t=><li key={t}><Md>{t}</Md></li>)}</ul></aside>}
           {p.note && <p className="note-src">说明：{p.note}</p>}
           {!copied && !p.options && (
             <button className="ghost small" onClick={copyPrompt}>复制批改提示词（发给 Gemini 或 ChatGPT）</button>
@@ -194,6 +236,7 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
           {grade !== null && grade < 3 && (
             <>
               <p className="muted">错在哪里？（可多选）</p>
+              <div className="actions error-shortcuts">{[['概念/性质误用','概念不清'],['计算/代数失误','计算失误'],['思路卡壳','方法不会']].map(([label,value])=><button key={value} aria-pressed={tags.includes(value as MistakeTag)} className={tags.includes(value as MistakeTag)?'on':''} onClick={()=>setTags(tags.includes(value as MistakeTag)?tags.filter(t=>t!==value):[...tags,value as MistakeTag])}>{label}</button>)}</div>
               <div className="tag-buttons">
                 {MISTAKE_TAGS.map((t) => (
                   <label key={t} className={`tag ${tags.includes(t) ? 'on' : ''}`}>
@@ -206,6 +249,7 @@ export function ProblemPage({ id, onNavigate, onComplete, exam }: { id: string; 
                   </label>
                 ))}
               </div>
+              <p className="muted small">概念/公式错误会安排次日基础卡；方法卡壳会安排三天后换家族验证。计算失误保留正常评级间隔，下次提醒验算。</p>
             </>
           )}
           {ai && !recognition && <p className="muted small">请先在批改区选择转写复核情况。</p>}

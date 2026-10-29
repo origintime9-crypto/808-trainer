@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { paperById } from '../content';
+import { paperById } from '../content/catalog';
 import { examDeadline, finishExam, mockResult, mockSessions, validMockSession } from '../engine/mock';
 import { GRADE_LABELS, type AttemptEvent, type ExamAnswer } from '../types';
 import { kpLabel, sourceLabel } from '../format';
@@ -94,7 +94,7 @@ export function ExamSessionPage({id}:{id:string}) {
       {gradeRow?.problem&&!gradeRow.attempt&&<div className="exam-assessment"><section className="card"><h2>交卷后评分 · {gradeRow.item.no}</h2><pre className="submitted-answer">{gradeRow.answer?.text}{gradeRow.answer?.choice!==undefined&&`\n选项：${String.fromCharCode(65+gradeRow.answer.choice)}`}</pre><button onClick={()=>setGrading(null)}>收起评分</button><p className="muted small">请按交卷时的纸稿或已保存作答评分。确认后固定本题参考得分。选择题按提交选项计分。</p></section><ProblemPage key={`assessment-${id}-${grading}`} id={gradeRow.item.problemId} exam={{id,score:gradeRow.item.score,locked:true,assessmentSec:gradeRow.answer?.sec,choice:gradeRow.answer?.choice,onRecord:assess}} onComplete={()=>setGrading(null)}/></div>}
     </>:!expired&&current?.problem?<>
       <section className="card mock-slot"><b>本卷题位：{current.item.no}（{current.item.score||'未标'}分）</b></section>
-      {strict?<StrictQuestion key={`${id}-${current.item.problemId}`} problem={current.problem} initial={current.answer} onDraft={draft} onSave={()=>{try{flush();}catch{setError('未能保存本题作答。');}}} onSkip={answer=>{draft(answer);try{flush();if(session.current<session.items.length-1)navigate(session.current+1);}catch{setError('未能保存跳题记录。');}}}/>
+      {strict?<StrictQuestion key={`${id}-${current.item.problemId}`} examId={id} problem={current.problem} initial={current.answer} onDraft={draft} onSave={()=>{try{flush();}catch{setError('未能保存本题作答。');}}} onSkip={answer=>{draft(answer);try{flush();if(session.current<session.items.length-1)navigate(session.current+1);}catch{setError('未能保存跳题记录。');}}}/>
         :<ProblemPage key={`${id}-${current.item.problemId}`} id={current.item.problemId} exam={{id,score:current.item.score,attempt:current.attempt}} onNavigate={target=>{const n=session.items.findIndex(i=>i.problemId===target);if(n>=0)navigate(n);}} onComplete={finish}/>}
     </>:<section className="card">考试时间已到，正在保存交卷。</section>}
     <MockPrint title={session.title} items={session.items} minutes={session.minutes}/>

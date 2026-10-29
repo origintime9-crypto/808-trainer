@@ -4,7 +4,7 @@ import { replay } from './engine/scheduler';
 import { loadEvents, loadSettings, mergeEvents, newId, saveEvents, saveSettings } from './engine/store';
 import type { Settings, TrainerEvent } from './types';
 import { readEvent } from './engine/events';
-import { problemById } from './content';
+import { problemById } from './content/catalog';
 
 type DistOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
 export type NewEvent = DistOmit<TrainerEvent, 'id' | 't'>;

@@ -1,4 +1,4 @@
-import type { Problem } from '../types';
+import type { ProblemInfo } from '../types';
 
 export interface SkillTraining {
   id:string;title:string;kps:string[];patterns:string[];
@@ -35,4 +35,4 @@ export const skillTrainings:SkillTraining[]=[
 ];
 export const skillById=new Map(skillTrainings.map(s=>[s.id,s]));
 export const skillErrorLabel=(id:string)=>skillTrainings.flatMap(s=>s.errors).find(e=>e.id===id)?.label??id;
-export const trainingForProblem=(p:Problem)=>skillTrainings.filter(s=>s.id==='method'||s.patterns.includes(p.pattern??'')||s.kps.some(k=>p.kps.includes(k)));
+export const trainingForProblem=(p:ProblemInfo)=>skillTrainings.filter(s=>s.id==='method'||s.patterns.includes(p.pattern??'')||s.kps.some(k=>p.kps.includes(k)));

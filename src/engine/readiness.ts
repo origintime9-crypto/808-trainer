@@ -1,4 +1,4 @@
-import { kpInitialPapers as kpPapers, problemById } from '../content';
+import { kpInitialPapers as kpPapers, problemById } from '../content/catalog';
 import { latestEvidence } from './evidence';
 import { fits808, importance808, target808Points, target808Scope, target808Units, TARGET_808_PAPER } from '../content/target808';
 import type { TrainerEvent } from '../types';

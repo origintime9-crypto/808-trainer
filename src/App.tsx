@@ -1,14 +1,15 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
-import { AnalysisPage } from './pages/AnalysisPage';
-import { MistakesPage } from './pages/MistakesPage';
-import { PracticePage } from './pages/PracticePage';
-import { SettingsPage } from './pages/SettingsPage';
+const AnalysisPage = lazy(() => import('./pages/AnalysisPage').then(m => ({ default: m.AnalysisPage })));
+const MistakesPage = lazy(() => import('./pages/MistakesPage').then(m => ({ default: m.MistakesPage })));
+const PracticePage = lazy(() => import('./pages/PracticePage').then(m => ({ default: m.PracticePage })));
+const SettingsPage = lazy(() => import('./pages/SettingsPage').then(m => ({ default: m.SettingsPage })));
 import { TodayPage } from './pages/TodayPage';
 import { connectSync, syncStatusLabel, useSyncStatus } from './engine/sync';
 import { eventStorageError } from './engine/store';
 import { useEvents } from './state';
 import { mockSessions, validMockSession } from './engine/mock';
 import { Icon } from './components/Icon';
+import { LoadBoundary } from './components/LoadBoundary';
 
 const ProblemPage = lazy(() => import('./pages/ProblemPage').then(m => ({ default: m.ProblemPage })));
 const ReviewPage = lazy(() => import('./pages/ReviewPage').then(m => ({ default: m.ReviewPage })));
@@ -94,7 +95,7 @@ export function App() {
         <span className="workspace-date">{dateLabel}</span>
         {locked?<span className="badge">严格模考进行中</span>:<a className={`sync-pill ${sync.phase}`} href="#/settings" title={sync.message} aria-live="polite">{syncStatusLabel(sync)}</a>}
       </header>
-      <main>{storageError && active !== 'settings' && <a className="banner" href="#/settings" role="alert">{storageError}</a>}<Suspense fallback={<section className="card">正在打开…</section>}>{page}</Suspense></main>
+      <main>{storageError && active !== 'settings' && <a className="banner" href="#/settings" role="alert">{storageError}</a>}<LoadBoundary resetKey={route}><Suspense fallback={<section className="card">正在打开…</section>}>{page}</Suspense></LoadBoundary></main>
       {!locked&&<nav className="tabs-bottom" aria-label="手机导航">
         {TABS.map((t) => (
           <a key={t.path} href={`#/${t.path}`} className={active === t.path ? 'on' : ''} aria-current={active===t.path?'page':undefined}>

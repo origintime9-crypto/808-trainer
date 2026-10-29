@@ -1,4 +1,4 @@
-import { cardById, kpById, kpInitialPapers as kpPapers, knowledge, patternById, patternInitialPapers as patternPapers, patterns, problemById, initialPaperCount as realPaperCount } from '../content';
+import { cardById, kpById, kpInitialPapers as kpPapers, knowledge, patternById, patternInitialPapers as patternPapers, patterns, problemById, initialPaperCount as realPaperCount } from '../content/catalog';
 import { problemFamily } from '../content/families';
 import { dailyEvidence, isFullCredit, isIndependent } from './evidence';
 import { learningEvents } from './history';

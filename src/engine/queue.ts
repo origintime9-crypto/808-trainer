@@ -1,4 +1,4 @@
-import { cardById, cards, kpById, kpInitialPapers as kpPapers, paperById, problemById, problems } from '../content';
+import { cardById, cards, kpById, kpInitialPapers as kpPapers, paperById, problemById, problems } from '../content/catalog';
 import { examEmphasis, fits808 } from '../content/target808';
 import { problemDemand } from '../content/difficulty808';
 import type { Settings, TrainerEvent } from '../types';
@@ -6,6 +6,7 @@ import { priority, problemPriority, type MasteryIndex } from './mastery';
 import { DAY, endOfToday, isNewCard, startOfToday, type Schedule } from './scheduler';
 import { learningEvents } from './history';
 import { timeEstimate } from './timing';
+import { remediationPlan } from './remediation';
 
 const LEARN_AHEAD_MS = 20 * 60 * 1000;
 
@@ -13,6 +14,7 @@ export interface ReviewQueue {
   due: string[];
   fresh: string[];
   newToday: number;
+  remedial: string[];
 }
 
 /** 卡片复习队列：到期卡（含 20 分钟内的学习步）优先，然后是今日剩余额度的新卡 */
@@ -38,14 +40,15 @@ export function cardQueue(sched: Schedule, events: TrainerEvent[], settings: Set
   const newToday = [...firstSeen.values()].filter((t) => t >= today).length;
   const quota = Math.max(0, settings.newCardsPerDay - newToday);
 
+  const remedial=remediationPlan(events,settings,now).cards.filter(c=>c.dueAt<=now).map(c=>c.id);
   const fresh = cards
-    .filter((c) => isNewCard(sched.cards.get(c.id)) && c.kps.some(k => (kpById.get(k)?.chapter ?? 8) <= 7))
+    .filter((c) => !remedial.includes(c.id) && isNewCard(sched.cards.get(c.id)) && c.kps.some(k => (kpById.get(k)?.chapter ?? 8) <= 7))
     .map((c, i) => ({ id: c.id, i, score: kpScore(c.kps) }))
     .sort((a, b) => b.score - a.score || a.i - b.i)
     .slice(0, quota)
     .map((x) => x.id);
 
-  return { due, fresh, newToday };
+  return { due:[...new Set([...remedial,...due])], fresh, newToday, remedial };
 }
 
 /** 过关题也按记忆曲线复习；错题和重要考点优先，但不超前拉取未到期题。 */
@@ -82,7 +85,8 @@ export function recommendNew(sched: Schedule, events: TrainerEvent[], settings: 
       timeEstimate(p.id,events,now).minutes<=(settings.dailyMinutes??90))
     .map((p) => ({
       p,
-      score: problemPriority(p.id, mi) * (p.sources.some((s) => paperById.get(s.paper)?.kind === '真题') ? 1.2 : 1),
+      score: problemPriority(p.id, mi) * (p.sources.some((s) => paperById.get(s.paper)?.kind === '真题') ? 1.2 : 1) *
+        (settings.studyStage!=='foundation'&&problemDemand(p).level>=2?1.4:1),
     }))
     .sort((a, b) => b.score - a.score);
 

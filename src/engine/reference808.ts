@@ -1,4 +1,4 @@
-import { problemById } from '../content';
+import { problemById } from '../content/catalog';
 import { compareDemand, reference808 } from '../content/difficulty808';
 import { fits808, TARGET_808_PAPER, target808Total, target808Units } from '../content/target808';
 import type { AttemptEvent, TrainerEvent } from '../types';

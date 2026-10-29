@@ -1,4 +1,4 @@
-import { problemById } from '../content';
+import { problemById } from '../content/catalog';
 import type { TrainerEvent } from '../types';
 import { learningEvents } from './history';
 

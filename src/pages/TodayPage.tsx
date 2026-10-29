@@ -1,15 +1,15 @@
 import { rankKnowledge, recommendationReason, type MasteryIndex } from '../engine/mastery';
 import { DAY, dayDiff, startOfToday } from '../engine/scheduler';
-import { problemById } from '../content';
-import { go, kpLabel, patternLabel, sourceLabel, stars } from '../format';
-import { setProblemList, useDerived, useEvents, useSettings } from '../state';
+import { problemById } from '../content/catalog';
+import { go, kpLabel, patternLabel, relDay, sourceLabel, stars } from '../format';
+import { app, setProblemList, useDerived, useEvents, useSettings } from '../state';
 import { sourceEvidenceLabel } from '../content/sourceEvidence';
 import { dailyPlan, STAGE_LABELS } from '../engine/dailyPlan';
 import { learningEvents } from '../engine/history';
 import { exam808Schedule, examStartTimestamp } from '../content/revisionGuide';
 import { Icon } from '../components/Icon';
 
-function ProblemLinks({ ids, empty, mi }: { ids: string[]; empty: string; mi?: MasteryIndex }) {
+function ProblemLinks({ ids, empty, mi, hidden=false }: { ids: string[]; empty: string; mi?: MasteryIndex; hidden?:boolean }) {
   if (ids.length === 0) return <p className="muted">{empty}</p>;
   return (
     <ul className="rows">
@@ -23,8 +23,8 @@ function ProblemLinks({ ids, empty, mi }: { ids: string[]; empty: string; mi?: M
               onClick={() => setProblemList(ids)}
             >
               <span>{sourceLabel({...p,sources:p.sources.slice(0,1)})}{p.sources.length>1&&<span className="source-count">另{p.sources.length-1}个来源</span>}</span>
-              <span className="muted small">{patternLabel(p.pattern) || p.kps.map(kpLabel).join('，')}</span>
-              {mi&&<span className="adaptive-reason small">{recommendationReason(id, mi)}</span>}
+              {!hidden&&<span className="muted small">{patternLabel(p.pattern) || p.kps.map(kpLabel).join('，')}</span>}
+              {mi&&!hidden&&<span className="adaptive-reason small">{recommendationReason(id, mi)}</span>}
             </a>
           </li>
         );
@@ -48,6 +48,7 @@ export function TodayPage() {
   const first=plan.tasks[0],firstProblem=first?problemById.get(first.id):undefined;
   const firstHref=first?(first.kind.includes('problem')?`#/p/${first.id}`:'#/review'):'#/analysis';
   const firstLabel=first?(firstProblem?sourceLabel({...firstProblem,sources:firstProblem.sources.slice(0,1)}):first.kind==='new-card'?'学习第一张新卡':'复习第一张到期卡片'):'今天的预算已用完，或暂无待安排任务。';
+  const sprint=plan.stage==='sprint',deepIds=plan.deep.tasks.map(t=>t.id);
 
   return (
     <div className="today">
@@ -61,7 +62,7 @@ export function TodayPage() {
           <div className="plan-next"><span className="task-kicker">{first?'下一步':'今日安排'}</span><span>{firstLabel}</span>{first&&<small>约 {first.minutes} 分钟</small>}</div>
           <div className="plan-actions"><a className="button primary" href={firstHref} onClick={()=>first?.kind.includes('problem')&&setProblemList(plan.tasks.filter(t=>t.kind.includes('problem')).map(t=>t.id))}>{first?'开始今日任务':'查看学习记录'}<Icon name="arrow"/></a><a href="#/settings">调整计划</a></div>
           {!settings.planConfigured&&<p className="plan-note">暂按{STAGE_LABELS[plan.stage]}、每天{plan.budget}分钟安排。<a href="#/settings">确认你的计划 →</a></p>}
-          {plan.deferredMinutes>0&&<details className="plan-backlog"><summary>暂缓 {plan.deferredProblems.length} 题、{plan.deferredCards.length} 张卡片，查看补偿安排</summary><p>到期任务超出预算约{plan.deferredMinutes}分钟。建议先暂停新增，后续每天留出约{Math.ceil(plan.budget*0.7)}分钟补偿；现有积压至少需约{plan.catchupDays}天，新增到期任务另计。</p></details>}
+          {plan.deferredMinutes>0&&<details className="plan-backlog"><summary>暂缓 {plan.deferredProblems.length} 题、{plan.deferredCards.length} 张卡片，查看补偿安排</summary><p>到期任务超出本次分配约{plan.deferredMinutes}分钟。建议先暂停新增，后续保留热身基础卡与核心推导两段时间补偿；现有积压至少需约{plan.catchupDays}天，新增到期任务另计。</p></details>}
         </section>
         <section className="hero countdown-card">
           <div className="countdown-label"><span>距离专业课初试</span><Icon name="target"/></div>
@@ -86,7 +87,8 @@ export function TodayPage() {
       <section className="card readiness-entry"><span className="entry-icon"><Icon name="target"/></span><div><h2>我对 808 准备得怎么样</h2><p>核对重点覆盖与独立作答证据，找到下一步该补的内容。</p></div><a className="button" href="#/readiness">查看适配水平 <Icon name="arrow"/></a></section>
 
       <div className="today-sections">
-      <section className="card">
+      <section className="card learning-track">
+        <p className="task-kicker">01 · 热身唤醒</p>
         <div className="card-head">
           <h2>卡片复习</h2>
           <button className="primary" disabled={q.due.length + q.fresh.length === 0} onClick={() => go('#/review')}>
@@ -97,19 +99,35 @@ export function TodayPage() {
           到期 <b>{q.due.length}</b> 张，新卡 <b>{q.fresh.length}</b> 张
           <span className="muted">（今日已学新卡 {q.newToday} / {settings.newCardsPerDay}）</span>
         </p>
+        <p className="muted small">本段剩余约 {plan.warmup.minutes} 分钟；全天热身预算约 {plan.warmup.targetMinutes} 分钟。先回忆概念与性质，再做完整推导。{q.remedial.length>0&&`含 ${q.due.filter(id=>q.remedial.includes(id)).length} 张错因回溯基础卡。`}</p>
+        {plan.warmup.spentMinutes>=plan.warmup.targetMinutes&&<p className="hint">今天的热身额度已完成，进入核心推导。</p>}
+      </section>
+
+      <section className="card learning-track deep-track">
+        <p className="task-kicker">02 · 核心推导</p><div className="card-head"><h2>{sprint?'无标签混排训练':'完整推导与验算'}</h2><span className="badge">约 {plan.deep.minutes} 分钟</span></div>
+        <p>本段 {deepIds.length} 题：到期重做 {mistakes.length}、方法迁移 {plan.variants.length}、新题 {fresh.length}。</p>
+        <p className="muted small">每题保留计时。{sprint?'题目列表隐藏章节、题型和补弱原因，先自己选择方法。':'先在纸上或草稿板完成，再核对步骤；题数随阶段、预算和积压调整。'}</p>
+        <div className="actions"><a className="button primary" href={deepIds.length?`#/p/${deepIds[0]}`:'#/analysis'} onClick={()=>setProblemList(deepIds)}>{deepIds.length?'开始核心推导':'查看薄弱点'}</a>
+          <button aria-pressed={sprint} onClick={()=>app.updateSettings({studyStage:sprint?'strengthening':'sprint',planConfigured:true})}>{sprint?'退出冲刺混排':'切换冲刺混排'}</button><a className="small" href="#/mock">整卷考试 →</a></div>
       </section>
 
       <section className="card">
         <h2>到期重做 <span className="count">{mistakes.length}</span></h2>
         <p className="muted small">错题优先；已过关的题也会到期复习，防止“当时会、现在忘了”。</p>
-        <ProblemLinks ids={mistakes} mi={mi} empty="今天没有需要重做的题。" />
+        <ProblemLinks ids={mistakes} mi={mi} hidden={sprint} empty="今天没有需要重做的题。" />
       </section>
 
       <section className="card">
         <h2>推荐新题</h2>
         <p className="muted small">按阶段、剩余时间、808重点和薄弱情况挑题；弱项可连续练，熟练考点后移。已保留的整卷不从这里抽题。</p>
-        <ProblemLinks ids={fresh} mi={mi} empty="今日新题额度已完成，或适合808的题都做过了。可以去「刷题」页按卷练习。" />
+        <ProblemLinks ids={fresh} mi={mi} hidden={sprint} empty="今日新题额度已完成，或适合808的题都做过了。可以去「刷题」页按卷练习。" />
       </section>
+
+      {(plan.variants.length>0||plan.remediation.cards.length>0||plan.remediation.variants.length>0)&&<section className="card remediation-plan"><h2>错因补救与延迟验证</h2>
+        {!!plan.variants.length&&<><p className="small muted">方法卡壳三天后，使用另一个原始题目家族检验迁移。</p><ProblemLinks ids={plan.variants.map(t=>t.id)} hidden={sprint} empty=""/></>}
+        <p className="small muted">待安排基础卡 {plan.remediation.cards.length} 张，方法验证 {plan.remediation.variants.length} 项；这些是补课任务，不是掌握证据。</p>
+        <ul className="small">{plan.remediation.variants.filter(v=>v.dueAt>now||!v.id).map(v=><li key={v.from}>{v.id?`${relDay(now,v.dueAt)}安排另一家族的同类题。`:'当前保留卷及难度条件下没有合适变式，可进入专项继续训练。'}</li>)}</ul>
+      </section>}
 
       <section className="card">
         <div className="card-head">

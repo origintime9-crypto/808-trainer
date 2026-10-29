@@ -56,6 +56,10 @@ export interface Problem {
   /** 人工评估的完整作答用时，用于模拟卷匹配计算量。 */
   minutes?: number;
   family?: string;
+  /** 分级提示和易错点是学习辅助；打开后不能作为独立作答。 */
+  hints?: [string, string];
+  pitfalls?: string[];
+  prerequisites?: string[];
 }
 
 export interface Card {
@@ -64,6 +68,12 @@ export interface Card {
   front: string;
   back: string;
 }
+
+/** 首页和调度使用的题目目录，不加载题干与解析。 */
+export type ProblemInfo = Pick<Problem, 'id' | 'sources' | 'type' | 'kps' | 'pattern' | 'verified' | 'minutes' | 'family' | 'answerKey'> & {
+  demand?: { level: 1 | 2 | 3 | 4; minutes: number; basis: '原卷参照' | '人工用时' | '规则估计' };
+};
+export type CardInfo = Pick<Card, 'id' | 'kps'>;
 
 export type Grade = 0 | 1 | 2 | 3;
 export type CardRating = 1 | 2 | 3 | 4;
@@ -159,7 +169,13 @@ export interface ExposureEvent extends EventBase {
   problemId: string;
 }
 
-export type TrainerEvent = AttemptEvent | ReviewEvent | NoteEvent | ExamEvent | ExposureEvent;
+export interface BookmarkEvent extends EventBase {
+  kind: 'bookmark';
+  problemId: string;
+  active: boolean;
+}
+
+export type TrainerEvent = AttemptEvent | ReviewEvent | NoteEvent | ExamEvent | ExposureEvent | BookmarkEvent;
 
 export interface Settings {
   examDate: string;

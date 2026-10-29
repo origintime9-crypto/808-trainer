@@ -4,12 +4,17 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "content:prepare": "node tools/prepare-content.mjs",
+    "predev": "npm run content:prepare",
+    "prebuild": "npm run content:prepare",
+    "pretest": "npm run content:prepare",
     "dev": "vite --host 0.0.0.0",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 0.0.0.0",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "verify:math": "python -X utf8 tools/verify_all.py",
+    "verify:startup": "node tools/check-startup.mjs",
     "content:report": "node tools/content-report.mjs",
     "local:api": "wrangler pages dev dist --port 8788",
     "db:init:local": "wrangler d1 execute 808-trainer --local --file schema.sql"

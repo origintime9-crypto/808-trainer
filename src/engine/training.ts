@@ -1,4 +1,4 @@
-import { problemById, problems } from '../content';
+import { problemById, problems } from '../content/catalog';
 import { skillById, skillTrainings } from '../content/training';
 import { fits808 } from '../content/target808';
 import { problemDemand } from '../content/difficulty808';

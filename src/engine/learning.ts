@@ -1,4 +1,4 @@
-import { problemById } from '../content';
+import { problemById } from '../content/catalog';
 import { fits808 } from '../content/target808';
 import type { AttemptEvent, TrainerEvent } from '../types';
 import type { MasteryIndex } from './mastery';

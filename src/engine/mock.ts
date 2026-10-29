@@ -1,6 +1,6 @@
-import { paperById, papers, problemById, problems } from '../content';
+import { paperById, papers, problemById, problems } from '../content/catalog';
 import { paperProblems, SCORE_COEF } from './paper';
-import type { AttemptEvent, ExamAnswer, ExamEvent, ExamItem, ExamSnapshotRow, Problem, TrainerEvent } from '../types';
+import type { AttemptEvent, ExamAnswer, ExamEvent, ExamItem, ExamSnapshotRow, ProblemInfo, TrainerEvent } from '../types';
 import { learningEvents } from './history';
 import { problemPriority, type MasteryIndex } from './mastery';
 import { compareDemand, problemDemand } from '../content/difficulty808';
@@ -10,15 +10,15 @@ export type MockPool = 'mixed' | 'selected' | 'local';
 export const templatePapers = papers.filter(p => p.kind === '真题' && !p.school && p.totalScore === 150 && paperProblems(p.id).every(q => q.sources.find(s => s.paper === p.id)?.score) && paperProblems(p.id).reduce((v,q)=>v+(q.sources.find(s=>s.paper===p.id)?.score??0),0) === 150);
 export const selectedPapers = papers.filter(p => !!p.school);
 
-function workload(p: Problem): number {
+function workload(p: ProblemInfo): number {
   return problemDemand(p).minutes;
 }
-function family(p: Problem): string {
+function family(p: ProblemInfo): string {
   const discrete = p.kps.some(k => /^[67]\./.test(k));
   const continuous = p.kps.some(k => /^[2345]\./.test(k));
   return discrete ? (continuous ? 'both' : 'discrete') : continuous ? 'continuous' : 'basics';
 }
-function fits(anchor: Problem, p: Problem, score: number): boolean {
+function fits(anchor: ProblemInfo, p: ProblemInfo, score: number): boolean {
   if (p.verified === 'uncertain' || p.type !== anchor.type || p.kps.some(k=>k.startsWith('8.'))) return false;
   const a = family(anchor), b = family(p);
   // 含离散内容的题不混入纯连续题位，反之亦然。
@@ -52,7 +52,7 @@ export function generateMock(template: string, pool: MockPool, seed: string, att
       return { p, value: value + (adaptive && p.id !== a.id ? 35 * problemPriority(p.id, adaptive) : 0) };
     }).sort((a,b)=>b.value-a.value || a.p.id.localeCompare(b.p.id));
   });
-  const assigned = new Map<string,number>(), picks = new Map<number,Problem>();
+  const assigned = new Map<string,number>(), picks = new Map<number,ProblemInfo>();
   // 增广匹配使候选稀少的题位仍能选到合适题，每个原题在整卷中最多出现一次。
   function assign(slot: number, visited: Set<string>): boolean {
     for (const {p} of choices[slot]) {

@@ -32,6 +32,8 @@ export function readAiResult(x: unknown): AiResult | null {
 export function readEvent(x: unknown): TrainerEvent | null {
   if (!record(x) || !str(x.id, 200) || !x.id || !int(x.t, 0, 8640000000000000)) return null;
   const base = { id: x.id as string, t: x.t as number };
+  if (x.kind === 'bookmark' && str(x.problemId, 200) && x.problemId && typeof x.active === 'boolean')
+    return { ...base, kind: 'bookmark', problemId: x.problemId as string, active: x.active };
   if (x.kind === 'exposure' && str(x.problemId, 200) && x.problemId)
     return { ...base, kind: 'exposure', problemId: x.problemId as string };
   if (x.kind === 'attempt' && str(x.problemId, 200) && x.problemId && int(x.grade, 0, 3) && tags(x.tags) && int(x.sec, 0, 31536000)) {

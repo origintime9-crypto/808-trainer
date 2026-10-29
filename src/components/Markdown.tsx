@@ -1,8 +1,10 @@
+import 'katex/dist/katex.min.css';
 import ReactMarkdown from 'react-markdown';
 import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import type { Element, Root } from 'hast';
+import { mathMacros } from '../content/mathMacros';
 
 function rehypeAiMathFallback() {
   return (tree: Root) => {
@@ -33,7 +35,7 @@ export function Md({ children, inline = false, preserveBadMath = false }: { chil
     <div className={inline ? 'md md-inline' : 'md'}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
-        rehypePlugins={[[rehypeKatex, { throwOnError: false, strict: 'ignore' }], ...(preserveBadMath ? [rehypeAiMathFallback] : [])]}
+        rehypePlugins={[[rehypeKatex, { throwOnError: false, strict: 'ignore', macros: { ...mathMacros }, trust: false, maxExpand: 1000 }], ...(preserveBadMath ? [rehypeAiMathFallback] : [])]}
         components={{ img: ({ src, alt }) => <a href={src} target="_blank" rel="noreferrer" aria-label={'打开大图：' + (alt ?? '图示')}><img src={src} alt={alt} /></a> }}
       >
         {children}

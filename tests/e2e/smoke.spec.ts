@@ -165,6 +165,8 @@ test('持续打开的两台设备自动双向同步，服务失败自动补传�
     await pb.goto(base + '/#/mistakes');
     await expect(pa.locator('.sync-pill')).toContainText('云端已保存');
     await expect(pb.locator('.sync-pill')).toContainText('云端已保存');
+    // 详情按需加载，先确认实际见题事件已传到云端，再模拟服务中断。
+    await expect.poll(()=>cloud.filter(e=>e.kind==='exposure').length).toBe(1);
     fail = true;
     await chooseGrade(pa, '部分对');
     await expect(pa.locator('.sync-pill')).toContainText('同步待重试');

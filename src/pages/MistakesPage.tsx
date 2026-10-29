@@ -1,11 +1,15 @@
 import { useState } from 'react';
-import { CHAPTERS, knowledge, kpById, problemById } from '../content';
+import { CHAPTERS, knowledge, kpById, problemById } from '../content/catalog';
 import { relDay, sourceLabel } from '../format';
-import { setProblemList, useDerived } from '../state';
+import { setProblemList, useDerived, useEvents, useSettings } from '../state';
+import { remediationPlan } from '../engine/remediation';
+import { bookmarkedProblems } from '../engine/bookmarks';
 import { GRADE_LABELS, MISTAKE_TAGS } from '../types';
 
 export function MistakesPage() {
   const { sched, now } = useDerived();
+  const events=useEvents(),settings=useSettings();
+  const remediation=remediationPlan(events,settings,now),bookmarks=[...bookmarkedProblems(events,now)].filter(id=>problemById.has(id));
   const [tag, setTag] = useState('');
   const [chapter, setChapter] = useState('');
   const [kp, setKp] = useState('');
@@ -26,6 +30,7 @@ export function MistakesPage() {
 
   return (
     <div>
+      {!!remediation.variants.length&&<section className="card"><div className="card-head"><h2>题型母题库</h2><button className="small" onClick={()=>setTag('方法不会')}>只看方法卡壳</button></div><p className="muted small">保留卡壳的原题；三天后安排另一家族的同类题，原题订正不会代替迁移验证。</p><ul className="rows">{remediation.variants.map(v=><li key={v.from}><a href={`#/p/${v.from}`}><span>{sourceLabel(problemById.get(v.from)!)}</span><span className="small muted">{v.dueAt>now?`${relDay(now,v.dueAt)}安排变式验证`:v.id?'变式验证已到期':'暂无符合条件的变式，请进入专项训练'}</span></a></li>)}</ul></section>}
       <section className="card filters">
         <label>知识点<select value={kp} onChange={e => setKp(e.target.value)}><option value="">全部</option>{knowledge.map(k => <option key={k.id} value={k.id}>{k.id} {k.title}</option>)}</select></label>
         <label>
@@ -75,6 +80,7 @@ export function MistakesPage() {
         </ul>
         {entries.length === 0 && <p className="muted">错题本是空的。</p>}
       </section>
+      {!!bookmarks.length&&<section className="card"><div className="card-head"><h2>我的收藏 <span className="count">{bookmarks.length}</span></h2><a href="#/practice?status=saved">筛选收藏题 →</a></div><p className="small muted">题目页按 S 可收藏或取消。收藏单独同步，不影响错题状态和掌握判断。</p><ul className="rows">{bookmarks.map(id=><li key={id}><a href={`#/p/${id}`} onClick={()=>setProblemList(bookmarks)}>{sourceLabel(problemById.get(id)!)}</a></li>)}</ul></section>}
     </div>
   );
 }

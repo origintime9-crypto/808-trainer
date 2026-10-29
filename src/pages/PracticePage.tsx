@@ -1,6 +1,7 @@
-import { CHAPTERS, knowledge, kpById, paperById, papers, patterns, problems } from '../content';
+import { CHAPTERS, knowledge, kpById, paperById, papers, patterns, problems } from '../content/catalog';
 import { go, patternLabel, sourceLabel } from '../format';
-import { setProblemList, useDerived } from '../state';
+import { setProblemList, useDerived, useEvents } from '../state';
+import { bookmarkedProblems } from '../engine/bookmarks';
 import { GRADE_LABELS } from '../types';
 import { paperProblems } from '../engine/paper';
 import { StudyNav } from '../components/StudyNav';
@@ -9,7 +10,7 @@ import { problemPriority } from '../engine/mastery';
 import { REFERENCE_LABELS, reference808, type ReferenceClass } from '../content/difficulty808';
 import { problemFamily } from '../content/families';
 
-const STATUS = { all: '全部', todo: '未做', wrong: '错题本', done: '已过关' } as const;
+const STATUS = { all: '全部', todo: '未做', wrong: '错题本', done: '已过关', saved:'已收藏' } as const;
 type Status = keyof typeof STATUS;
 const SCORE_COEF = [0, 0.3, 0.7, 1];
 
@@ -29,6 +30,7 @@ function setQuery(patch: Record<string, string>) {
 
 export function PracticePage() {
   const { sched, mi, now } = useDerived();
+  const bookmarks=bookmarkedProblems(useEvents(),now);
   const q = readQuery();
   const paper = q.get('paper') ?? '';
   const family=q.get('family')??'';
@@ -55,6 +57,7 @@ export function PracticePage() {
     if (status === 'todo' && st) return false;
     if (status === 'wrong' && !st?.inMistakes) return false;
     if (status === 'done' && !st?.mastered) return false;
+    if (status === 'saved' && !bookmarks.has(p.id)) return false;
     return true;
   });
   if (!paper && sort !== 'source') {
@@ -158,6 +161,7 @@ export function PracticePage() {
                 <a href={`#/p/${p.id}`} onClick={() => setProblemList(ids)}>
                   <span>
                     {sourceLabel(p)}
+                    {bookmarks.has(p.id)&&<span className="badge">已收藏</span>}
                     {st?.inMistakes && <span className="badge bad">错题</span>}
                     {st?.mastered && <span className="badge good">过关</span>}
                     {p.verified !== 'checked' && <span className="badge warn">{p.verified === 'corrected' ? '已勘误' : '存疑'}</span>}

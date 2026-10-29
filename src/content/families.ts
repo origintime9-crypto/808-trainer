@@ -1,8 +1,8 @@
-import { problems } from './index';
-import type { Problem, Source } from '../types';
+import { problems } from './catalog';
+import type { ProblemInfo, Source } from '../types';
 
 /** 按原始大题保守合并；同题的多个来源会连接家族，避免拆小问增加迁移证据。 */
-export function sourceFamily(p: Problem, source: Source): string {
+export function sourceFamily(p: ProblemInfo, source: Source): string {
   if (p.family) return p.family;
   if (source.family) return `${source.paper}:${source.family}`;
   const no = source.no.replace(/（/g, '(').replace(/）/g, ')');
@@ -29,7 +29,7 @@ for (const p of problems) {
 }
 export const familyByProblem = new Map(problems.map(p => [p.id, root(p.sources[0] ? sourceFamily(p, p.sources[0]) : p.family ?? p.id)]));
 export const problemFamily = (id: string): string => familyByProblem.get(id) ?? id;
-export function familyMembers(id: string): Problem[] {
+export function familyMembers(id: string): ProblemInfo[] {
   const family = problemFamily(id);
   return problems.filter(p => problemFamily(p.id) === family);
 }

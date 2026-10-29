@@ -1,8 +1,8 @@
-import { kpById, paperById, patternById } from './content';
+import { kpById, paperById, patternById } from './content/catalog';
 import { dayDiff } from './engine/scheduler';
-import type { Problem } from './types';
+import type { ProblemInfo } from './types';
 
-export function sourceLabel(p: Problem): string {
+export function sourceLabel(p: ProblemInfo): string {
   return p.sources
     .map((s) => {
       const paper = paperById.get(s.paper);
@@ -12,7 +12,7 @@ export function sourceLabel(p: Problem): string {
     .join(' / ');
 }
 
-export function problemScore(p: Problem): number {
+export function problemScore(p: ProblemInfo): number {
   return p.sources.find((s) => s.score)?.score ?? 0;
 }
 

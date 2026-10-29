@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { knowledge, problems } from '../content';
+import { knowledge, problems } from '../content/catalog';
 import { sourceEvidenceLabel } from '../content/sourceEvidence';
 import { domains, topics, matchesCategory } from '../content/taxonomy';
 import { StudyNav } from '../components/StudyNav';

@@ -1,5 +1,5 @@
 import { StudyNav } from '../components/StudyNav';
-import { kpById } from '../content';
+import { kpById } from '../content/catalog';
 import { target808Basis } from '../content/target808';
 import { exam808Schedule, guideCheckedAt, guideComparisons, guideSources } from '../content/revisionGuide';
 

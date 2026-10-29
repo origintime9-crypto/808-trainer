@@ -7,7 +7,7 @@ import { mockResult, mockSessions, validMockSession } from '../engine/mock';
 import { readiness808 } from '../engine/readiness';
 import { learningPlan } from '../engine/learning';
 import { sourceLabel, stars } from '../format';
-import { problemById } from '../content';
+import { problemById } from '../content/catalog';
 import { useDerived, useEvents } from '../state';
 
 const percent = (value: number) => Math.round(value * 100) + '%';

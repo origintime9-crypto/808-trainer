@@ -1,9 +1,10 @@
 import { createEmptyCard, fsrs, Rating, State, type Card as FsrsCard, type Grade as FsrsGrade } from 'ts-fsrs';
 import type { AttemptEvent, Grade, TrainerEvent } from '../types';
-import { cardById, kpById, kpInitialPapers as kpPapers, problemById, initialPaperCount as realPaperCount } from '../content';
+import { cardById, kpById, kpInitialPapers as kpPapers, problemById, initialPaperCount as realPaperCount } from '../content/catalog';
 import { examEmphasis } from '../content/target808';
 import { learningEvents } from './history';
 import { examStartTimestamp } from '../content/revisionGuide';
+import { errorRoutes } from '../content/learningSupport';
 
 export const DAY = 86_400_000;
 
@@ -123,7 +124,8 @@ export function replay(events: TrainerEvent[], examDate: string): Schedule {
       if (!full || !independent) inMistakes = true;
       else if (wasInMistakes && streak >= 2) inMistakes = false;
       // 首次纠正还需隔日确认；不能用Easy长间隔把未过关错题推迟数天。
-      const retryDays = !independent || e.grade <= 1 || (e.grade === 3 && inMistakes) ? 1 : cap;
+      // 概念/性质误用次日回测；计算失误不额外惩罚 FSRS 的正常评级间隔。
+      const retryDays = errorRoutes(e).concept || !independent || e.grade <= 1 || (e.grade === 3 && inMistakes) ? 1 : cap;
       const next = finalDaily ? clampDue(f.next(base, new Date(e.t), GRADE_TO_RATING[e.grade]).card, e.t, retryDays, examDate) : base;
       problems.set(e.problemId, { card: next, attempts, inMistakes, mastered: !inMistakes, streak });
     } else if (e.kind === 'note') {
