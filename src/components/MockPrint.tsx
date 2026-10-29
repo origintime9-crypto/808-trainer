@@ -3,6 +3,7 @@ import { Md } from './Markdown';
 import type { ExamItem } from '../types';
 import { Suspense, useEffect, useState } from 'react';
 import { recordProblemExposure } from '../state';
+import { LoadBoundary } from './LoadBoundary';
 
 export function MockPrint({title,items,minutes=180}:{title:string;items:ExamItem[];minutes?:number}) {
   const [exposureError,setExposureError]=useState('');
@@ -14,7 +15,7 @@ export function MockPrint({title,items,minutes=180}:{title:string;items:ExamItem
     window.addEventListener('beforeprint',beforePrint);
     return()=>window.removeEventListener('beforeprint',beforePrint);
   },[items]);
-  return <>{exposureError&&<p className="hint" role="alert">{exposureError}</p>}<section className="mock-print"><h1>808 · {title}</h1><p>已标明分值合计 {items.reduce((v,i)=>v+i.score,0)} 分，建议时间 {minutes} 分钟。</p>{items.map(i=><Suspense key={i.no} fallback={<p>正在载入题面…</p>}><PrintItem item={i}/></Suspense>)}</section></>;
+  return <>{exposureError&&<p className="hint" role="alert">{exposureError}</p>}<section className="mock-print"><h1>808 · {title}</h1><p>已标明分值合计 {items.reduce((v,i)=>v+i.score,0)} 分，建议时间 {minutes} 分钟。</p>{items.map(i=><LoadBoundary key={i.no} resetKey={i.problemId}><Suspense fallback={<p>正在载入题面…</p>}><PrintItem item={i}/></Suspense></LoadBoundary>)}</section></>;
 }
 function PrintItem({item:i}:{item:ExamItem}) {
   const p=useProblemDetail(i.problemId);

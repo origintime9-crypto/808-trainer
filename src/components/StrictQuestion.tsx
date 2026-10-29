@@ -4,12 +4,14 @@ import type { ExamAnswer, ProblemInfo } from '../types';
 import { Md } from './Markdown';
 import { useProblemExposure } from '../state';
 import { Scratchpad } from './Scratchpad';
+import { LoadBoundary } from './LoadBoundary';
 
 interface StrictQuestionProps {
   problem:ProblemInfo; examId:string; initial?:ExamAnswer; onDraft:(answer:ExamAnswer)=>void; onSave:()=>void; onSkip:(answer:ExamAnswer)=>void;
 }
 export function StrictQuestion(props:StrictQuestionProps) {
-  return <Suspense fallback={<section className="card">正在载入题面…</section>}><StrictQuestionBody {...props}/></Suspense>;
+  // 题面分组加载失败只影响本题，不能卸载整卷倒计时。
+  return <LoadBoundary resetKey={props.problem.id}><Suspense fallback={<section className="card">正在载入题面…</section>}><StrictQuestionBody {...props}/></Suspense></LoadBoundary>;
 }
 function StrictQuestionBody({ problem:info, examId, initial, onDraft, onSave, onSkip }:StrictQuestionProps) {
   const p=useProblemDetail(info.id)!;
